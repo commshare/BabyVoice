@@ -34,7 +34,7 @@ public class NetworkHelper {
         int nType = networkInfo.getType();
         //Log.i(TAG ,"kelvin networkInfo.getExtraInfo() is "+networkInfo.getExtraInfo()+"");
         if (nType == ConnectivityManager.TYPE_MOBILE) {
-            netType =  Constant.SYSNET_MOBILE;
+            netType = Constant.SYSNET_MOBILE;
         } else if (nType == ConnectivityManager.TYPE_WIFI) {
             netType = Constant.SYSNET_WIFI;
         }

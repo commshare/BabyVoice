@@ -6,13 +6,13 @@ package com.lihb.babyvoice;
 
 public class Constant {
 
-    public static final byte SYSNET_WIFI=0;
-    public static final byte SYSNET_MOBILE=1;
-    public static final byte SYSNET_DISCONNECT=2;
+    public static final byte SYSNET_WIFI = 0;
+    public static final byte SYSNET_MOBILE = 1;
+    public static final byte SYSNET_DISCONNECT = 2;
     public static final byte SYSNET_2G = 3;
     public static final byte SYSNET_3G = 4;
     public static final byte SYSNET_4G = 5;
-    public static final byte SYSNET_UNKNOWN=127;
+    public static final byte SYSNET_UNKNOWN = 127;
 
     // TELPHONE NETWORK TYPE
     public static final int TELNET_UNKNOWN = 0;

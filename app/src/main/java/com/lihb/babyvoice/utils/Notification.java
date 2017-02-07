@@ -3,7 +3,6 @@ package com.lihb.babyvoice.utils;
 import android.os.Handler;
 import android.util.Log;
 
-
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;

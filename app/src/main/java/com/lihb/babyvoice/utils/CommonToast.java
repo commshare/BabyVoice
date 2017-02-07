@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.lihb.babyvoice.BabyVoiceApp;
 import com.lihb.babyvoice.R;
 
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -68,11 +67,11 @@ public final class CommonToast {
     }
 
     public static void showExtendLongToast(@StringRes final int resId) {
-        showToastWithTime(resId,EXTEND_LONG);
+        showToastWithTime(resId, EXTEND_LONG);
     }
 
     public static void showExtendLongToast(final CharSequence text) {
-        showToastWithTime(text,EXTEND_LONG);
+        showToastWithTime(text, EXTEND_LONG);
     }
 
 
@@ -94,7 +93,7 @@ public final class CommonToast {
         t.getView().setBackgroundResource(R.drawable.toast_frame_background);
 
         View textView = t.getView().findViewById(android.R.id.message);
-        ((TextView)textView).setGravity(Gravity.CENTER);
+        ((TextView) textView).setGravity(Gravity.CENTER);
         if (textView != null) {
             // Meizu 特殊处理
             textView.setBackgroundColor(Color.TRANSPARENT);
@@ -111,27 +110,27 @@ public final class CommonToast {
      */
     public static void showToastWithTime(@StringRes final int resId, long duration) {
         final Toast toast = makeText(resId, Toast.LENGTH_LONG);
-        showToast(toast,duration,null);
+        showToast(toast, duration, null);
     }
 
     public static void showToastWithTime(final CharSequence text, long duration) {
-        showToast(text,duration,null);
+        showToast(text, duration, null);
     }
 
     public static void showToast(@StringRes final int resId, long duration, final ToastTimeFinish cb) {
         final Toast toast = makeText(resId, Toast.LENGTH_LONG);
-        showToast(toast,duration,cb);
+        showToast(toast, duration, cb);
     }
 
     public static void showToast(final CharSequence text, long duration, final ToastTimeFinish cb) {
         final Toast toast = makeText(text, Toast.LENGTH_LONG);
-        showToast(toast,duration,cb);
+        showToast(toast, duration, cb);
     }
 
     private static void showToast(final Toast toast, long duration, final ToastTimeFinish cb) {
         final long ONE_SECOND = 1000;
         final long MIN_TIME = 2000;
-        new CountDownTimer(Math.max(MIN_TIME,duration), ONE_SECOND) {
+        new CountDownTimer(Math.max(MIN_TIME, duration), ONE_SECOND) {
 
             @Override
             public void onTick(long millisUntilFinished) {
@@ -141,7 +140,7 @@ public final class CommonToast {
             @Override
             public void onFinish() {
                 toast.cancel();
-                if (cb!= null) {
+                if (cb != null) {
                     cb.onFinish();
                 }
             }

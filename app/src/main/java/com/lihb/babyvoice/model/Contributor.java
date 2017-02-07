@@ -6,9 +6,9 @@ package com.lihb.babyvoice.model;
 
 public class Contributor {
 
-    public  String login;
-    public  String avatar_url;
-    public  String followers_url;
+    public String login;
+    public String avatar_url;
+    public String followers_url;
 
     public Contributor(String login, String avatar_url, String followers_url) {
         this.login = login;

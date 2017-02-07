@@ -27,14 +27,14 @@ public abstract class BaseActivity extends RxActivity implements IUiState, View.
     private String mPath = "";
 
     protected String getPath() {
-        if (StringUtils.isBlank(this.mPath )){
+        if (StringUtils.isBlank(this.mPath)) {
             return getLocalClassName();
         }
-        return this.mPath ;
+        return this.mPath;
     }
 
-    protected void setPath(String path){
-        this.mPath  = path;
+    protected void setPath(String path) {
+        this.mPath = path;
     }
 
     @Override

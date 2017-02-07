@@ -30,6 +30,6 @@
     </declare-styleable>
 
     <declare-styleable name="CircularImageViewStyle">
-        <attr name="circularImageViewDefault" format="reference"/>
+        <attr name="circularImageViewDefault" format="reference" />
     </declare-styleable>
 </resources>

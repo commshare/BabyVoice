@@ -15,7 +15,6 @@ import com.lihb.babyvoice.action.ApiManager;
 import com.lihb.babyvoice.action.ServiceGenerator;
 import com.lihb.babyvoice.model.Contributor;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +38,7 @@ public class ContributorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         mContext = context;
         mData = dataList;
     }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Log.i("ContributorAdapter", "onCreateViewHolder");
@@ -111,7 +111,7 @@ public class ContributorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return mData.size();
     }
 
-    private class FollowViewHolder extends RecyclerView.ViewHolder{
+    private class FollowViewHolder extends RecyclerView.ViewHolder {
 
         public TextView userNameTxt;
         public ImageView userAvatarImg;

@@ -14,7 +14,7 @@ public class BabyVoiceApp extends Application {
 
     public static BabyVoiceApp instance = null;
 
-    private BabyVoiceApp(){
+    private BabyVoiceApp() {
 
     }
 

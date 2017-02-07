@@ -27,23 +27,23 @@ public class RadiusImageView extends ImageView {
     private int bottomRightRadiusWidth = 0;
     private Paint paint2;
 
-    public RadiusImageView(Context context, AttributeSet attrs, int defStyle){
+    public RadiusImageView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context, attrs);
     }
 
-    public RadiusImageView(Context context, AttributeSet attr){
+    public RadiusImageView(Context context, AttributeSet attr) {
         super(context, attr);
         init(context, attr);
     }
 
-    public RadiusImageView(Context context){
+    public RadiusImageView(Context context) {
         super(context);
         init(context, null);
     }
 
-    private void init(Context context, AttributeSet attrs){
-        if (attrs != null){
+    private void init(Context context, AttributeSet attrs) {
+        if (attrs != null) {
             TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.RadiusImageView);
             topLeftRadiusWidth = a.getDimensionPixelOffset(R.styleable.RadiusImageView_topLeftRadiusWidth, 0);
             topRightRadiusWidth = a.getDimensionPixelOffset(R.styleable.RadiusImageView_topRightRadiusWidth, 0);
@@ -61,7 +61,7 @@ public class RadiusImageView extends ImageView {
     }
 
     @Override
-    public void draw(Canvas canvas){
+    public void draw(Canvas canvas) {
         Bitmap bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas2 = new Canvas(bitmap);
         super.draw(canvas2);
@@ -73,7 +73,7 @@ public class RadiusImageView extends ImageView {
         bitmap.recycle();
     }
 
-    private void drawTopLeft(Canvas canvas){
+    private void drawTopLeft(Canvas canvas) {
         Path path = new Path();
         path.moveTo(0, topLeftRadiusWidth);
         path.lineTo(0, 0);
@@ -83,25 +83,25 @@ public class RadiusImageView extends ImageView {
         canvas.drawPath(path, paint);
     }
 
-    private void  drawTopRight(Canvas canvas){
+    private void drawTopRight(Canvas canvas) {
         Path path = new Path();
         path.moveTo(getWidth(), topRightRadiusWidth);
         path.lineTo(getWidth(), 0);
         path.lineTo(getWidth() - topRightRadiusWidth, 0);
-        path.arcTo(new RectF(getWidth() - topRightRadiusWidth*2, 0, getWidth(), topLeftRadiusWidth*2), -90, 90);
+        path.arcTo(new RectF(getWidth() - topRightRadiusWidth * 2, 0, getWidth(), topLeftRadiusWidth * 2), -90, 90);
         path.close();
         canvas.drawPath(path, paint);
     }
 
-    private void drawBottomLeft(Canvas canvas){
+    private void drawBottomLeft(Canvas canvas) {
         Path path = new Path();
-        path.moveTo(0, getHeight()-bottomLeftRadiusWidth);
+        path.moveTo(0, getHeight() - bottomLeftRadiusWidth);
         path.lineTo(0, getHeight());
         path.lineTo(bottomLeftRadiusWidth, getHeight());
         path.arcTo(new RectF(
                         0,
-                        getHeight()-bottomLeftRadiusWidth*2,
-                        0+bottomLeftRadiusWidth*2,
+                        getHeight() - bottomLeftRadiusWidth * 2,
+                        0 + bottomLeftRadiusWidth * 2,
                         getHeight()),
                 90,
                 90);
@@ -109,14 +109,14 @@ public class RadiusImageView extends ImageView {
         canvas.drawPath(path, paint);
     }
 
-    private void drawBottomRight(Canvas canvas){
+    private void drawBottomRight(Canvas canvas) {
         Path path = new Path();
-        path.moveTo(getWidth()-bottomRightRadiusWidth, getHeight());
+        path.moveTo(getWidth() - bottomRightRadiusWidth, getHeight());
         path.lineTo(getWidth(), getHeight());
-        path.lineTo(getWidth(), getHeight()-bottomRightRadiusWidth);
+        path.lineTo(getWidth(), getHeight() - bottomRightRadiusWidth);
         path.arcTo(new RectF(
-                getWidth()-bottomRightRadiusWidth*2,
-                getHeight()-bottomRightRadiusWidth*2,
+                getWidth() - bottomRightRadiusWidth * 2,
+                getHeight() - bottomRightRadiusWidth * 2,
                 getWidth(),
                 getHeight()), 0, 90);
         path.close();

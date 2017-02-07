@@ -9,6 +9,7 @@ import com.lihb.babyvoice.customview.IUiState;
 import com.lihb.babyvoice.utils.NotificationCenter;
 import com.lihb.babyvoice.utils.StringUtils;
 import com.trello.rxlifecycle.components.support.RxFragment;
+
 /**
  * Fragment 基类
  * <p/>
@@ -22,13 +23,13 @@ public class BaseFragment extends RxFragment implements IUiState {
     private String mPath = "";
 
     protected String getPath() {
-        if (StringUtils.isBlank(this.mPath)){
+        if (StringUtils.isBlank(this.mPath)) {
             return getClass().getSimpleName();
         }
         return this.mPath;
     }
 
-    protected void setPath(String path){
+    protected void setPath(String path) {
         this.mPath = path;
     }
 

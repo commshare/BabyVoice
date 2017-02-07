@@ -7,7 +7,6 @@ import android.view.View;
 
 /**
  * RecyclerView基类，支持emptyview
- *
  */
 public class BaseRecyclerView extends RecyclerView {
 

@@ -67,6 +67,7 @@ public enum NotificationCenter {
     /**
      * Make sure to call this function in main thread, or will be post in the message queue.
      * Do not call this function in notification callback or will cause concurrent exception
+     *
      * @param observer
      */
     public void removeObserverNow(Object observer) {
@@ -81,6 +82,7 @@ public enum NotificationCenter {
 
     /**
      * see {@link #removeObserverNow(Object)}
+     *
      * @param observer
      */
     public void removeObserver(final Object observer) {
@@ -89,6 +91,7 @@ public enum NotificationCenter {
 
     /**
      * observer will be removed later
+     *
      * @param observer
      */
     public void removeObserverLater(final Object observer) {

@@ -1,16 +1,13 @@
 package com.lihb.babyvoice;
 
+import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.lihb.babyvoice.action.ApiManager;
 import com.lihb.babyvoice.action.ServiceGenerator;
@@ -20,10 +17,8 @@ import com.lihb.babyvoice.model.Contributor;
 import java.util.ArrayList;
 import java.util.List;
 
-import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
@@ -79,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onNext(List<Contributor> contributors) {
                         mProgressBar.setVisibility(View.GONE);
-                        Log.i("MainActivity ", "size = " +contributors.size());
+                        Log.i("MainActivity ", "size = " + contributors.size());
                         mAdapter.updateData(contributors);
                     }
 

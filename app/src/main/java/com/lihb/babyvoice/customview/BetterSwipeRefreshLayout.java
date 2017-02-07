@@ -18,14 +18,16 @@ public class BetterSwipeRefreshLayout extends SwipeRefreshLayout {
     public void setAcceptEvents(boolean mAcceptEvents) {
         this.mAcceptEvents = mAcceptEvents;
     }
+
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return mAcceptEvents? super.onInterceptTouchEvent(ev) : true;
+        return mAcceptEvents ? super.onInterceptTouchEvent(ev) : true;
     }
 
     public BetterSwipeRefreshLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
+
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();

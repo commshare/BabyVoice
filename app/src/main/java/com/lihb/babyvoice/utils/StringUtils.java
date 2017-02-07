@@ -47,10 +47,11 @@ public class StringUtils {
         String ext = defExt;
         final int index = string.lastIndexOf('.');
         if (index != -1) {
-            ext = string.substring(index+1);
+            ext = string.substring(index + 1);
         }
         return ext;
     }
+
     /**
      * Convert the hash bytes to hex digits string
      *
@@ -81,6 +82,7 @@ public class StringUtils {
     protected static char[] hexDigits = {
             '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
     };
+
     private static void appendHexPair(byte bt, StringBuffer stringbuffer) {
         char c0 = hexDigits[(bt & 0xf0) >> 4];
         char c1 = hexDigits[bt & 0xf];
@@ -266,7 +268,7 @@ public class StringUtils {
 
     /**
      * is null or its length is 0 or it is made by space
-     *
+     * <p>
      * <pre>
      * isBlank(null) = true;
      * isBlank(&quot;&quot;) = true;

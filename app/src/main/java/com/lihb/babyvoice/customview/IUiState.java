@@ -13,7 +13,10 @@ public interface IUiState {
     int kUiDestroyed = 10000;
 
     boolean isUiActive();
+
     boolean isUiPaused();
+
     boolean isUiInstanceStateSaved();
+
     boolean isUiDestroyed();
 }
