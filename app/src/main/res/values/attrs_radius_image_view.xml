@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RadiusImageView">
+        <attr name="topLeftRadiusWidth" format="dimension" />
+        <attr name="topRightRadiusWidth" format="dimension" />
+        <attr name="bottomLeftRadiusWidth" format="dimension" />
+        <attr name="bottomRightRadiusWidth" format="dimension" />
+    </declare-styleable>
+</resources>
