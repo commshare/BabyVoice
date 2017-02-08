@@ -4,10 +4,24 @@
     android:layout_height="match_parent"
     tools:context=".view.MainActivity">
 
+    <include
+        android:id="@+id/net_error_notice_bar"
+        layout="@layout/net_error_notice_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/net_error_bar_height" />
+
+    <com.lihb.babyvoice.customview.DividerLine
+        android:id="@+id/divider_line"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/net_error_notice_bar"
+        android:background="@android:color/white" />
+
     <com.lihb.babyvoice.customview.base.SwipeControllableViewPager
         android:id="@+id/baby_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/divider_line"
         android:layout_above="@+id/divider_line2" />
 
     <com.lihb.babyvoice.customview.DividerLine

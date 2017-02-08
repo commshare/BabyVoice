@@ -12,4 +12,6 @@
     <string name="title_right">完成</string>
 
     <string name="back">返回</string>
+
+    <string name="net_error_notice">网络连接不可用，请检查您的网络设置</string>
 </resources>

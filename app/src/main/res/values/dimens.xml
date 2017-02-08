@@ -6,4 +6,5 @@
 
     <dimen name="padding_top">0dp</dimen>
     <dimen name="title_bar_height">56dp</dimen>
+    <dimen name="net_error_bar_height">48dp</dimen>
 </resources>

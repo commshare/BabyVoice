@@ -77,14 +77,14 @@ public final class CommonToast {
 
     @SuppressLint("ShowToast")
     public static Toast makeText(CharSequence text, @Duration int duration) {
-        return customToast(Toast.makeText(BabyVoiceApp.instance,
+        return customToast(Toast.makeText(BabyVoiceApp.getInstance(),
                 text,
                 duration));
     }
 
     @SuppressLint("ShowToast")
     public static Toast makeText(@StringRes final int resId, @Duration int duration) {
-        return customToast(Toast.makeText(BabyVoiceApp.instance,
+        return customToast(Toast.makeText(BabyVoiceApp.getInstance(),
                 resId,
                 duration));
     }

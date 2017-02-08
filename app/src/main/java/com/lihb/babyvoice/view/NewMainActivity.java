@@ -9,12 +9,20 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lihb.babyvoice.R;
+import com.lihb.babyvoice.command.BaseAndroidCommand;
+import com.lihb.babyvoice.command.NetStateChangedCommand;
 import com.lihb.babyvoice.customview.base.BaseFragmentActivity;
 import com.lihb.babyvoice.customview.base.SwipeControllableViewPager;
+import com.lihb.babyvoice.utils.NetworkHelper;
+import com.lihb.babyvoice.utils.RxBus;
 import com.orhanobut.logger.Logger;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 
 public class NewMainActivity extends BaseFragmentActivity {
 
@@ -39,6 +47,7 @@ public class NewMainActivity extends BaseFragmentActivity {
     private TextView mAssistTab;
     private TextView mMeTab;
     private SwipeControllableViewPager mViewPager;
+    private RelativeLayout mNetErrorNoticeBar;
 
     private FragmentPagerAdapter mFragmentPagerAdapter;
     private FragmentManager mFragmentManager;
@@ -50,6 +59,7 @@ public class NewMainActivity extends BaseFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_new);
         initViews();
+        checkNetStatus();
 //        addStatusBarView();
     }
 
@@ -62,6 +72,8 @@ public class NewMainActivity extends BaseFragmentActivity {
         mWatchTab.setOnClickListener(mTabOnClickListener);
         mAssistTab.setOnClickListener(mTabOnClickListener);
         mMeTab.setOnClickListener(mTabOnClickListener);
+
+        mNetErrorNoticeBar = (RelativeLayout) findViewById(R.id.net_error_notice_bar);
 
         mViewPager = (SwipeControllableViewPager) findViewById(R.id.baby_view_pager);
         mViewPager.setOffscreenPageLimit(2);
@@ -175,6 +187,30 @@ public class NewMainActivity extends BaseFragmentActivity {
             default:
                 break;
         }
+    }
+
+    private void checkNetStatus() {
+        updateNetErrorNoticeBar();
+        RxBus.getDefault().registerOnActivity(BaseAndroidCommand.class, this)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<BaseAndroidCommand>() {
+                    @Override
+                    public void call(BaseAndroidCommand baseAndroidCommand) {
+                        if (baseAndroidCommand instanceof NetStateChangedCommand) {
+                            updateNetErrorNoticeBar();
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Logger.d("BaseAndroidCommand failed.", throwable);
+                    }
+                });
+    }
+
+    private void updateNetErrorNoticeBar() {
+        mNetErrorNoticeBar.setVisibility(NetworkHelper.isDisconnected(NewMainActivity.this) ? View.VISIBLE : View.GONE);
+        findViewById(R.id.divider_line).setVisibility(NetworkHelper.isDisconnected(NewMainActivity.this) ? View.VISIBLE : View.GONE);
     }
 
     private void addStatusBarView() {
