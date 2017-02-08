@@ -6,4 +6,10 @@
     <string name="tab_baby_watch">爱视贝</string>
     <string name="tab_baby_assist">爱助手</string>
     <string name="tab_baby_me">我</string>
+
+    <string name="title_left">返回</string>
+    <string name="title_Title">Title</string>
+    <string name="title_right">完成</string>
+
+    <string name="back">返回</string>
 </resources>

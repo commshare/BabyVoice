@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <com.lihb.babyvoice.customview.TitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/padding_top"
+        android:background="@android:color/background_dark"
+        app:leftDrawable="@mipmap/ic_back_orange"
+        app:rightDrawable="@mipmap/icon_my_next"
+        app:leftText="@string/back"
+        app:titleText="@string/tab_baby_watch" />
 
     <TextView
         android:layout_width="match_parent"
