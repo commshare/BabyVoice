@@ -1,4 +1,9 @@
 <resources>
-    <string name="app_name">BabyVoice</string>
+    <string name="app_name">爱听贝</string>
     <string name="check_followers">查看followers</string>
+
+    <string name="tab_baby_heart">爱听贝</string>
+    <string name="tab_baby_watch">爱视贝</string>
+    <string name="tab_baby_assist">爱助手</string>
+    <string name="tab_baby_me">我</string>
 </resources>

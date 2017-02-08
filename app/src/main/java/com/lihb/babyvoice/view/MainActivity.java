@@ -1,4 +1,4 @@
-package com.lihb.babyvoice;
+package com.lihb.babyvoice.view;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.action.ApiManager;
 import com.lihb.babyvoice.action.ServiceGenerator;
 import com.lihb.babyvoice.adapter.ContributorAdapter;

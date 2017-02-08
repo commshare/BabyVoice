@@ -6,4 +6,11 @@
     <color name="list_divider">#50dee1e4</color>
     <color name="window_background">#FFF5F5F5</color>
 
+    <!-- 统一分割线颜色 -->
+
+    <color name="divider_color">#E5E5E5</color>
+    <!-- 首页颜色 -->
+    <color name="tab_background">#f9f9f9</color>
+    <color name="tab_txt_selected">#ff8c0e</color>
+    <color name="tab_txt_normal">#666666</color>
 </resources>

@@ -1,0 +1,135 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.MainActivity">
+
+    <com.lihb.babyvoice.customview.DividerLine
+        android:id="@+id/divider_line1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <com.lihb.babyvoice.customview.base.SwipeControllableViewPager
+        android:id="@+id/baby_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/divider_line2"
+        android:layout_below="@+id/divider_line1" />
+
+    <com.lihb.babyvoice.customview.DividerLine
+        android:id="@+id/divider_line2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@+id/linearLayout1"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/tab_background"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/rl_tab_heart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:padding="2dp">
+
+
+            <TextView
+                android:id="@+id/heart_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:drawablePadding="-15dp"
+                android:drawableTop="@mipmap/ic_launcher"
+                android:gravity="center"
+                android:text="@string/tab_baby_heart"
+                android:textColor="@color/tab_txt_color_selector"
+                android:textSize="12dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_tab_watch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:padding="2dp">
+
+
+            <TextView
+                android:id="@+id/watch_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:drawablePadding="-15dp"
+                android:drawableTop="@mipmap/ic_launcher"
+                android:gravity="center"
+                android:text="@string/tab_baby_watch"
+                android:textColor="@color/tab_txt_color_selector"
+                android:textSize="12dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_tab_assist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:padding="2dp">
+
+            <TextView
+                android:id="@+id/assist_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:drawablePadding="-15dp"
+                android:drawableTop="@mipmap/ic_launcher"
+                android:gravity="center"
+                android:text="@string/tab_baby_assist"
+                android:textColor="@color/tab_txt_color_selector"
+                android:textSize="12dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_tab_me"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:padding="2dp">
+
+            <TextView
+                android:id="@+id/me_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:drawablePadding="-15dp"
+                android:drawableTop="@mipmap/ic_launcher"
+                android:gravity="center"
+                android:text="@string/tab_baby_me"
+                android:textColor="@color/tab_txt_color_selector"
+                android:textSize="12dp" />
+
+
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>
