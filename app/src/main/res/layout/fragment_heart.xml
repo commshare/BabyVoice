@@ -1,24 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <com.lihb.babyvoice.customview.TitleBar
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/padding_top"
         android:background="@android:color/holo_red_dark"
+        android:paddingTop="@dimen/padding_top"
         app:leftDrawable="@mipmap/ic_back_orange"
-        app:rightDrawable="@mipmap/icon_my_next"
         app:leftText="@string/back"
+        app:rightDrawable="@mipmap/icon_my_next"
         app:titleText="@string/tab_baby_heart" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="fragment_爱听贝" />
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.lihb.babyvoice.customview.RefreshLayout
+            android:id="@+id/heart_refreshlayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.lihb.babyvoice.customview.RemovedRecyclerView
+                android:id="@+id/heart_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none" />
+        </com.lihb.babyvoice.customview.RefreshLayout>
+
+        <include
+            layout="@layout/empty_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
 </LinearLayout>

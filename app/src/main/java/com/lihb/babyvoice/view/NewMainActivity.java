@@ -77,7 +77,7 @@ public class NewMainActivity extends BaseFragmentActivity {
 
         mViewPager = (SwipeControllableViewPager) findViewById(R.id.baby_view_pager);
         mViewPager.setOffscreenPageLimit(2);
-        mViewPager.setSwipeEnabled(true);
+        mViewPager.setSwipeEnabled(false);
         mFragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int idx) {
