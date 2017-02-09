@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.adapter.HeartAdapter;
@@ -30,6 +31,7 @@ public class HeartFragment extends BaseFragment {
     private List<BabyVoice> mData = new ArrayList<>();
     private boolean hasMoreData = false;
     private View emptyView;
+    private ImageView mImgGoToRecord;
 
     public static HeartFragment create() {
         return new HeartFragment();
@@ -85,6 +87,14 @@ public class HeartFragment extends BaseFragment {
                 mHeartAdapter.removeItem(position);
             }
         });
+
+        mImgGoToRecord = (ImageView) view.findViewById(R.id.img_goto_record);
+        mImgGoToRecord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CommonToast.showShortToast("luyin");
+            }
+        });
     }
 
     private void getData(final boolean refresh) {
@@ -96,7 +106,7 @@ public class HeartFragment extends BaseFragment {
             mData.add(babyVoice);
         }
         mHeartAdapter.notifyDataSetChanged();
-        hasMoreData = mData.size() < 50;
+        hasMoreData = mData.size() < 150;
         onLoadedLessons(refresh);
     }
 
