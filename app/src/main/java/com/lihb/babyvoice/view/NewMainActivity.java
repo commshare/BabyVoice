@@ -105,7 +105,9 @@ public class NewMainActivity extends BaseFragmentActivity {
             } else {
                 index = ME_TAB;
             }
-            switchToFragment(index);
+            if (index != mCurrTab) {
+                switchToFragment(index);
+            }
 
         }
     };
@@ -118,9 +120,9 @@ public class NewMainActivity extends BaseFragmentActivity {
     private void switchToFragment(int index) {
         Logger.i("switchToView() index = %d", index);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        int count = getFragmentManager().getBackStackEntryCount();
+        int count = getSupportFragmentManager().getBackStackEntryCount();
         if (count > 0) {
-            getFragmentManager().popBackStackImmediate();
+            getSupportFragmentManager().popBackStackImmediate();
         }
         transaction.hide(mFragmentList[mCurrTab])
                 .show(mFragmentList[index])

@@ -16,4 +16,5 @@
     <string name="net_error_notice">网络连接不可用，请检查您的网络设置</string>
 
     <string name="no_voice_record">您还有没有胎心率记录\n点击右下方按钮进行测试吧！</string>
+    <string name="voice_recording">正在录音</string>
 </resources>

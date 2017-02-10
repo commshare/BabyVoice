@@ -1,6 +1,7 @@
 package com.lihb.babyvoice.view;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -32,6 +33,8 @@ public class HeartFragment extends BaseFragment {
     private boolean hasMoreData = false;
     private View emptyView;
     private ImageView mImgGoToRecord;
+
+    private VoiceRecordFragment mVoiceRecordFragment;
 
     public static HeartFragment create() {
         return new HeartFragment();
@@ -92,9 +95,26 @@ public class HeartFragment extends BaseFragment {
         mImgGoToRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CommonToast.showShortToast("luyin");
+                gotoVoiceRecordFragment();
             }
         });
+    }
+
+    private void gotoVoiceRecordFragment() {
+        if (null == mVoiceRecordFragment) {
+            mVoiceRecordFragment = VoiceRecordFragment.create();
+        }
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.hide(this);
+        int count = getActivity().getSupportFragmentManager().getBackStackEntryCount();
+        if (count > 0) {
+            getActivity().getSupportFragmentManager().popBackStackImmediate();
+        }
+        transaction.add(R.id.main_layout, mVoiceRecordFragment, "VoiceRecordFragment")
+                .show(mVoiceRecordFragment)
+                .addToBackStack(null)
+                .commit();
+
     }
 
     private void getData(final boolean refresh) {
