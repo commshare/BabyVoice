@@ -106,7 +106,7 @@ public class HeartFragment extends BaseFragment {
             mData.add(babyVoice);
         }
         mHeartAdapter.notifyDataSetChanged();
-        hasMoreData = mData.size() < 150;
+        hasMoreData = mData.size() < 50;
         onLoadedLessons(refresh);
     }
 

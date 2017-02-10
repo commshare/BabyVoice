@@ -17,8 +17,8 @@
         android:layout_below="@id/net_error_notice_bar"
         android:background="@android:color/white" />
 
-    <com.lihb.babyvoice.customview.base.SwipeControllableViewPager
-        android:id="@+id/baby_view_pager"
+    <RelativeLayout
+        android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/divider_line"

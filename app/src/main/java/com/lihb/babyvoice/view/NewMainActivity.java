@@ -3,9 +3,7 @@ package com.lihb.babyvoice.view;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -16,7 +14,6 @@ import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.command.BaseAndroidCommand;
 import com.lihb.babyvoice.command.NetStateChangedCommand;
 import com.lihb.babyvoice.customview.base.BaseFragmentActivity;
-import com.lihb.babyvoice.customview.base.SwipeControllableViewPager;
 import com.lihb.babyvoice.utils.NetworkHelper;
 import com.lihb.babyvoice.utils.RxBus;
 import com.orhanobut.logger.Logger;
@@ -32,25 +29,20 @@ public class NewMainActivity extends BaseFragmentActivity {
     private static final int WATCH_TAB = 1;
     private static final int ASSIST_TAB = 2;
     private static final int ME_TAB = 3;
-    private static final int TABS_COUNT = 4;
 
-    private Fragment[] mFragmentList = new Fragment[TABS_COUNT];
+    private Fragment[] mFragmentList;
 
-//    private MeFragment mMeFragment;
-//    private WatchFragment mWatchFragment;
-//    private HeartFragment mHeartFragment;
-//    private AssistFragment mAssistFragment;
+    private MeFragment mMeFragment;
+    private WatchFragment mWatchFragment;
+    private HeartFragment mHeartFragment;
+    private AssistFragment mAssistFragment;
 
     //ui
     private TextView mHeartPageTab;
     private TextView mWatchTab;
     private TextView mAssistTab;
     private TextView mMeTab;
-    private SwipeControllableViewPager mViewPager;
     private RelativeLayout mNetErrorNoticeBar;
-
-    private FragmentPagerAdapter mFragmentPagerAdapter;
-    private FragmentManager mFragmentManager;
 
     private int mCurrTab = HEART_TAB;
 
@@ -68,6 +60,7 @@ public class NewMainActivity extends BaseFragmentActivity {
         mWatchTab = (TextView) findViewById(R.id.watch_textview);
         mAssistTab = (TextView) findViewById(R.id.assist_textview);
         mMeTab = (TextView) findViewById(R.id.me_textview);
+
         mHeartPageTab.setOnClickListener(mTabOnClickListener);
         mWatchTab.setOnClickListener(mTabOnClickListener);
         mAssistTab.setOnClickListener(mTabOnClickListener);
@@ -75,58 +68,27 @@ public class NewMainActivity extends BaseFragmentActivity {
 
         mNetErrorNoticeBar = (RelativeLayout) findViewById(R.id.net_error_notice_bar);
 
-        mViewPager = (SwipeControllableViewPager) findViewById(R.id.baby_view_pager);
-        mViewPager.setOffscreenPageLimit(2);
-        mViewPager.setSwipeEnabled(false);
-        mFragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
-            @Override
-            public Fragment getItem(int idx) {
-                if (idx < 0 || idx >= TABS_COUNT) {
-                    return null;
-                }
+        mHeartFragment = HeartFragment.create();
+        mWatchFragment = WatchFragment.create();
+        mAssistFragment = AssistFragment.create();
+        mMeFragment = MeFragment.create();
 
-                Logger.d("mFragViewPager.getItem, idx: %d", idx);
+        mFragmentList = new Fragment[]{mHeartFragment, mWatchFragment, mAssistFragment, mMeFragment};
 
-                if (mFragmentList[idx] != null) {
-                    return mFragmentList[idx];
-                }
+        // 加入fragment,显示爱听贝tab
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.main_layout, mHeartFragment)
+                .add(R.id.main_layout, mMeFragment)
+                .add(R.id.main_layout, mWatchFragment)
+                .add(R.id.main_layout, mAssistFragment)
+                .show(mHeartFragment)
+                .hide(mMeFragment)
+                .hide(mWatchFragment)
+                .hide(mAssistFragment)
+                .commit();
 
-                Fragment fragment = null;
-                switch (idx) {
-                    case HEART_TAB:
-                        fragment = HeartFragment.create();
-                        break;
-                    case WATCH_TAB:
-                        fragment = WatchFragment.create();
-                        break;
-                    case ASSIST_TAB:
-                        fragment = AssistFragment.create();
-                        break;
-                    case ME_TAB:
-                        fragment = MeFragment.create();
-                        break;
-                    default:
-                        break;
-                }
-                mFragmentList[idx] = fragment;
-                return fragment;
-            }
+        switchToFragment(HEART_TAB);
 
-            @Override
-            public int getCount() {
-                return TABS_COUNT;
-            }
-
-        };
-        mViewPager.setAdapter(mFragmentPagerAdapter);
-        mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                changeIndicatorByIndex(position);
-            }
-        });
-        changeIndicatorByIndex(0);
-        mFragmentManager = getSupportFragmentManager();
     }
 
     private View.OnClickListener mTabOnClickListener = new View.OnClickListener() {
@@ -143,17 +105,33 @@ public class NewMainActivity extends BaseFragmentActivity {
             } else {
                 index = ME_TAB;
             }
-            switchToView(index);
+            switchToFragment(index);
 
         }
     };
 
-    private void switchToView(int index) {
+    /**
+     * 跳转到指定的fragment
+     *
+     * @param index 需要跳转fragment的index
+     */
+    private void switchToFragment(int index) {
         Logger.i("switchToView() index = %d", index);
-        mViewPager.setCurrentItem(index, false);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        int count = getFragmentManager().getBackStackEntryCount();
+        if (count > 0) {
+            getFragmentManager().popBackStackImmediate();
+        }
+        transaction.hide(mFragmentList[mCurrTab])
+                .show(mFragmentList[index])
+                .commit();
         changeIndicatorByIndex(index);
     }
 
+    /**
+     * 改变底部tab图片和文字颜色
+     * @param index 选中的tab的index
+     */
     private void changeIndicatorByIndex(int index) {
         switch (index) {
             case HEART_TAB:
