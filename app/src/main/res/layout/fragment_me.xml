@@ -16,10 +16,94 @@
         app:leftText="@string/back"
         app:titleText="@string/tab_baby_me" />
 
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="fragment_我的" />
+        android:layout_below="@+id/title_bar"
+        android:layout_marginTop="15dp">
+
+        <LinearLayout
+            android:id="@+id/additional_item_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.lihb.babyvoice.customview.DividerLine
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.lihb.babyvoice.customview.CommonItem
+                android:id="@+id/item_me_center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:commonDividerVisible="true"
+                app:commonItemName="@string/txt_me_center"
+                app:commonItemSelector="@drawable/voice_item_selector"
+                app:commonLeftIcon="@mipmap/icon_my_next"
+                app:commonRightIcon="@mipmap/icon_my_next" />
+
+            <com.lihb.babyvoice.customview.DividerLine
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" />
+
+            <com.lihb.babyvoice.customview.CommonItem
+                android:id="@+id/item_pregnant_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:commonDividerVisible="true"
+                app:commonItemName="@string/txt_pregnant_date"
+                app:commonItemSelector="@drawable/voice_item_selector"
+                app:commonLeftIcon="@mipmap/icon_my_next"
+                app:commonRightIcon="@mipmap/icon_my_next" />
+
+            <com.lihb.babyvoice.customview.CommonItem
+                android:id="@+id/item_baby_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:commonDividerVisible="true"
+                app:commonItemName="@string/txt_baby_info"
+                app:commonItemSelector="@drawable/voice_item_selector"
+                app:commonLeftIcon="@mipmap/icon_my_next"
+                app:commonRightIcon="@mipmap/icon_my_next" />
+
+            <com.lihb.babyvoice.customview.CommonItem
+                android:id="@+id/item_remote_video_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:commonDividerVisible="true"
+                app:commonItemName="@string/txt_remote_video_address"
+                app:commonItemSelector="@drawable/voice_item_selector"
+                app:commonLeftIcon="@mipmap/icon_my_next"
+                app:commonRightIcon="@mipmap/icon_my_next" />
+
+
+            <com.lihb.babyvoice.customview.DividerLine
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" />
+
+            <com.lihb.babyvoice.customview.CommonItem
+                android:id="@+id/item_language_select"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:commonDividerVisible="true"
+                app:commonItemName="@string/txt_language_select"
+                app:commonItemSelector="@drawable/voice_item_selector"
+                app:commonLeftIcon="@mipmap/icon_my_next"
+                app:commonRightIcon="@mipmap/icon_my_next" />
+
+            <com.lihb.babyvoice.customview.CommonItem
+                android:id="@+id/item_about_app"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:commonDividerVisible="true"
+                app:commonItemName="@string/txt_about_app"
+                app:commonItemSelector="@drawable/voice_item_selector"
+                app:commonLeftIcon="@mipmap/icon_my_next"
+                app:commonRightIcon="@mipmap/icon_my_next" />
+
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

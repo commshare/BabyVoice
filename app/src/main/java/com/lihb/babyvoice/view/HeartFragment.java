@@ -1,6 +1,7 @@
 package com.lihb.babyvoice.view;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.adapter.HeartAdapter;
@@ -42,17 +44,37 @@ public class HeartFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_heart, container, false);
-        initView(view);
-        getData(true);
-        return view;
+        return inflater.inflate(R.layout.fragment_heart, container, false);
     }
 
-    private void initView(View view) {
-        emptyView = view.findViewById(R.id.empty_root_view);
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        initView();
+    }
 
-        mRefreshLayout = (RefreshLayout) view.findViewById(R.id.heart_refreshlayout);
-        mRecyclerView = (RemovedRecyclerView) view.findViewById(R.id.heart_recyclerView);
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden == false) {
+            showBottomTab();
+        }
+    }
+
+    private void showBottomTab() {
+        if (getActivity() == null) {
+            return;
+        }
+        // 隐藏底部的导航栏和分割线
+        ((LinearLayout) getActivity().findViewById(R.id.linearLayout1)).setVisibility(View.VISIBLE);
+        ((View) getActivity().findViewById(R.id.divider_line2)).setVisibility(View.VISIBLE);
+    }
+
+    private void initView() {
+        emptyView = getView().findViewById(R.id.empty_root_view);
+
+        mRefreshLayout = (RefreshLayout) getView().findViewById(R.id.heart_refreshlayout);
+        mRecyclerView = (RemovedRecyclerView) getView().findViewById(R.id.heart_recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mRecyclerView.setEmptyView(emptyView);
@@ -91,13 +113,14 @@ public class HeartFragment extends BaseFragment {
             }
         });
 
-        mImgGoToRecord = (ImageView) view.findViewById(R.id.img_goto_record);
+        mImgGoToRecord = (ImageView) getView().findViewById(R.id.img_goto_record);
         mImgGoToRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 gotoVoiceRecordFragment();
             }
         });
+        getData(true);
     }
 
     private void gotoVoiceRecordFragment() {

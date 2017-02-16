@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CommonItem">
+        <!-- 点击selector -->
+        <attr name="commonItemSelector" format="reference" />
+        <!-- 左侧图标 -->
+        <attr name="commonLeftIcon" format="reference" />
+        <!-- 名字 -->
+        <attr name="commonItemName" format="string|reference" />
+        <!-- 右侧图标 -->
+        <attr name="commonRightIcon" format="reference" />
+        <!-- 分隔线是否可见 -->
+        <attr name="commonDividerVisible" format="boolean" />
+    </declare-styleable>
+</resources>

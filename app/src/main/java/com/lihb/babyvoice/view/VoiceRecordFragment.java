@@ -2,22 +2,24 @@ package com.lihb.babyvoice.view;
 
 import android.media.MediaRecorder;
 import android.os.Bundle;
-import android.os.Environment;
+import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Chronometer;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragment;
+import com.lihb.babyvoice.utils.FileUtils;
 import com.lihb.babyvoice.utils.StringUtils;
 import com.orhanobut.logger.Logger;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -30,6 +32,7 @@ public class VoiceRecordFragment extends BaseFragment {
     private Chronometer mChronometer;
     private SimpleDateFormat sdf;
     private TitleBar mTitleBar;
+    private String mFileName;
 
     public static VoiceRecordFragment create() {
         return new VoiceRecordFragment();
@@ -37,15 +40,44 @@ public class VoiceRecordFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_voice_record, container, false);
-        initView(view);
-        return view;
+        return inflater.inflate(R.layout.fragment_voice_record, container, false);
     }
 
-    private void initView(View view) {
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        hideBottomTab();
+        initView();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden == false) {
+            hideBottomTab();
+            mChronometer.setBase(System.currentTimeMillis());
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Logger.i("onResume");
+    }
+
+    private void hideBottomTab() {
+        if (getActivity() == null) {
+            return;
+        }
+        // 隐藏底部的导航栏和分割线
+        ((LinearLayout) getActivity().findViewById(R.id.linearLayout1)).setVisibility(View.GONE);
+        ((View) getActivity().findViewById(R.id.divider_line2)).setVisibility(View.GONE);
+    }
+
+    private void initView() {
         sdf = new SimpleDateFormat("yyyyMMdd", Locale.CHINA);
-        mChronometer = (Chronometer) view.findViewById(R.id.chronometer);
-        recordText = (TextView) view.findViewById(R.id.record_txt);
+        mChronometer = (Chronometer) getView().findViewById(R.id.chronometer);
+        recordText = (TextView) getView().findViewById(R.id.record_txt);
         recordText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,11 +88,12 @@ public class VoiceRecordFragment extends BaseFragment {
                 } else {
                     stopRecording();
                     recordText.setText("开始");
+                    gotoVoiceSaveFragment();
 
                 }
             }
         });
-        mTitleBar = (TitleBar) view.findViewById(R.id.title_bar);
+        mTitleBar = (TitleBar) getView().findViewById(R.id.title_bar);
         mTitleBar.setLeftOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,8 +108,8 @@ public class VoiceRecordFragment extends BaseFragment {
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         //设置封装格式
         mRecorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
-        String fileName = sdf.format(new Date());
-        mRecorder.setOutputFile(getAMRFilePath(fileName/*+"-"+System.currentTimeMillis()*/ + ".amr"));
+        mFileName = System.currentTimeMillis() + ".amr";
+        mRecorder.setOutputFile(FileUtils.getAMRFilePath(mFileName));
         //设置编码格式
         mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
@@ -97,32 +130,7 @@ public class VoiceRecordFragment extends BaseFragment {
         stopChronometer();
     }
 
-    /**
-     * 判断是否有外部存储设备sdcard
-     *
-     * @return true | false
-     */
-    public static boolean isSdcardExit() {
-        if (Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED))
-            return true;
-        else
-            return false;
-    }
 
-    /**
-     * 获取编码后的AMR格式音频文件路径
-     *
-     * @return
-     */
-    public static String getAMRFilePath(String fileName) {
-        String mAudioAMRPath = "";
-        if (isSdcardExit()) {
-            String fileBasePath = Environment.getExternalStorageDirectory().getAbsolutePath();
-            mAudioAMRPath = fileBasePath + "/" + fileName;
-
-        }
-        return mAudioAMRPath;
-    }
 
     public void startChronometer(long startTime) {
         mChronometer.setBase(startTime);
@@ -188,6 +196,24 @@ public class VoiceRecordFragment extends BaseFragment {
             return 0;
         }
         return System.currentTimeMillis() - mChronometer.getBase();
+    }
+
+    private VoiceSaveFragment mVoiceSaveFragment;
+
+    private void gotoVoiceSaveFragment() {
+        if (null == mVoiceSaveFragment) {
+            mVoiceSaveFragment = VoiceSaveFragment.create();
+        }
+        Bundle bundle = new Bundle();
+        bundle.putString("fileName", mFileName);
+        mVoiceSaveFragment.setArguments(bundle);
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.hide(this);
+        transaction.add(R.id.main_layout, mVoiceSaveFragment, "VoiceSaveFragment")
+                .show(mVoiceSaveFragment)
+                .addToBackStack(null)
+                .commit();
+
     }
 
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">爱听贝</string>
+    <string name="app_name">听贝贝</string>
     <string name="check_followers">查看followers</string>
 
     <string name="tab_baby_heart">爱听贝</string>
@@ -17,4 +17,25 @@
 
     <string name="no_voice_record">您还有没有胎心率记录\n点击右下方按钮进行测试吧！</string>
     <string name="voice_recording">正在录音</string>
+    <string name="voice_save">保存录音</string>
+    <string name="voice_save_title">文件名称</string>
+    <string name="cancel">取消</string>
+    <string name="save">保存</string>
+
+    <!-- 爱助手 -->
+    <string name="txt_pregnant_zone">孕婴圈</string>
+    <string name="txt_check_assist">产检助手</string>
+    <string name="txt_vaccine_assist">疫苗助手</string>
+    <string name="txt_health_protect_assist">儿保助手</string>
+    <string name="txt_growup_record">成长记录</string>
+    <string name="txt_care_mall">关爱商城</string>
+    <string name="txt_expert_online">专家在线</string>
+
+    <!-- 个人中心 -->
+    <string name="txt_me_center">个人中心</string>
+    <string name="txt_pregnant_date">怀孕日期设置</string>
+    <string name="txt_baby_info">儿童信息设置</string>
+    <string name="txt_remote_video_address">远程视频连接地址设置</string>
+    <string name="txt_language_select">选择语言</string>
+    <string name="txt_about_app">关于听贝贝</string>
 </resources>

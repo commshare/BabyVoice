@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="voice_type">
+        <item>胎心音</item>
+        <item>母亲心跳</item>
+        <item>父亲心跳</item>
+    </string-array>
+</resources>
