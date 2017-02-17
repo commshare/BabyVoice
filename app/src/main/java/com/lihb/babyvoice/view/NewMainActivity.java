@@ -18,6 +18,7 @@ import com.lihb.babyvoice.utils.NetworkHelper;
 import com.lihb.babyvoice.utils.RxBus;
 import com.orhanobut.logger.Logger;
 
+import cn.sharesdk.framework.ShareSDK;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 
@@ -50,6 +51,7 @@ public class NewMainActivity extends BaseFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_new);
+        ShareSDK.initSDK(this);
         initViews();
         checkNetStatus();
 //        addStatusBarView();

@@ -16,6 +16,7 @@ import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.customview.base.BaseFragment;
 import com.lihb.babyvoice.utils.CommonToast;
 import com.lihb.babyvoice.utils.FileUtils;
+import com.lihb.babyvoice.utils.HttpUploadUtil;
 import com.orhanobut.logger.Logger;
 
 
@@ -96,6 +97,12 @@ public class VoiceSaveFragment extends BaseFragment {
                 FileUtils.deleteFile(FileUtils.getAMRFilePath(mFileName));
             } else if (v == mSaveTxt) {
                 FileUtils.renameFile(FileUtils.getAMRFilePath(mFileName), FileUtils.getAMRFilePath(mEditText.getText().toString().trim() + ".amr"));
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        HttpUploadUtil.uploadFile(FileUtils.getAMRFilePath(mEditText.getText().toString().trim() + ".amr"));
+                    }
+                }).start();
             }
         }
     };
