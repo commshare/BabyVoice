@@ -13,11 +13,24 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.lihb.babyvoice.R;
+import com.lihb.babyvoice.action.ApiManager;
+import com.lihb.babyvoice.action.ServiceGenerator;
 import com.lihb.babyvoice.customview.base.BaseFragment;
+import com.lihb.babyvoice.model.BaseResponse;
 import com.lihb.babyvoice.utils.CommonToast;
 import com.lihb.babyvoice.utils.FileUtils;
-import com.lihb.babyvoice.utils.HttpUploadUtil;
 import com.orhanobut.logger.Logger;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 
 /**
@@ -97,12 +110,32 @@ public class VoiceSaveFragment extends BaseFragment {
                 FileUtils.deleteFile(FileUtils.getAMRFilePath(mFileName));
             } else if (v == mSaveTxt) {
                 FileUtils.renameFile(FileUtils.getAMRFilePath(mFileName), FileUtils.getAMRFilePath(mEditText.getText().toString().trim() + ".amr"));
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        HttpUploadUtil.uploadFile(FileUtils.getAMRFilePath(mEditText.getText().toString().trim() + ".amr"));
-                    }
-                }).start();
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        HttpUploadUtil.uploadFile(FileUtils.getAMRFilePath(mEditText.getText().toString().trim() + ".amr"));
+//                    }
+//                }).start();
+                File file = new File(FileUtils.getAMRFilePath(/*mEditText.getText().toString().trim() + ".amr"*/"igap.txt"));
+                List<File> files = new ArrayList<>();
+                files.add(file);
+                MultipartBody body = filesToMultipartBody(files);
+                ServiceGenerator.createService(ApiManager.class)
+                        .uploadFiles(body)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Action1<BaseResponse<String>>() {
+                            @Override
+                            public void call(BaseResponse<String> stringBaseResponse) {
+                                Logger.i(stringBaseResponse.msg);
+                            }
+                        }, new Action1<Throwable>() {
+                            @Override
+                            public void call(Throwable throwable) {
+                                Logger.e(throwable.getMessage());
+                            }
+                        });
+
             }
         }
     };
@@ -120,6 +153,19 @@ public class VoiceSaveFragment extends BaseFragment {
         }
 
     };
+
+    public static MultipartBody filesToMultipartBody(List<File> files) {
+        MultipartBody.Builder builder = new MultipartBody.Builder();
+
+        for (File file : files) {
+            // TODO: 16-4-2  这里为了简单起见，没有判断file的类型
+            RequestBody requestBody = RequestBody.create(MediaType.parse(""), file);
+            builder.addFormDataPart("file", file.getName(), requestBody);
+        }
+        builder.setType(MultipartBody.FORM);
+        MultipartBody multipartBody = builder.build();
+        return multipartBody;
+    }
 
 
 }

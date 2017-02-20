@@ -2,9 +2,9 @@ package com.lihb.babyvoice.action;
 
 import com.lihb.babyvoice.utils.SingleOkHttpClient;
 
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
-import retrofit.RxJavaCallAdapterFactory;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 /**
@@ -13,7 +13,7 @@ import retrofit.RxJavaCallAdapterFactory;
 
 public class ServiceGenerator {
 
-    public static final String API_BASE_URL = "https://api.github.com/users/";
+    public static final String API_BASE_URL = "http://172.25.57.3:5000/";
 
     private static Retrofit.Builder builder =
             new Retrofit.Builder()
