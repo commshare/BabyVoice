@@ -16,7 +16,7 @@ import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.action.ApiManager;
 import com.lihb.babyvoice.action.ServiceGenerator;
 import com.lihb.babyvoice.customview.base.BaseFragment;
-import com.lihb.babyvoice.model.BaseResponse;
+import com.lihb.babyvoice.model.HttpResponse;
 import com.lihb.babyvoice.utils.CommonToast;
 import com.lihb.babyvoice.utils.FileUtils;
 import com.orhanobut.logger.Logger;
@@ -116,23 +116,29 @@ public class VoiceSaveFragment extends BaseFragment {
 //                        HttpUploadUtil.uploadFile(FileUtils.getAMRFilePath(mEditText.getText().toString().trim() + ".amr"));
 //                    }
 //                }).start();
-                File file = new File(FileUtils.getAMRFilePath(/*mEditText.getText().toString().trim() + ".amr"*/"igap.txt"));
                 List<File> files = new ArrayList<>();
+                File file = new File(FileUtils.getAMRFilePath(mEditText.getText().toString().trim() + ".amr"));
                 files.add(file);
                 MultipartBody body = filesToMultipartBody(files);
                 ServiceGenerator.createService(ApiManager.class)
                         .uploadFiles(body)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Action1<BaseResponse<String>>() {
+                        .subscribe(new Action1<HttpResponse<String>>() {
                             @Override
-                            public void call(BaseResponse<String> stringBaseResponse) {
+                            public void call(HttpResponse<String> stringBaseResponse) {
                                 Logger.i(stringBaseResponse.msg);
+                                if (stringBaseResponse.code == 200) {
+                                    CommonToast.showShortToast("上传成功！！");
+                                }
+                                FileUtils.deleteFile(FileUtils.getAMRFilePath(mEditText.getText().toString().trim() + ".amr"));
                             }
                         }, new Action1<Throwable>() {
                             @Override
                             public void call(Throwable throwable) {
                                 Logger.e(throwable.getMessage());
+                                CommonToast.showShortToast("error : " + throwable.getMessage());
+                                FileUtils.deleteFile(FileUtils.getAMRFilePath(mEditText.getText().toString().trim() + ".amr"));
                             }
                         });
 
@@ -158,7 +164,6 @@ public class VoiceSaveFragment extends BaseFragment {
         MultipartBody.Builder builder = new MultipartBody.Builder();
 
         for (File file : files) {
-            // TODO: 16-4-2  这里为了简单起见，没有判断file的类型
             RequestBody requestBody = RequestBody.create(MediaType.parse(""), file);
             builder.addFormDataPart("file", file.getName(), requestBody);
         }

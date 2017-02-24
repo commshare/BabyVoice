@@ -1,6 +1,5 @@
 package com.lihb.babyvoice.view;
 
-import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
@@ -12,15 +11,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lihb.babyvoice.R;
+import com.lihb.babyvoice.customview.RecordingView;
 import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragment;
 import com.lihb.babyvoice.utils.FileUtils;
+import com.lihb.babyvoice.utils.RecorderHelper;
 import com.lihb.babyvoice.utils.StringUtils;
 import com.orhanobut.logger.Logger;
-
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 /**
  * Created by lhb on 2017/2/10.
@@ -28,11 +25,11 @@ import java.util.Locale;
 public class VoiceRecordFragment extends BaseFragment {
 
     private TextView recordText;
-    private MediaRecorder mRecorder;
     private Chronometer mChronometer;
-    private SimpleDateFormat sdf;
     private TitleBar mTitleBar;
     private String mFileName;
+    //    private AnimatedRecordingView mAnimatedRecordingView;
+    private RecordingView mRecordingView;
 
     public static VoiceRecordFragment create() {
         return new VoiceRecordFragment();
@@ -47,7 +44,15 @@ public class VoiceRecordFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         hideBottomTab();
+        initRecordHelper();
         initView();
+    }
+
+    private void initRecordHelper() {
+        mFileName = System.currentTimeMillis() + ".amr";
+
+        RecorderHelper.getInstance().setPath(FileUtils.getAMRFilePath(mFileName));
+        RecorderHelper.getInstance().setRecorderListener(mOnRecorderListener);
     }
 
     @Override
@@ -75,7 +80,6 @@ public class VoiceRecordFragment extends BaseFragment {
     }
 
     private void initView() {
-        sdf = new SimpleDateFormat("yyyyMMdd", Locale.CHINA);
         mChronometer = (Chronometer) getView().findViewById(R.id.chronometer);
         recordText = (TextView) getView().findViewById(R.id.record_txt);
         recordText.setOnClickListener(new View.OnClickListener() {
@@ -84,9 +88,9 @@ public class VoiceRecordFragment extends BaseFragment {
                 String text = recordText.getText().toString().trim();
                 if (StringUtils.areEqual(text, "开始")) {
                     recordText.setText("完成");
-                    startRecording();
+                    RecorderHelper.getInstance().startRecord();
                 } else {
-                    stopRecording();
+                    RecorderHelper.getInstance().cancel();
                     recordText.setText("开始");
                     gotoVoiceSaveFragment();
 
@@ -100,35 +104,31 @@ public class VoiceRecordFragment extends BaseFragment {
                 getActivity().onBackPressed();
             }
         });
+
+//        mAnimatedRecordingView = (AnimatedRecordingView) getView().findViewById(R.id.animated_recording_view);
+        mRecordingView = (RecordingView) getView().findViewById(R.id.animated_recording_view);
     }
 
-    private void startRecording() {
-        mRecorder = new MediaRecorder();
-        //设置音源为MicPhone
-        mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        //设置封装格式
-        mRecorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
-        mFileName = System.currentTimeMillis() + ".amr";
-        mRecorder.setOutputFile(FileUtils.getAMRFilePath(mFileName));
-        //设置编码格式
-        mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-
-        try {
-            mRecorder.prepare();
-        } catch (IOException e) {
-            Logger.e("prepare() failed. cause: %s", e.getMessage());
+    private RecorderHelper.onRecorderListener mOnRecorderListener = new RecorderHelper.onRecorderListener() {
+        @Override
+        public void recorderStart() {
+            startChronometer(System.currentTimeMillis());
+//            mAnimatedRecordingView.start();
+            mRecordingView.start();
         }
 
-        mRecorder.start();
-        startChronometer(System.currentTimeMillis());
-    }
+        @Override
+        public void recorderStop() {
+            stopChronometer();
+        }
 
-    private void stopRecording() {
-        mRecorder.stop();
-        mRecorder.release();
-        mRecorder = null;
-        stopChronometer();
-    }
+        @Override
+        public void volumeChange(float vol) {
+//            Log.e("lihb", "vol = " + vol);
+//            mAnimatedRecordingView.setVolume(vol);
+            mRecordingView.setVolume(vol);
+        }
+    };
 
 
 

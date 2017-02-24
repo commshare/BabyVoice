@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.model.BabyVoice;
+import com.lihb.babyvoice.utils.StringUtils;
 
 /**
  * Created by lhb on 2017/2/9.
@@ -34,6 +35,8 @@ public class HeartViewHolder extends RecyclerView.ViewHolder {
         mVoice = voice;
         titleText.setText(mVoice.name);
         dateText.setText(mVoice.date);
-        durationText.setText(mVoice.duration);
+        durationText.setText(StringUtils.formatTime(Integer.parseInt(mVoice.duration)));
     }
+
+
 }

@@ -10,11 +10,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/padding_top"
-        android:background="@android:color/background_dark"
+        android:background="@color/colorPrimary"
         app:leftDrawable="@mipmap/ic_back_orange"
         app:rightDrawable="@mipmap/icon_my_next"
         app:leftText="@string/back"
         app:titleText="@string/tab_baby_watch" />
+
+    <com.lihb.babyvoice.customview.AnalysisBarChartingView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <TextView
         android:layout_width="match_parent"

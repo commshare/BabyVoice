@@ -285,4 +285,17 @@ public class StringUtils {
     public static boolean isBlank(String str) {
         return (str == null || str.trim().length() == 0);
     }
+
+    /**
+     * 根据秒数换算成时分秒
+     *
+     * @param time
+     * @return
+     */
+    public static String formatTime(int time) {
+        String hh = time / 3600 > 9 ? time / 3600 + "" : "0" + time / 3600;
+        String mm = (time % 3600) / 60 > 9 ? (time % 3600) / 60 + "" : "0" + (time % 3600) / 60;
+        String ss = (time % 3600) % 60 > 9 ? (time % 3600) % 60 + "" : "0" + (time % 3600) % 60;
+        return hh + ":" + mm + ":" + ss;
+    }
 }

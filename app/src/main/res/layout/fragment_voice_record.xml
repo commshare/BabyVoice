@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@mipmap/recording_background"
     android:orientation="vertical">
 
     <com.lihb.babyvoice.customview.TitleBar
@@ -11,8 +12,16 @@
         app:leftText="@string/voice_recording"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/darker_gray"
+        android:background="@color/colorPrimary"
         android:paddingTop="@dimen/padding_top" />
+    <!-- <com.lihb.babyvoice.customview.AnimatedRecordingView
+         android:id="@+id/animated_recording_view"
+         android:layout_width="match_parent"
+         android:layout_height="200dp" />-->
+    <com.lihb.babyvoice.customview.RecordingView
+        android:id="@+id/animated_recording_view"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
 
     <Chronometer
         android:id="@+id/chronometer"

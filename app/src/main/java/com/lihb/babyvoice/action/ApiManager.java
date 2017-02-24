@@ -1,7 +1,9 @@
 package com.lihb.babyvoice.action;
 
-import com.lihb.babyvoice.model.BaseResponse;
+import com.lihb.babyvoice.model.BabyVoice;
 import com.lihb.babyvoice.model.Contributor;
+import com.lihb.babyvoice.model.HttpResList;
+import com.lihb.babyvoice.model.HttpResponse;
 
 import java.util.List;
 
@@ -10,6 +12,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -34,5 +37,19 @@ public interface ApiManager {
      * @return
      */
     @POST("uploadfiles")
-    Observable<BaseResponse<String>> uploadFiles(@Body MultipartBody files);
+    Observable<HttpResponse<String>> uploadFiles(@Body MultipartBody files);
+
+    /**
+     * 获取录音的文件
+     *
+     * @param start 起始值
+     * @param count 获取数量
+     * @return
+     */
+    @GET("getVoiceRecords")
+    Observable<HttpResponse<HttpResList<BabyVoice>>> getBabyVoiceRecord(
+            @Query("start") int start,
+            @Query("count") int count);
 }
+
+

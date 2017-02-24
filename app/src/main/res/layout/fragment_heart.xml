@@ -8,7 +8,7 @@
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/holo_red_dark"
+        android:background="@color/colorPrimary"
         android:paddingTop="@dimen/padding_top"
         app:leftDrawable="@mipmap/ic_back_orange"
         app:leftText="@string/back"

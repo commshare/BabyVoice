@@ -12,18 +12,26 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.lihb.babyvoice.R;
+import com.lihb.babyvoice.action.ApiManager;
+import com.lihb.babyvoice.action.ServiceGenerator;
 import com.lihb.babyvoice.adapter.HeartAdapter;
 import com.lihb.babyvoice.customview.RefreshLayout;
 import com.lihb.babyvoice.customview.RemovedRecyclerView;
 import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragment;
 import com.lihb.babyvoice.model.BabyVoice;
+import com.lihb.babyvoice.model.HttpResList;
+import com.lihb.babyvoice.model.HttpResponse;
 import com.lihb.babyvoice.utils.CommonToast;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.sharesdk.onekeyshare.OnekeyShare;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by lhb on 2017/2/8.
@@ -40,6 +48,8 @@ public class HeartFragment extends BaseFragment {
     private ImageView mImgGoToRecord;
 
     private VoiceRecordFragment mVoiceRecordFragment;
+
+    private static final int COUNT = 10;
 
     public static HeartFragment create() {
         return new HeartFragment();
@@ -61,6 +71,7 @@ public class HeartFragment extends BaseFragment {
         super.onHiddenChanged(hidden);
         if (hidden == false) {
             showBottomTab();
+            getData(true);
         }
     }
 
@@ -177,16 +188,43 @@ public class HeartFragment extends BaseFragment {
     }
 
     private void getData(final boolean refresh) {
+        int start = 0;
         if (refresh) {
             mData.clear();
+            start = 0;
+        } else {
+            start = mData.size();
         }
-        for (int i = 0; i < 10; i++) {
-            BabyVoice babyVoice = new BabyVoice("录音" + mData.size(), "2017/01/03", "00:02:50");
-            mData.add(babyVoice);
-        }
-        mHeartAdapter.notifyDataSetChanged();
-        hasMoreData = mData.size() < 50;
-        onLoadedLessons(refresh);
+//        for (int i = 0; i < 10; i++) {
+//            BabyVoice babyVoice = new BabyVoice("录音" + mData.size(), "2017/01/03", "00:02:50", "胎心音");
+//            mData.add(babyVoice);
+//        }
+        ServiceGenerator.createService(ApiManager.class)
+                .getBabyVoiceRecord(start, COUNT)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<HttpResponse<HttpResList<BabyVoice>>>() {
+                    @Override
+                    public void call(HttpResponse<HttpResList<BabyVoice>> httpResListHttpResponse) {
+                        if (httpResListHttpResponse.code == 200) {
+                            HttpResList<BabyVoice> httpResList = httpResListHttpResponse.data;
+
+                            hasMoreData = mData.size() < httpResList.total;
+                            List<BabyVoice> list = (List<BabyVoice>) httpResList.dataList;
+                            mData.addAll(list);
+                            mHeartAdapter.notifyDataSetChanged();
+                            onLoadedLessons(refresh);
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        CommonToast.showShortToast("获取数据失败");
+                        Logger.e(throwable.toString());
+                        onLoadedLessons(refresh);
+                    }
+                });
+
     }
 
     private void onLoadedLessons(final boolean refresh) {

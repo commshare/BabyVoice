@@ -4,7 +4,7 @@ package com.lihb.babyvoice.model;
  * Created by lhb on 2017/1/17.
  */
 
-public class Contributor extends BaseResponse {
+public class Contributor {
 
     public String login;
     public String avatar_url;
