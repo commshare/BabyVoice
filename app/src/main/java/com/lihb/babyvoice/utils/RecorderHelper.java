@@ -2,6 +2,7 @@ package com.lihb.babyvoice.utils;
 
 import android.media.MediaRecorder;
 import android.os.Handler;
+import android.util.Log;
 
 import java.io.File;
 
@@ -13,8 +14,8 @@ import java.io.File;
 public class RecorderHelper {
     private static final String TAG = "RecorderHelper";
     String PATH;
-    private int BASE = 1;
-    private int SPACE = 160;// 间隔取样时间
+    private int BASE = 50;
+    private int SPACE = 60;// 间隔取样时间
     private MediaRecorder mMediaRecorder;
     private static volatile RecorderHelper sInst = null;
     onRecorderListener mListener;
@@ -69,7 +70,7 @@ public class RecorderHelper {
         }
     }
 
-    void stopAndRelease() {
+    public void stopAndRelease() {
         if (null != mMediaRecorder) {
             mMediaRecorder.stop();
             mMediaRecorder.release();
@@ -100,13 +101,18 @@ public class RecorderHelper {
     private void updateMicStatus() {
         if (mMediaRecorder != null) {
             double ratio = (double) mMediaRecorder.getMaxAmplitude() / BASE;
-            double db = 0;// 分贝
-            if (ratio > 1) {
-                db = 20 * Math.log10(ratio);
-            }
+
+//            double db = 0;// 分贝
+//            if (ratio > 1) {
+//                db = 20 * Math.log10(ratio);
+//            }
+            Log.d(TAG, "updateMicStatus: ratio = " + ratio);
+
             if (null != mListener) {
-                mListener.volumeChange((float) db);
+//                mListener.volumeChange((float) db);
+                mListener.volumeChange((float) ratio);
             }
+
             mHandler.postDelayed(mUpdateMicStatusTimer, SPACE);
         }
     }

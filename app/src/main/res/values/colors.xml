@@ -11,8 +11,8 @@
     <color name="divider_color">#E5E5E5</color>
     <!-- 首页颜色 -->
     <color name="tab_background">#f9f9f9</color>
-    <color name="tab_txt_selected">#ff8c0e</color>
-    <color name="tab_txt_normal">#666666</color>
+    <color name="tab_txt_selected">#6c4bf0</color>
+    <color name="tab_txt_normal">#999999</color>
 
     <color name="base_color">#e47139</color>
     <color name="text_black">#333333</color>

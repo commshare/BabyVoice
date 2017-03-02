@@ -166,6 +166,7 @@ public class VoiceSaveFragment extends BaseFragment {
         for (File file : files) {
             RequestBody requestBody = RequestBody.create(MediaType.parse(""), file);
             builder.addFormDataPart("file", file.getName(), requestBody);
+            builder.addFormDataPart("fileName", file.getName());
         }
         builder.setType(MultipartBody.FORM);
         MultipartBody multipartBody = builder.build();

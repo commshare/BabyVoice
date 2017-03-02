@@ -17,7 +17,6 @@ import com.lihb.babyvoice.action.ServiceGenerator;
 import com.lihb.babyvoice.adapter.HeartAdapter;
 import com.lihb.babyvoice.customview.RefreshLayout;
 import com.lihb.babyvoice.customview.RemovedRecyclerView;
-import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragment;
 import com.lihb.babyvoice.model.BabyVoice;
 import com.lihb.babyvoice.model.HttpResList;
@@ -96,6 +95,8 @@ public class HeartFragment extends BaseFragment {
         mHeartAdapter = new HeartAdapter(getContext(), mData);
         mRecyclerView.setAdapter(mHeartAdapter);
 
+        mRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -134,13 +135,13 @@ public class HeartFragment extends BaseFragment {
                 gotoVoiceRecordFragment();
             }
         });
-        ((TitleBar) getView().findViewById(R.id.title_bar)).setLeftText("分享测试");
-        ((TitleBar) getView().findViewById(R.id.title_bar)).setLeftOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showShare();
-            }
-        });
+//        ((TitleBar) getView().findViewById(R.id.title_bar)).setLeftText("分享测试");
+//        ((TitleBar) getView().findViewById(R.id.title_bar)).setLeftOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                showShare();
+//            }
+//        });
         getData(true);
     }
 
@@ -190,7 +191,6 @@ public class HeartFragment extends BaseFragment {
     private void getData(final boolean refresh) {
         int start = 0;
         if (refresh) {
-            mData.clear();
             start = 0;
         } else {
             start = mData.size();
@@ -211,6 +211,9 @@ public class HeartFragment extends BaseFragment {
 
                             hasMoreData = mData.size() < httpResList.total;
                             List<BabyVoice> list = (List<BabyVoice>) httpResList.dataList;
+                            if (refresh) {
+                                mData.clear();
+                            }
                             mData.addAll(list);
                             mHeartAdapter.notifyDataSetChanged();
                             onLoadedLessons(refresh);
@@ -234,15 +237,5 @@ public class HeartFragment extends BaseFragment {
             mRefreshLayout.setLoading(false);
         }
     }
-
-
-//    public static void main(String[] args) {
-//        for (int i = 2; i < 10000; i++) {
-//            if (((i - 1) % 2 == 0) && (i % 3 == 0) && ((i - 1) % 4 == 0) && ((i + 1) % 5 == 0) &&
-//                    ((i - 3) % 6 == 0) && ((i) % 7 == 0) && ((i - 1) % 8 == 0) && ((i) % 9 == 0)) {
-//                System.out.println(i);
-//            }
-//        }
-//    }
 
 }

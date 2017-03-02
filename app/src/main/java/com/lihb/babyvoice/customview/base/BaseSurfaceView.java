@@ -4,13 +4,14 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 public abstract class BaseSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
     private static final String TAG = "BaseSurfaceView";
     private final Object surfaceLock = new Object();
-    private DrawThread drawThread;
+    protected DrawThread drawThread;
     public float mVolume;
     protected int mWidth, mHeight;
 
@@ -38,16 +39,13 @@ public abstract class BaseSurfaceView extends SurfaceView implements SurfaceHold
 //        } else {
 //            this.mVolume = volume;
 //        }
-        if (volume < 1.0f) {
-            volume = 1.0f;
-        }
         mVolume = volume;
 
     }
 
-    private class DrawThread extends Thread {
+    protected class DrawThread extends Thread {
 
-        private static final long SLEEP_TIME = 160;
+        private static final long SLEEP_TIME = 30;
 
         private SurfaceHolder surfaceHolder;
         private boolean running = true;
@@ -59,11 +57,9 @@ public abstract class BaseSurfaceView extends SurfaceView implements SurfaceHold
 
         @Override
         public void run() {
-            while (true) {
+            while (running) {
                 synchronized (surfaceLock) {
-                    if (!running) {
-                        return;
-                    }
+
                     Canvas canvas = surfaceHolder.lockCanvas();
                     if (canvas != null) {
                         render(canvas, mVolume);  //这里做真正绘制的事情
@@ -93,13 +89,22 @@ public abstract class BaseSurfaceView extends SurfaceView implements SurfaceHold
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         mWidth = width;
         mHeight = height;
+        Log.i("lihbtest", "surfaceChanged: mWidth = " + mWidth + ", mHeight = " + mHeight);
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         synchronized (surfaceLock) {
-            drawThread.setRun(false);
+            if (drawThread != null) {
+                drawThread.setRun(false);
+                try {
+                    drawThread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
+
     }
 
     private void render(Canvas canvas, float volume) {

@@ -2,7 +2,8 @@
 <resources>
     <string-array name="voice_type">
         <item>胎心音</item>
-        <item>母亲心跳</item>
-        <item>父亲心跳</item>
+        <item>肺音</item>
+        <item>儿童语音</item>
+        <item>其他音</item>
     </string-array>
 </resources>

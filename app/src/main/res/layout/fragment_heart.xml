@@ -10,10 +10,8 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:paddingTop="@dimen/padding_top"
-        app:leftDrawable="@mipmap/ic_back_orange"
-        app:leftText="@string/back"
-        app:rightDrawable="@mipmap/icon_my_next"
-        app:titleText="@string/tab_baby_heart" />
+        app:titleTextColor="@android:color/white"
+        app:titleText="@string/app_name" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -42,7 +40,7 @@
         android:id="@+id/img_goto_record"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/empty_icon"
+        android:src="@mipmap/sound_recording"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
         android:layout_alignParentBottom="true"

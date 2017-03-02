@@ -14,13 +14,14 @@
         <RelativeLayout
             android:id="@+id/voice_content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp">
 
             <ImageView
                 android:id="@+id/voice_category_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/ic_back_orange"
+                android:src="@mipmap/catetory_heart"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="5dp" />
 
@@ -53,6 +54,14 @@
                 android:layout_marginTop="10dp"
                 android:text="时长" />
 
+            <com.lihb.babyvoice.customview.DividerLine
+                android:id="@+id/split_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignLeft="@+id/voice_title_txt"
+                app:lineColor="@color/voice_line_color" />
+
         </RelativeLayout>
 
         <TextView
@@ -66,10 +75,5 @@
             android:textSize="20sp" />
     </LinearLayout>
 
-    <com.lihb.babyvoice.customview.DividerLine
-        android:id="@+id/split_line"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_alignParentBottom="true"
-        app:lineColor="@color/voice_line_color" />
+
 </RelativeLayout>

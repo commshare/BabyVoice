@@ -11,9 +11,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/padding_top"
         android:background="@color/colorPrimary"
-        app:leftDrawable="@mipmap/ic_back_orange"
-        app:rightDrawable="@mipmap/icon_my_next"
-        app:leftText="@string/back"
+        app:titleTextColor="@android:color/white"
         app:titleText="@string/tab_baby_assist" />
 
     <ScrollView

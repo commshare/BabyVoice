@@ -15,6 +15,7 @@ import com.lihb.babyvoice.command.BaseAndroidCommand;
 import com.lihb.babyvoice.command.NetStateChangedCommand;
 import com.lihb.babyvoice.customview.base.BaseFragmentActivity;
 import com.lihb.babyvoice.utils.NetworkHelper;
+import com.lihb.babyvoice.utils.RecorderHelper;
 import com.lihb.babyvoice.utils.RxBus;
 import com.orhanobut.logger.Logger;
 
@@ -169,6 +170,12 @@ public class NewMainActivity extends BaseFragmentActivity {
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        RecorderHelper.getInstance().cancel();
     }
 
     private void checkNetStatus() {

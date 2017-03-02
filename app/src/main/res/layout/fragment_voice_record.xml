@@ -14,33 +14,47 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:paddingTop="@dimen/padding_top" />
-    <!-- <com.lihb.babyvoice.customview.AnimatedRecordingView
+
+    <com.lihb.babyvoice.customview.AnimatedRecordingView
+         android:id="@+id/animated_recording_view"
+        android:layout_marginTop="15dp"
+         android:layout_width="match_parent"
+        android:layout_height="200dp" />
+    <!-- <com.lihb.babyvoice.customview.RecordingView
          android:id="@+id/animated_recording_view"
          android:layout_width="match_parent"
          android:layout_height="200dp" />-->
-    <com.lihb.babyvoice.customview.RecordingView
-        android:id="@+id/animated_recording_view"
-        android:layout_width="match_parent"
-        android:layout_height="200dp" />
 
     <Chronometer
         android:id="@+id/chronometer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="30dp"
         android:gravity="center"
         android:format="00:00:00"
-        android:textSize="16sp" />
+        android:textColor="@android:color/white"
+        android:textSize="40dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:paddingLeft="105dp"
+        android:text="HOUR     MIN       SEC"
+        android:textColor="@android:color/white"
+        android:textSize="15dp" />
+
 
     <TextView
         android:id="@+id/record_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:layout_gravity="center"
-        android:background="@color/tab_txt_selected"
+        android:background="@drawable/start_recording_shape"
         android:gravity="center"
-        android:textSize="32dp"
+        android:textSize="20dp"
+        android:textColor="@android:color/white"
         android:text="开始" />
 
 </LinearLayout>

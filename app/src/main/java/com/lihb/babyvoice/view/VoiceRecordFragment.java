@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lihb.babyvoice.R;
-import com.lihb.babyvoice.customview.RecordingView;
+import com.lihb.babyvoice.customview.AnimatedRecordingView;
 import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragment;
 import com.lihb.babyvoice.utils.FileUtils;
@@ -28,8 +28,8 @@ public class VoiceRecordFragment extends BaseFragment {
     private Chronometer mChronometer;
     private TitleBar mTitleBar;
     private String mFileName;
-    //    private AnimatedRecordingView mAnimatedRecordingView;
-    private RecordingView mRecordingView;
+    private AnimatedRecordingView mAnimatedRecordingView;
+//    private RecordingView mRecordingView;
 
     public static VoiceRecordFragment create() {
         return new VoiceRecordFragment();
@@ -105,32 +105,31 @@ public class VoiceRecordFragment extends BaseFragment {
             }
         });
 
-//        mAnimatedRecordingView = (AnimatedRecordingView) getView().findViewById(R.id.animated_recording_view);
-        mRecordingView = (RecordingView) getView().findViewById(R.id.animated_recording_view);
+        mAnimatedRecordingView = (AnimatedRecordingView) getView().findViewById(R.id.animated_recording_view);
+//        mRecordingView = (RecordingView) getView().findViewById(R.id.animated_recording_view);
     }
 
     private RecorderHelper.onRecorderListener mOnRecorderListener = new RecorderHelper.onRecorderListener() {
         @Override
         public void recorderStart() {
             startChronometer(System.currentTimeMillis());
-//            mAnimatedRecordingView.start();
-            mRecordingView.start();
+            mAnimatedRecordingView.start();
+//            mRecordingView.start();
         }
 
         @Override
         public void recorderStop() {
             stopChronometer();
+            mAnimatedRecordingView.stop();
         }
 
         @Override
         public void volumeChange(float vol) {
 //            Log.e("lihb", "vol = " + vol);
-//            mAnimatedRecordingView.setVolume(vol);
-            mRecordingView.setVolume(vol);
+            mAnimatedRecordingView.setVolume(vol);
+//            mRecordingView.setVolume(vol);
         }
     };
-
-
 
     public void startChronometer(long startTime) {
         mChronometer.setBase(startTime);
