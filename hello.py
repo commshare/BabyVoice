@@ -1,7 +1,7 @@
 #!flask/bin/python
 # -*- coding: utf-8 -*-  
 from flask import Flask, jsonify, abort, make_response,request
-import os, time
+import os, time, random
 from werkzeug import secure_filename
 from pydub import AudioSegment
 
@@ -53,7 +53,7 @@ def create_task():
     return jsonify({'task': task}), 201
 
 
-ALLOWED_EXTENSIONS = set(['txt','mp3','amr','3gp','JPG','PNG','xlsx','gif','GIF'])
+ALLOWED_EXTENSIONS = set(['txt','mp3','amr','3gp','jpg','PNG','xlsx','gif','GIF'])
 # 用于判断文件后缀
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.',1)[1] in ALLOWED_EXTENSIONS
@@ -65,26 +65,32 @@ def upload():
     # single file
     # file = request.files['file']
     # print f.filename
-     
+
     # mulitfile
-    files = request.files.getlist('file') 
+    files = request.files.getlist('file')
+    print files
+    #filenames = request.form.getlist("fileName")
+    #print filenames
     file_dir = os.path.join(basedir,'upload_folder')
     if not os.path.exists(file_dir):
         os.makedirs(file_dir)
-    for f in files:
-	if f and allowed_file(f.filename):
-            fname = secure_filename(f.filename)
-	    f.save(os.path.join(file_dir,fname))
+    for index in range(len(files)):
+        f = files[index]
+        print f.filename
+        #fileName = filenames[index]
+        if f and allowed_file(f.filename):
+        #    fname = secure_filename(f.filename)
+            f.save(os.path.join(file_dir,f.filename))
         else:
-	    return jsonify({'msg':'upload failed!','code':1000,'data':'no'}), 201 		
+            return jsonify({'msg':'upload failed!','code':1000,'data':'no'}), 201
     return jsonify({'msg':'upload success!','code':200,'data':'yes'}), 201
- 
+
 def TimeStampToTime(timestamp):
 	timeStruct = time.localtime(timestamp)
 	return time.strftime('%Y/%m/%d',timeStruct)
 
-
-# 获取音频接口 
+p = ["胎心音",  "肺音",  "儿童语音", "其他音"]
+# 获取音频接口
 @app.route('/getVoiceRecords', methods=['GET'])
 def getVoiceRecord():
     babyRecords = []
@@ -101,20 +107,20 @@ def getVoiceRecord():
     else:
         end = len(lists)
     while(start < end):
-        print start, end
+        #print start, end
         f = lists[start]
-        print f
+        #print f
         tmpfile = os.path.join(file_dir, f)
         sound = AudioSegment.from_file(tmpfile, format="amr")
-        print int(len(sound)/1000.0)
-        print sound.duration_seconds
+        #print int(len(sound)/1000.0)
+        #print sound.duration_seconds
         if os.path.isfile(tmpfile):
             print tmpfile
             record = {
                 'name':f,
                 'date':TimeStampToTime(os.path.getctime(tmpfile)),
                 'duration':int(len(sound)/1000.0),
-                'category':start
+                'category':random.choice(p) # random select a element from p.
             }
         babyRecords.append(record)
         start = start + 1

@@ -30,7 +30,7 @@ public class AnimatedRecordingView extends BaseSurfaceView {
     private boolean mIsStarted = false;
     private List<RectF> rectFList;
 
-    private boolean mFlag = false;
+    private boolean mIsToEdge = false; //是否到达最右边
     public AnimatedRecordingView(Context context) {
         this(context, null);
     }
@@ -63,15 +63,15 @@ public class AnimatedRecordingView extends BaseSurfaceView {
 
     public void start() {
         mIsStarted = true;
-        mFlag = false;
+        mIsToEdge = false;
         step = 0;
     }
 
     public void stop() {
         mIsStarted = false;
-        mFlag = false;
+        mIsToEdge = false;
         step = 0;
-        drawThread.setRun(false);
+        rectFList.clear();
     }
 
     @Override
@@ -85,21 +85,14 @@ public class AnimatedRecordingView extends BaseSurfaceView {
         super.onRender(canvas, volume);
         canvas.translate(0, mHeight / 2); // 移动Y坐标到canvas中间
         canvas.scale(1, -1); // 翻转Y坐标
-        // 画上边界
-        canvas.drawLine(0, -mHeight / 2, mWidth, -mHeight / 2, mLinePaint);
-        // 画中间线
-        canvas.drawLine(0, 0, mWidth, 0, mLinePaint);
-        // 画下边界
-        canvas.drawLine(0, mHeight / 2, mWidth, mHeight / 2, mLinePaint);
 
+        drawEdge(canvas);
+
+        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
         if (!mIsStarted) {
             return;
         }
 
-//        float left = step;
-//        float top = (mHeight / 2 - mVolume - 150);
-//        float right = step + RECT_WIDTH;
-//        float bottom = 0;
         if (volume < 60) {
             volume = new Random().nextInt(60);
         }
@@ -115,14 +108,13 @@ public class AnimatedRecordingView extends BaseSurfaceView {
         rectFList.add(rect);
         step = step + RECT_WIDTH + SPACE;
         if (step >= mWidth) {
-            mFlag = true;
+            mIsToEdge = true;
             rectFList.remove(0);
             step = step - (RECT_WIDTH + SPACE);
         }
         canvas.save();
-        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
         for (RectF rectF : rectFList) {
-            if (mFlag) {
+            if (mIsToEdge) {
                 rectF.left = rectF.left - RECT_WIDTH - SPACE;
                 rectF.right = rectF.left + RECT_WIDTH;
             }
@@ -130,12 +122,17 @@ public class AnimatedRecordingView extends BaseSurfaceView {
             canvas.drawRect(rectF.left, 0, rectF.right, -rectF.top, mRectPaint);
 
         }
+        drawEdge(canvas);
+
+        canvas.restore();
+    }
+
+    private void drawEdge(Canvas canvas) {
         // 画上边界
         canvas.drawLine(0, -mHeight / 2, mWidth, -mHeight / 2, mLinePaint);
         // 画中间线
         canvas.drawLine(0, 0, mWidth, 0, mLinePaint);
         // 画下边界
         canvas.drawLine(0, mHeight / 2, mWidth, mHeight / 2, mLinePaint);
-        canvas.restore();
     }
 }

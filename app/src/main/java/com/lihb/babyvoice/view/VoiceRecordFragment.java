@@ -90,7 +90,8 @@ public class VoiceRecordFragment extends BaseFragment {
                     recordText.setText("完成");
                     RecorderHelper.getInstance().startRecord();
                 } else {
-                    RecorderHelper.getInstance().cancel();
+//                    RecorderHelper.getInstance().cancel();
+                    mAnimatedRecordingView.stop();
                     recordText.setText("开始");
                     gotoVoiceSaveFragment();
 
@@ -151,6 +152,12 @@ public class VoiceRecordFragment extends BaseFragment {
             return 0;
         }
         return System.currentTimeMillis() - mChronometer.getBase();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        RecorderHelper.getInstance().cancel();
     }
 
     /**

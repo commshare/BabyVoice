@@ -57,9 +57,12 @@ public abstract class BaseSurfaceView extends SurfaceView implements SurfaceHold
 
         @Override
         public void run() {
-            while (running) {
+            while (true) {
                 synchronized (surfaceLock) {
 
+                    if (!running) {
+                        return;
+                    }
                     Canvas canvas = surfaceHolder.lockCanvas();
                     if (canvas != null) {
                         render(canvas, mVolume);  //这里做真正绘制的事情
@@ -97,11 +100,11 @@ public abstract class BaseSurfaceView extends SurfaceView implements SurfaceHold
         synchronized (surfaceLock) {
             if (drawThread != null) {
                 drawThread.setRun(false);
-                try {
-                    drawThread.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    drawThread.join();
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
             }
         }
 
