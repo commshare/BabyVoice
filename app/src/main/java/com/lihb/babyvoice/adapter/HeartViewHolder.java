@@ -46,7 +46,7 @@ public class HeartViewHolder extends RecyclerView.ViewHolder {
 
     private void setCategoryImg(String category) {
         String[] items = itemView.getResources().getStringArray(R.array.voice_type);
-        int[] ids = {R.mipmap.catetory_heart, R.mipmap.category_lung, R.mipmap.category_baby_voice, R.mipmap.ic_launcher};
+        int[] ids = {R.mipmap.catetory_heart, R.mipmap.category_lung, R.mipmap.category_baby_voice, R.mipmap.category_other_voice};
         if (StringUtils.areEqual(category, items[0])) {
             catergoryImg.setImageResource(ids[0]);
         } else if (StringUtils.areEqual(category, items[1])) {

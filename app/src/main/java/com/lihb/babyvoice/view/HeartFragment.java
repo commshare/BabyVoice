@@ -5,9 +5,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -15,6 +18,8 @@ import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.action.ApiManager;
 import com.lihb.babyvoice.action.ServiceGenerator;
 import com.lihb.babyvoice.adapter.HeartAdapter;
+import com.lihb.babyvoice.command.PickedCategoryCommand;
+import com.lihb.babyvoice.customview.PickRecordDialog;
 import com.lihb.babyvoice.customview.RefreshLayout;
 import com.lihb.babyvoice.customview.RemovedRecyclerView;
 import com.lihb.babyvoice.customview.base.BaseFragment;
@@ -22,6 +27,7 @@ import com.lihb.babyvoice.model.BabyVoice;
 import com.lihb.babyvoice.model.HttpResList;
 import com.lihb.babyvoice.model.HttpResponse;
 import com.lihb.babyvoice.utils.CommonToast;
+import com.lihb.babyvoice.utils.RxBus;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
@@ -49,6 +55,8 @@ public class HeartFragment extends BaseFragment {
     private VoiceRecordFragment mVoiceRecordFragment;
 
     private static final int COUNT = 10;
+    private PickRecordDialog mPickCategoryDialog;
+    private int mRecordType = PickedCategoryCommand.TYPE_HEART;
 
     public static HeartFragment create() {
         return new HeartFragment();
@@ -132,7 +140,8 @@ public class HeartFragment extends BaseFragment {
         mImgGoToRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                gotoVoiceRecordFragment();
+//                gotoVoiceRecordFragment();
+                showPickCategoryDialog();
             }
         });
 //        ((TitleBar) getView().findViewById(R.id.title_bar)).setLeftText("分享测试");
@@ -143,6 +152,24 @@ public class HeartFragment extends BaseFragment {
 //            }
 //        });
         getData(true);
+    }
+
+    private void showPickCategoryDialog() {
+        if (mPickCategoryDialog == null) {
+            mPickCategoryDialog = new PickRecordDialog(getContext(),R.style.loading_dialog);
+            mPickCategoryDialog.setContentView(R.layout.pick_category);
+            Window window = mPickCategoryDialog.getWindow();
+            window.setGravity(Gravity.CENTER);  // dialog显示的位置
+            window.setWindowAnimations(R.style.pickCategoryDialogStyle);  //弹出动画
+            mPickCategoryDialog.setOnPickRecordDialogListener(new PickRecordDialog.OnPickRecordDialogListener() {
+                @Override
+                public void onClick(int type) {
+                    mRecordType = type;
+                    gotoVoiceRecordFragment();
+                }
+            });
+        }
+        mPickCategoryDialog.show();
     }
 
     private void showShare() {
@@ -175,6 +202,9 @@ public class HeartFragment extends BaseFragment {
         if (null == mVoiceRecordFragment) {
             mVoiceRecordFragment = VoiceRecordFragment.create();
         }
+        Bundle bundle = new Bundle();
+        bundle.putInt("recordType", mRecordType);
+        mVoiceRecordFragment.setArguments(bundle);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.hide(this);
         int count = getActivity().getSupportFragmentManager().getBackStackEntryCount();

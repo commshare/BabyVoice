@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/pick_category_shape"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/pick_title"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@drawable/pick_category_top_shape"
+        android:gravity="center_vertical"
+        android:text="类别  |  录制音频类型"
+        android:textSize="12dp"
+        android:textColor="#333333"
+        android:paddingLeft="16dp"
+        />
+    <com.lihb.babyvoice.customview.DividerLine
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="19dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        >
+
+        <com.lihb.babyvoice.customview.CategoryView
+            android:id="@+id/record_heart_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+
+        <com.lihb.babyvoice.customview.CategoryView
+            android:id="@+id/record_lung_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+
+        <com.lihb.babyvoice.customview.CategoryView
+            android:id="@+id/record_baby_voice_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+
+        <com.lihb.babyvoice.customview.CategoryView
+            android:id="@+id/record_other_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            />
+
+    </LinearLayout>
+
+
+</LinearLayout>

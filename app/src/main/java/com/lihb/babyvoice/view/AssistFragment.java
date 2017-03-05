@@ -2,6 +2,7 @@ package com.lihb.babyvoice.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,15 @@ public class AssistFragment extends BaseFragment {
     private CommonItem itemGrowUpRecord;
     private CommonItem itemCareMall;
     private CommonItem itemExpertOnline;
+    private DateSelectFragment  mDateSelectFragment;
+
+    public static final int ITEM_PREGNANT  = 1;
+    public static final int ITEM_EXAMINE  = 2;
+    public static final int ITEM_VACCINE  = 3;
+    public static final int ITEM_HEALTH_PROTECT  = 4;
+    public static final int ITEM_GROWUP  = 5;
+    public static final int ITEM_CARE_MALL  = 6;
+    public static final int ITEM_EXPERT_ONLINE  = 7;
 
     public static AssistFragment create() {
         return new AssistFragment();
@@ -74,6 +84,8 @@ public class AssistFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 CommonToast.showShortToast("itemCheckAssist");
+                gotoDateSelectFragment(ITEM_EXAMINE);
+
             }
         });
 
@@ -82,6 +94,7 @@ public class AssistFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 CommonToast.showShortToast("itemVaccineAssist");
+                gotoDateSelectFragment(ITEM_VACCINE);
             }
         });
 
@@ -90,6 +103,7 @@ public class AssistFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 CommonToast.showShortToast("itemHealthProtectAssist");
+                gotoDateSelectFragment(ITEM_HEALTH_PROTECT);
             }
         });
 
@@ -98,6 +112,7 @@ public class AssistFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 CommonToast.showShortToast("itemGrowUpRecord");
+                gotoDateSelectFragment(ITEM_GROWUP);
             }
         });
 
@@ -116,6 +131,22 @@ public class AssistFragment extends BaseFragment {
                 CommonToast.showShortToast("itemExpertOnline");
             }
         });
+
+    }
+
+    private void gotoDateSelectFragment(int type) {
+        if (null == mDateSelectFragment) {
+            mDateSelectFragment = DateSelectFragment.create();
+        }
+        Bundle bundle = new Bundle();
+        bundle.putInt("itemType", type);
+        mDateSelectFragment.setArguments(bundle);
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.hide(this);
+        transaction.add(R.id.main_layout, mDateSelectFragment, "DateSelectFragment")
+                .show(mDateSelectFragment)
+                .addToBackStack(null)
+                .commit();
 
     }
 

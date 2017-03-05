@@ -16,6 +16,7 @@ import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragment;
 import com.lihb.babyvoice.utils.FileUtils;
 import com.lihb.babyvoice.utils.RecorderHelper;
+import com.lihb.babyvoice.utils.SoftInputUtil;
 import com.lihb.babyvoice.utils.StringUtils;
 import com.orhanobut.logger.Logger;
 
@@ -28,6 +29,7 @@ public class VoiceRecordFragment extends BaseFragment {
     private Chronometer mChronometer;
     private TitleBar mTitleBar;
     private String mFileName;
+    private int mRecordType;
     private AnimatedRecordingView mAnimatedRecordingView;
 //    private RecordingView mRecordingView;
 
@@ -37,6 +39,11 @@ public class VoiceRecordFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            mRecordType = bundle.getInt("recordType");
+        }
         return inflater.inflate(R.layout.fragment_voice_record, container, false);
     }
 
@@ -49,7 +56,9 @@ public class VoiceRecordFragment extends BaseFragment {
     }
 
     private void initRecordHelper() {
-        mFileName = System.currentTimeMillis() + ".amr";
+        String[] items = getResources().getStringArray(R.array.voice_type);
+
+        mFileName = items[mRecordType] + System.currentTimeMillis() + ".amr";
 
         RecorderHelper.getInstance().setPath(FileUtils.getAMRFilePath(mFileName));
         RecorderHelper.getInstance().setRecorderListener(mOnRecorderListener);

@@ -88,8 +88,8 @@ public class AnimatedRecordingView extends BaseSurfaceView {
 
         drawEdge(canvas);
 
-        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
         if (!mIsStarted) {
+            canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
             return;
         }
 
@@ -113,6 +113,7 @@ public class AnimatedRecordingView extends BaseSurfaceView {
             step = step - (RECT_WIDTH + SPACE);
         }
         canvas.save();
+        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
         for (RectF rectF : rectFList) {
             if (mIsToEdge) {
                 rectF.left = rectF.left - RECT_WIDTH - SPACE;

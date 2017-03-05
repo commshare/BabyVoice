@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.command.BaseAndroidCommand;
 import com.lihb.babyvoice.command.NetStateChangedCommand;
+import com.lihb.babyvoice.command.PickedCategoryCommand;
 import com.lihb.babyvoice.customview.base.BaseFragmentActivity;
 import com.lihb.babyvoice.utils.NetworkHelper;
 import com.lihb.babyvoice.utils.RecorderHelper;
@@ -193,6 +194,20 @@ public class NewMainActivity extends BaseFragmentActivity {
                     @Override
                     public void call(Throwable throwable) {
                         Logger.d("BaseAndroidCommand failed.", throwable);
+                    }
+                });
+        RxBus.getDefault().registerOnActivity(PickedCategoryCommand.class, this)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<PickedCategoryCommand>() {
+                    @Override
+                    public void call(PickedCategoryCommand pickedCategoryCommand) {
+                        int type = pickedCategoryCommand.getAction();
+                        Logger.i("type is %d",type);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Logger.e(throwable,"error");
                     }
                 });
     }

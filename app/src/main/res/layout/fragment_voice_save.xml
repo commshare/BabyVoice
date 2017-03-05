@@ -11,24 +11,51 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:paddingTop="@dimen/padding_top"
-        app:leftDrawable="@mipmap/ic_back_orange"
-        app:leftText="@string/voice_save" />
+        app:leftDrawable="@mipmap/back"
+        app:leftTextColor="@android:color/white"
+        app:rightTextColor="@android:color/white"
+        app:leftText="@string/cancel"
+        app:rightText="@string/save"
+        />
 
-
-    <android.support.design.widget.TextInputLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp">
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:background="#faf9ff"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        >
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="默认名称  |"
+            android:textColor="@color/text_black"
+            android:textSize="14dp"
+            />
         <EditText
             android:id="@+id/voice_save_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/voice_save_title" />
-    </android.support.design.widget.TextInputLayout>
+            android:layout_height="match_parent"
+            android:background="#00000000"
+            android:cursorVisible="true"
+            android:textCursorDrawable="@drawable/cursor_shape"
+            android:paddingLeft="4dp"
+            android:text="胎心音+xxxx"
+            android:textColor="@color/text_black"
+            android:textSize="14dp"
+            android:maxLength="60"
+            />
+    </LinearLayout>
 
-    <TextView
+    <com.lihb.babyvoice.customview.DividerLine
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+   <!-- <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
@@ -66,5 +93,5 @@
             android:layout_marginLeft="5dp"
             android:text="@string/save" />
 
-    </LinearLayout>
+    </LinearLayout>-->
 </LinearLayout>

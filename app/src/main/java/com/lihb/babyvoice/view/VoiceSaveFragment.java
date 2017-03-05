@@ -5,20 +5,18 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.action.ApiManager;
 import com.lihb.babyvoice.action.ServiceGenerator;
+import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragment;
 import com.lihb.babyvoice.model.HttpResponse;
 import com.lihb.babyvoice.utils.CommonToast;
 import com.lihb.babyvoice.utils.FileUtils;
+import com.lihb.babyvoice.utils.SoftInputUtil;
 import com.orhanobut.logger.Logger;
 
 import java.io.File;
@@ -40,10 +38,9 @@ import rx.schedulers.Schedulers;
 public class VoiceSaveFragment extends BaseFragment {
 
     private EditText mEditText;
-    private Spinner mSpinner;
-    private TextView mCancelTxt;
-    private TextView mSaveTxt;
     private String mFileName;
+    private TitleBar mTitleBar;
+
 
     public static VoiceSaveFragment create() {
         return new VoiceSaveFragment();
@@ -66,20 +63,16 @@ public class VoiceSaveFragment extends BaseFragment {
     }
 
     private void initView() {
+
+        mTitleBar = (TitleBar) getView().findViewById(R.id.title_bar);
+        mTitleBar.setLeftOnClickListener(mOnClickListener);
+        mTitleBar.setRightOnClickListener(mOnClickListener);
+
         mEditText = (EditText) getView().findViewById(R.id.voice_save_title);
-        mSpinner = (Spinner) getView().findViewById(R.id.spinner1);
-        mCancelTxt = (TextView) getView().findViewById(R.id.voice_save_cancel);
-        mSaveTxt = (TextView) getView().findViewById(R.id.voice_save_done);
-
-        String[] items = getResources().getStringArray(R.array.voice_type);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, items);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSpinner.setAdapter(adapter);
-
-        mCancelTxt.setOnClickListener(mOnClickListener);
-        mSaveTxt.setOnClickListener(mOnClickListener);
-        mSpinner.setOnItemSelectedListener(mOnItemSelectedListener);
-
+        mEditText.setText(mFileName.substring(0, mFileName.indexOf(".")));
+        mEditText.requestFocus();
+        mEditText.setSelection(mFileName.indexOf(".")-1);
+        SoftInputUtil.showSoftInput(mEditText, getActivity());
     }
 
 
@@ -103,12 +96,13 @@ public class VoiceSaveFragment extends BaseFragment {
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            SoftInputUtil.hideSoftInput(getActivity());
             getActivity().onBackPressed();
             Logger.i(FileUtils.getAMRFilePath(mFileName));
             Logger.i(FileUtils.getAMRFilePath(mEditText.getText().toString().trim() + ".amr"));
-            if (v == mCancelTxt) {
+            if (v == mTitleBar.getLeftText()) {
                 FileUtils.deleteFile(FileUtils.getAMRFilePath(mFileName));
-            } else if (v == mSaveTxt) {
+            } else if (v == mTitleBar.getRightText()) {
                 FileUtils.renameFile(FileUtils.getAMRFilePath(mFileName), FileUtils.getAMRFilePath(mEditText.getText().toString().trim() + ".amr"));
 //                new Thread(new Runnable() {
 //                    @Override
@@ -146,19 +140,6 @@ public class VoiceSaveFragment extends BaseFragment {
         }
     };
 
-    private AdapterView.OnItemSelectedListener mOnItemSelectedListener = new AdapterView.OnItemSelectedListener() {
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            String[] items = getResources().getStringArray(R.array.voice_type);
-            CommonToast.showShortToast("选择了" + items[position]);
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-
-        }
-
-    };
 
     public static MultipartBody filesToMultipartBody(List<File> files) {
         MultipartBody.Builder builder = new MultipartBody.Builder();
