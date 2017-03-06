@@ -18,7 +18,7 @@ tasks = [
     },
     {
         'id': 2,
-        'title': u'Learn Python',
+        'title': u'危险',
         'description': u'Need to find a good Python tutorial on the web',
         'done': False
     }
@@ -96,11 +96,12 @@ def getVoiceRecord():
     babyRecords = []
     httpResList = []
     httpResponse = []
-    start = int(request.args.get('start'))
+    begin = int(request.args.get('start'))
     count = int(request.args.get('count'))
     file_dir = os.path.join(basedir,'upload_folder')
     lists = os.listdir(file_dir)
     lists.sort()
+    start=begin
     end = 0
     if((start + count) < len(lists)):
         end = (start+count)
@@ -126,22 +127,151 @@ def getVoiceRecord():
         start = start + 1
 
     httpRes = {
-        'start':start,
+        'start':begin,
         'count':count,
         'total':len(lists),
-        'dataList':babyRecords	
+        'dataList':babyRecords
     }
 
     #httpResList.append(httpRes)
-		
+
     response = {
 		'code':200,
 		'msg':'success!',
-		'data':httpRes	
+		'data':httpRes
 	}
     #httpResponse.append(response)
     return jsonify(response), 201
     #return jsonify({'httpResponse':httpResponse}), 201
+
+# 获取疫苗信息
+
+vaccinfos= [
+    {
+        'vaccineName':u'麻风疫苗',
+        'isFree':True,
+        'isInjected':False,
+        'injectDate':u'',
+        'ageToInject':3
+    },
+    {
+        'vaccineName':u'狂犬疫苗',
+        'isFree':False,
+        'isInjected':True,
+        'injectDate':u'2017-02-23',
+        'ageToInject':3
+    },
+    {
+        'vaccineName':u'疫苗1',
+        'isFree':True,
+        'isInjected':True,
+        'injectDate':u'2017-03-23',
+        'ageToInject':5
+    },
+    {
+        'vaccineName':u'疫苗2',
+        'isFree':False,
+        'isInjected':True,
+        'injectDate':u'2017-05-20',
+        'ageToInject':5
+    },
+    {
+        'vaccineName':u'疫苗3',
+        'isFree':True,
+        'isInjected':False,
+        'injectDate':u'',
+        'ageToInject':4
+    },
+    {
+        'vaccineName':u'疫苗4',
+        'isFree':True,
+        'isInjected':False,
+        'injectDate':u'',
+        'ageToInject':9
+    },
+    {
+        'vaccineName':u'疫苗5',
+        'isFree':True,
+        'isInjected':True,
+        'injectDate':u'2016-03-23',
+        'ageToInject':9
+    },
+    {
+        'vaccineName':u'疫苗6',
+        'isFree':True,
+        'isInjected':False,
+        'injectDate':u'',
+        'ageToInject':1
+    },
+    {
+        'vaccineName':u'疫苗7',
+        'isFree':True,
+        'isInjected':False,
+        'injectDate':u'',
+        'ageToInject':2
+    },
+    {
+        'vaccineName':u'疫苗8',
+        'isFree':False,
+        'isInjected':True,
+        'injectDate':u'2017-10-21',
+        'ageToInject':8
+    },
+    {
+        'vaccineName':u'疫苗9',
+        'isFree':True,
+        'isInjected':False,
+        'injectDate':u'',
+        'ageToInject':9
+    },
+    {
+        'vaccineName':u'疫苗10',
+        'isFree':False,
+        'isInjected':True,
+        'injectDate':u'2017-04-10',
+        'ageToInject':5
+    },
+    {
+        'vaccineName':u'疫苗11',
+        'isFree':False,
+        'isInjected':False,
+        'injectDate':u'',
+        'ageToInject':18
+    },
+    {
+        'vaccineName':u'疫苗12',
+        'isFree':True,
+        'isInjected':False,
+        'injectDate':u'',
+        'ageToInject':13
+    }
+]
+
+@app.route('/getVaccineInfo', methods=['GET'])
+def getVaccineInfo():
+
+    begin = int(request.args.get('start'))
+    count = int(request.args.get('count'))
+    vaccinfos.sort()
+    start = begin
+    end = 0
+    if((start + count) < len(vaccinfos)):
+        end = (start+count)
+    else:
+        end = len(vaccinfos)
+    httpRes = {
+        'start':begin,
+        'count':count,
+        'total':len(vaccinfos),
+        'dataList':vaccinfos[start:end]
+    }
+    response = {
+        'code':200,
+        'msg':'success!',
+        'data':httpRes
+    }
+    return jsonify(response), 201
+
 
 
 if __name__ == '__main__':
