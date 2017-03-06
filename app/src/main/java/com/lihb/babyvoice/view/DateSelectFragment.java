@@ -49,6 +49,7 @@ public class DateSelectFragment  extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        hideBottomTab();
         initView();
     }
 

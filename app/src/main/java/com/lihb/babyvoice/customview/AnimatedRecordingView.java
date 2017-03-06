@@ -22,13 +22,15 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class AnimatedRecordingView extends BaseSurfaceView {
     private static final String TAG = "AnimatedRecordingView";
     private Context mContext;
-    private Paint mLinePaint;
-    private Paint mRectPaint;
-    private int step = 0;
+    private Paint mEdgeLinePaint;
+    private Paint mVolumeLinePaint;
+    private int index = 0;
     private static int RECT_WIDTH = 3;
+    private static int STEP = 3;
     private static int SPACE = 0;
     private boolean mIsStarted = false;
     private List<RectF> rectFList;
+    private List<MyLine> lineList;
 
     private boolean mIsToEdge = false; //是否到达最右边
     public AnimatedRecordingView(Context context) {
@@ -46,32 +48,35 @@ public class AnimatedRecordingView extends BaseSurfaceView {
 
     private void init(Context ctx) {
         mContext = ctx;
-        mLinePaint = new Paint();
-        mLinePaint.setColor(Color.RED);
-        mLinePaint.setStrokeWidth(2);
-        mLinePaint.setStyle(Paint.Style.STROKE);
-        mLinePaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+        mEdgeLinePaint = new Paint();
+        mEdgeLinePaint.setColor(Color.RED);
+        mEdgeLinePaint.setStrokeWidth(2);
+        mEdgeLinePaint.setStyle(Paint.Style.STROKE);
+        mEdgeLinePaint.setFlags(Paint.ANTI_ALIAS_FLAG);
 
-        mRectPaint = new Paint();
-        mRectPaint.setColor(Color.WHITE);
-        mLinePaint.setStyle(Paint.Style.STROKE);
-        mLinePaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+        mVolumeLinePaint = new Paint();
+        mVolumeLinePaint.setColor(Color.WHITE);
+        mVolumeLinePaint.setStrokeWidth(3);
+        mVolumeLinePaint.setStyle(Paint.Style.STROKE);
+        mVolumeLinePaint.setFlags(Paint.ANTI_ALIAS_FLAG);
 
         rectFList = new CopyOnWriteArrayList<>();
+        lineList = new CopyOnWriteArrayList<>();
 
     }
 
     public void start() {
         mIsStarted = true;
         mIsToEdge = false;
-        step = 0;
+        index = 0;
     }
 
     public void stop() {
         mIsStarted = false;
         mIsToEdge = false;
-        step = 0;
+        index = 0;
         rectFList.clear();
+        lineList.clear();
     }
 
     @Override
@@ -104,24 +109,41 @@ public class AnimatedRecordingView extends BaseSurfaceView {
         if (volume >= mHeight / 2) {
             volume = mHeight / 2 - 10;
         }
-        RectF rect = new RectF(step, volume, step + RECT_WIDTH, 0);
-        rectFList.add(rect);
-        step = step + RECT_WIDTH + SPACE;
-        if (step >= mWidth) {
+//        RectF rect = new RectF(index, volume, index + RECT_WIDTH, 0);
+//        rectFList.add(rect);
+//        index = index + RECT_WIDTH + SPACE;
+//        if (index >= mWidth) {
+//            mIsToEdge = true;
+//            rectFList.remove(0);
+//            index = index - (RECT_WIDTH + SPACE);
+//        }
+        MyLine line = new MyLine(index, 0, index, volume);
+        lineList.add(line);
+        index = index + STEP;
+        if (index >= mWidth) {
             mIsToEdge = true;
-            rectFList.remove(0);
-            step = step - (RECT_WIDTH + SPACE);
+            lineList.remove(0);
+            index = index - STEP;
         }
+
         canvas.save();
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-        for (RectF rectF : rectFList) {
+//        for (RectF rectF : rectFList) {
+//            if (mIsToEdge) {
+//                rectF.left = rectF.left - RECT_WIDTH - SPACE;
+//                rectF.right = rectF.left + RECT_WIDTH;
+//            }
+//            canvas.drawRect(rectF, mVolumeLinePaint);
+//            canvas.drawRect(rectF.left, 0, rectF.right, -rectF.top, mVolumeLinePaint);
+//
+//        }
+        for (MyLine line1 : lineList) {
             if (mIsToEdge) {
-                rectF.left = rectF.left - RECT_WIDTH - SPACE;
-                rectF.right = rectF.left + RECT_WIDTH;
+                line1.startX = line1.startX - STEP;
+                line1.stopX = line1.stopX - STEP;
             }
-            canvas.drawRect(rectF, mRectPaint);
-            canvas.drawRect(rectF.left, 0, rectF.right, -rectF.top, mRectPaint);
-
+            canvas.drawLine(line1.startX, line1.startY, line1.stopX, line1.stopY, mVolumeLinePaint);
+            canvas.drawLine(line1.startX, line1.startY, line1.stopX, -line1.stopY, mVolumeLinePaint);
         }
         drawEdge(canvas);
 
@@ -130,10 +152,25 @@ public class AnimatedRecordingView extends BaseSurfaceView {
 
     private void drawEdge(Canvas canvas) {
         // 画上边界
-        canvas.drawLine(0, -mHeight / 2, mWidth, -mHeight / 2, mLinePaint);
+        canvas.drawLine(0, -mHeight / 2, mWidth, -mHeight / 2, mEdgeLinePaint);
         // 画中间线
-        canvas.drawLine(0, 0, mWidth, 0, mLinePaint);
+        canvas.drawLine(0, 0, mWidth, 0, mEdgeLinePaint);
         // 画下边界
-        canvas.drawLine(0, mHeight / 2, mWidth, mHeight / 2, mLinePaint);
+        canvas.drawLine(0, mHeight / 2, mWidth, mHeight / 2, mEdgeLinePaint);
     }
+
+    private class MyLine {
+        public float startX;
+        public float startY;
+        public float stopX;
+        public float stopY;
+
+        public MyLine(float startX, float startY, float stopX, float stopY) {
+            this.startX = startX;
+            this.startY = startY;
+            this.stopX = stopX;
+            this.stopY = stopY;
+        }
+    }
+
 }

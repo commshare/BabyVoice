@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="32dp"
+    android:paddingTop="7dp"
+    android:background="@android:color/white">
+
+    <ImageView
+        android:id="@+id/vaccine_label_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="11dp"
+        android:src="@mipmap/vaccine" />
+
+    <TextView
+        android:id="@+id/vaccine_name_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="11dp"
+        android:layout_toRightOf="@id/vaccine_label_img"
+        android:text="免费疫苗"
+        android:textColor="@color/text_black"
+        android:textSize="15dp" />
+
+    <ImageView
+        android:id="@+id/vaccine_inject_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="8dp"
+        android:src="@mipmap/normal" />
+
+    <TextView
+        android:id="@+id/vaccine_inject_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="15dp"
+        android:layout_toLeftOf="@id/vaccine_inject_img"
+        android:text="未注射"
+        android:textColor="@color/color_999999"
+        android:textSize="13dp" />
+
+    <com.lihb.babyvoice.customview.DividerLine
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp" />
+
+
+</RelativeLayout>

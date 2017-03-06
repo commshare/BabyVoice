@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -27,7 +26,6 @@ import com.lihb.babyvoice.model.BabyVoice;
 import com.lihb.babyvoice.model.HttpResList;
 import com.lihb.babyvoice.model.HttpResponse;
 import com.lihb.babyvoice.utils.CommonToast;
-import com.lihb.babyvoice.utils.RxBus;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
@@ -117,6 +115,7 @@ public class HeartFragment extends BaseFragment {
             public void onLoad() {
                 if (hasMoreData) {
                     getData(false);
+                    return;
                 } else {
                     CommonToast.showShortToast("加载完毕");
                 }
@@ -225,10 +224,6 @@ public class HeartFragment extends BaseFragment {
         } else {
             start = mData.size();
         }
-//        for (int i = 0; i < 10; i++) {
-//            BabyVoice babyVoice = new BabyVoice("录音" + mData.size(), "2017/01/03", "00:02:50", "胎心音");
-//            mData.add(babyVoice);
-//        }
         ServiceGenerator.createService(ApiManager.class)
                 .getBabyVoiceRecord(start, COUNT)
                 .subscribeOn(Schedulers.io())
@@ -238,15 +233,15 @@ public class HeartFragment extends BaseFragment {
                     public void call(HttpResponse<HttpResList<BabyVoice>> httpResListHttpResponse) {
                         if (httpResListHttpResponse.code == 200) {
                             HttpResList<BabyVoice> httpResList = httpResListHttpResponse.data;
-
-                            hasMoreData = mData.size() < httpResList.total;
-                            List<BabyVoice> list = (List<BabyVoice>) httpResList.dataList;
                             if (refresh) {
                                 mData.clear();
                             }
+                            hasMoreData = mData.size() < httpResList.total;
+                            List<BabyVoice> list = httpResList.dataList;
+
                             mData.addAll(list);
                             mHeartAdapter.notifyDataSetChanged();
-                            onLoadedLessons(refresh);
+                            onLoadedData(refresh);
                         }
                     }
                 }, new Action1<Throwable>() {
@@ -254,13 +249,13 @@ public class HeartFragment extends BaseFragment {
                     public void call(Throwable throwable) {
                         CommonToast.showShortToast("获取数据失败");
                         Logger.e(throwable.toString());
-                        onLoadedLessons(refresh);
+                        onLoadedData(refresh);
                     }
                 });
 
     }
 
-    private void onLoadedLessons(final boolean refresh) {
+    private void onLoadedData(final boolean refresh) {
         if (refresh) {
             mRefreshLayout.setRefreshing(false);
         } else {

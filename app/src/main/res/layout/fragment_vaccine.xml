@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
+
     <com.lihb.babyvoice.customview.TitleBar
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
@@ -13,11 +14,24 @@
         app:leftDrawable="@mipmap/back"
         app:leftTextColor="@android:color/white"
         app:rightTextColor="@android:color/white"
-        app:leftText="@string/txt_vaccine_assist"
-        />
-    <com.lihb.babyvoice.customview.base.BaseRecyclerView
+        app:leftText="@string/txt_vaccine_assist" />
+
+    <!-- <FrameLayout
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         >-->
+    <com.lihb.babyvoice.customview.RefreshLayout
+        android:id="@+id/vaccine_refreshlayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
 
+        <com.lihb.babyvoice.customview.base.BaseRecyclerView
+            android:id="@+id/vaccine_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none" />
+    </com.lihb.babyvoice.customview.RefreshLayout>
 
+    <!--   <include layout="@layout/float_view" />
+   </FrameLayout>-->
 </LinearLayout>
