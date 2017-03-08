@@ -4,6 +4,7 @@ import com.lihb.babyvoice.model.BabyVoice;
 import com.lihb.babyvoice.model.Contributor;
 import com.lihb.babyvoice.model.HttpResList;
 import com.lihb.babyvoice.model.HttpResponse;
+import com.lihb.babyvoice.model.ProductionInspection;
 import com.lihb.babyvoice.model.VaccineInfo;
 
 import java.util.List;
@@ -63,6 +64,18 @@ public interface ApiManager {
     Observable<HttpResponse<HttpResList<VaccineInfo>>> getVaccineInfo(
             @Query("start") int start,
             @Query("count") int count);
+
+    /**
+     * 获取start到end周的产检信息
+     *
+     * @param start 起始周
+     * @param end   结束周
+     * @return
+     */
+    @GET("getProductionInfo")
+    Observable<HttpResponse<HttpResList<ProductionInspection>>> getProductionInfo(
+            @Query("start") int start,
+            @Query("end") int end);
 }
 
 

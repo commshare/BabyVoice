@@ -21,4 +21,6 @@
     <color name="color_999999">#999999</color>
 
     <color name="item_group_bg">#faf9ff</color>
+
+    <color name="white">#ffffffff</color>
 </resources>

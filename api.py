@@ -272,6 +272,133 @@ def getVaccineInfo():
     }
     return jsonify(response), 201
 
+productions= [
+    {
+        'id':1,
+        'name':u'普通B超',
+        'week':2,
+        'isDone':True
+    },
+    {
+        'id':1,
+        'name':u'B超2',
+        'week':2,
+        'isDone':False
+    },
+    {
+        'id':1,
+        'name':u'B超3',
+        'week':3,
+        'isDone':False
+    },
+    {
+        'id':2,
+        'name':u'血常规五项',
+        'week':4,
+        'isDone':False
+    },
+    {
+        'id':3,
+        'name':u'四维彩超',
+        'week':3,
+        'isDone':False
+    },
+    {
+        'id':2,
+        'name':u'B超5',
+        'week':4,
+        'isDone':False
+    },
+    {
+        'id':3,
+        'name':u'B超6',
+        'week':4,
+        'isDone':True
+    },
+    {
+        'id':4,
+        'name':u'B超7',
+        'week':3,
+        'isDone':True
+    },
+    {
+        'id':6,
+        'name':u'普通B超2',
+        'week':10,
+        'isDone':True
+    },
+    {
+        'id':2,
+        'name':u'普通B超3',
+        'week':10,
+        'isDone':True
+    },
+    {
+        'id':1,
+        'name':u'普通B超4',
+        'week':10,
+        'isDone':False
+    },
+    {
+        'id':4,
+        'name':u'普通B超5',
+        'week':10,
+        'isDone':True
+    },
+    {
+        'id':1,
+        'name':u'普通B超6',
+        'week':11,
+        'isDone':False
+    },
+    {
+        'id':2,
+        'name':u'普通B超7',
+        'week':11,
+        'isDone':True
+    },
+    {
+        'id':3,
+        'name':u'普通B超8',
+        'week':11,
+        'isDone':False
+    },
+    {
+        'id':4,
+        'name':u'普通B超9',
+        'week':11,
+        'isDone':False
+    }
+]
+
+def week(s):
+    return s['week']
+
+@app.route('/getProductionInfo', methods=['GET'])
+def getProductionInfo():
+
+    begin = int(request.args.get('start'))
+    end = int(request.args.get('end'))
+    count = 0
+    temp = sorted(productions,  key = week) #按照某个函数返回值排序
+    resData= []
+    for index in range(len(temp)):
+        info = temp[index]
+        if info['week'] >= begin and info['week'] <= end:
+            resData.append(info)
+            count = count + 1
+    httpRes = {
+        'start':begin,
+        'count':count,
+        'total':len(temp),
+        'dataList':resData
+    }
+    response = {
+        'code':200,
+        'msg':'success!',
+        'data':httpRes
+    }
+    return jsonify(response), 201
 
 
 if __name__ == '__main__':
