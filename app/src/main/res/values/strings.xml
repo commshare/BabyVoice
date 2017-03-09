@@ -46,4 +46,5 @@
 
     <string name="injected">已注射</string>
     <string name="not_injected">未注射</string>
+    <string name="enter_baby_info">请填写宝宝信息</string>
 </resources>

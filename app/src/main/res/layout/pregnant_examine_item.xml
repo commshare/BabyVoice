@@ -17,9 +17,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_toRightOf="@+id/left_line"
-        android:background="@drawable/pregant_item_shape"
         android:layout_marginLeft="15dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginRight="10dp"
         android:paddingLeft="15dp"
         android:paddingTop="5dp">
 
@@ -50,10 +49,11 @@
             android:layout_marginRight="8dp"
             android:src="@mipmap/normal" />
 
-        <!-- <com.lihb.babyvoice.customview.DividerLine
+        <com.lihb.babyvoice.customview.DividerLine
+            android:id="@+id/divider_line"
              android:layout_alignParentBottom="true"
              android:layout_width="match_parent"
-             android:layout_height="0.3dp" />-->
+            android:layout_height="0.3dp" />
 
 
     </RelativeLayout>

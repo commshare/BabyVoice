@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lihb.babyvoice.R;
+import com.lihb.babyvoice.customview.DividerLine;
 import com.lihb.babyvoice.model.ProductionInspection;
 
 import java.util.ArrayList;
@@ -166,6 +167,7 @@ public class PregnantExamineAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         public TextView pregnantTitleTxt;
         public ImageView pregnantDoneImg;
         public RelativeLayout pregnantContentRl;
+        public DividerLine dividerLine;
 
         public PregnantViewHolder(View itemView) {
             super(itemView);
@@ -173,6 +175,7 @@ public class PregnantExamineAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             pregnantTitleTxt = (TextView) itemView.findViewById(R.id.pregnant_title_txt);
             pregnantDoneImg = (ImageView) itemView.findViewById(R.id.pregnant_done_img);
             pregnantContentRl = (RelativeLayout) itemView.findViewById(R.id.pregnant_content_rl);
+            dividerLine = (DividerLine) itemView.findViewById(R.id.divider_line);
         }
 
         public void bindData(ProductionInspection inspection) {
@@ -192,15 +195,19 @@ public class PregnantExamineAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 // 该组第一个item
                 if ((position + 1) <= getItemCount() && mGroupPosition.containsKey(position + 1)) {
                     //同时，也是该组最后一个
+                    dividerLine.setVisibility(View.GONE);
                     pregnantContentRl.setBackgroundResource(R.drawable.pregant_item_shape);
                 }
-                pregnantContentRl.setBackgroundResource(R.drawable.pregant_item_first);
+                dividerLine.setVisibility(View.VISIBLE);
+                pregnantContentRl.setBackgroundResource(R.drawable.round_rect_top);
             } else if ((position + 1) <= getItemCount() && mGroupPosition.containsKey(position + 1)) {
                 // 该组最后一个
-                pregnantContentRl.setBackgroundResource(R.drawable.pregant_item_last);
+                pregnantContentRl.setBackgroundResource(R.drawable.round_rect_bottom);
+                dividerLine.setVisibility(View.GONE);
             } else {
                 // 中间item
-                pregnantContentRl.setBackgroundResource(R.color.white);
+                dividerLine.setVisibility(View.VISIBLE);
+                pregnantContentRl.setBackgroundResource(R.drawable.round_rect_center);
             }
 
         }
