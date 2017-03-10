@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/head_size_ll"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:background="@drawable/baby_info_txt_shape"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="头围     |"
+            android:textColor="@color/text_black"
+            android:textSize="14dp"
+            android:layout_weight="1" />
+
+        <EditText
+            android:id="@+id/head_size_edit_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="#00000000"
+            android:cursorVisible="true"
+            android:textCursorDrawable="@drawable/cursor_shape"
+            android:paddingLeft="4dp"
+            android:text="55"
+            android:textColor="@color/text_black"
+            android:textSize="14dp"
+            android:maxLength="60"
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="   CM"
+            android:textColor="@color/text_black"
+            android:textSize="14dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/height_size_ll"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:background="@drawable/baby_info_txt_shape"
+        android:gravity="center_vertical"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="身高     |"
+            android:textColor="@color/text_black"
+            android:textSize="14dp"
+            android:layout_weight="1" />
+
+        <EditText
+            android:id="@+id/height_size_edit_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="#00000000"
+            android:cursorVisible="true"
+            android:textCursorDrawable="@drawable/cursor_shape"
+            android:paddingLeft="4dp"
+            android:text="68"
+            android:textColor="@color/text_black"
+            android:textSize="14dp"
+            android:maxLength="60"
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="   CM"
+            android:textColor="@color/text_black"
+            android:textSize="14dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/weight_size_ll"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:background="@drawable/baby_info_txt_shape"
+        android:gravity="center_vertical"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="体重     |"
+            android:textColor="@color/text_black"
+            android:textSize="14dp"
+            android:layout_weight="1" />
+
+        <EditText
+            android:id="@+id/wieght_size_edit_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="#00000000"
+            android:cursorVisible="true"
+            android:textCursorDrawable="@drawable/cursor_shape"
+            android:paddingLeft="4dp"
+            android:text="16"
+            android:textColor="@color/text_black"
+            android:textSize="14dp"
+            android:maxLength="60"
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="   KG"
+            android:textColor="@color/text_black"
+            android:textSize="14dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/temperature_size_ll"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:background="@drawable/baby_info_txt_shape"
+        android:gravity="center_vertical"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="头围     |"
+            android:textColor="@color/text_black"
+            android:textSize="14dp"
+            android:layout_weight="1" />
+
+        <EditText
+            android:id="@+id/temperature_edit_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="#00000000"
+            android:cursorVisible="true"
+            android:textCursorDrawable="@drawable/cursor_shape"
+            android:paddingLeft="4dp"
+            android:text="35"
+            android:textColor="@color/text_black"
+            android:textSize="14dp"
+            android:maxLength="60"
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="   °"
+            android:textColor="@color/text_black"
+            android:textSize="14dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <ViewStub
+        android:id="@+id/more_item_view_stub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inflatedId="@+id/more_item_inflateView"
+        android:layout="@layout/health_protect_more_item" />
+
+    <TextView
+        android:id="@+id/more_item"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/baby_more_info_txt_shape"
+        android:layout_marginTop="7dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center"
+        android:textSize="14dp"
+        android:textColor="@android:color/white"
+        android:text="+更多项目" />
+</LinearLayout>
