@@ -7,7 +7,9 @@ import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.facebook.stetho.Stetho;
 import com.lihb.babyvoice.utils.BroadcastWatcher;
+import com.lihb.babyvoice.utils.NotificationCenter;
 import com.lihb.babyvoice.utils.SingleOkHttpClient;
+import com.lihb.babyvoice.utils.UserProfileChangedNotification;
 
 import java.io.InputStream;
 
@@ -34,6 +36,7 @@ public class BabyVoiceApp extends Application {
         Glide.get(this)
                 .register(GlideUrl.class, InputStream.class, new OkHttpUrlLoader.Factory(SingleOkHttpClient.getInstance()));
 //        NotificationCenter.INSTANCE.addCallbacks(PhoneStateChangedCallback.class);
+        NotificationCenter.INSTANCE.addCallbacks(UserProfileChangedNotification.class);
 
         mBroadcastWatcher = new BroadcastWatcher(this);
         mBroadcastWatcher.startWatch();

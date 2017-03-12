@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingLeft="6dp"
+    android:paddingRight="6dp"
+    android:orientation="vertical">
+    <com.lihb.babyvoice.customview.DividerLine
+        android:id="@+id/top_line"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="23dp"
+        android:layout_height="10dp"
+        android:orientation="vertical"
+        app:lineColor="@color/grow_up_line_color" />
+    <ImageView
+        android:id="@+id/grow_up_dot_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="19dp"
+        android:src="@mipmap/purple_dot"
+        />
+    <com.lihb.babyvoice.customview.DividerLine
+        android:id="@+id/bottom_line"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="23dp"
+        android:layout_height="10dp"
+        android:orientation="vertical"
+        app:lineColor="@color/grow_up_line_color" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/round_rect_top"
+        android:gravity="center_vertical"
+        >
+
+        <TextView
+            android:id="@+id/grow_up_title_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="11dp"
+            android:text="2017/2/2  周四"
+            android:textColor="@color/text_black"
+            android:textSize="10.7sp"
+            />
+
+        <ImageView
+            android:id="@+id/grow_up_del_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="11dp"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/delete"
+             />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/grow_up_content_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/health_show_bottom_shape"
+        android:layout_marginLeft="1.2dp"
+        android:layout_marginRight="1.2dp"
+        >
+
+        <TextView
+            android:id="@+id/grow_up_content_txt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="13dp"
+            android:gravity="center_vertical"
+            android:text="体重低、头围大\n舒服舒服发舒服舒服"
+            android:textColor="@color/coler_55555"
+            android:textSize="11.3sp"
+            />
+        <ImageView
+            android:id="@+id/grow_up_content_img1"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_below="@id/grow_up_content_txt"
+            android:src="@mipmap/add_photos"
+            android:scaleType="fitXY"
+            android:layout_marginLeft="13dp"
+            />
+        <ImageView
+            android:id="@+id/grow_up_content_img2"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_below="@id/grow_up_content_txt"
+            android:layout_toRightOf="@id/grow_up_content_img1"
+            android:src="@mipmap/add_photos"
+            android:scaleType="fitXY"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="16dp"
+            />
+
+    </RelativeLayout>
+
+</LinearLayout>

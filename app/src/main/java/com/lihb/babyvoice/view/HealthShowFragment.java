@@ -1,6 +1,5 @@
 package com.lihb.babyvoice.view;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,38 +11,37 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.lihb.babyvoice.R;
-import com.lihb.babyvoice.adapter.GrowUpAdapter;
+import com.lihb.babyvoice.adapter.HealthProtectAdapter;
 import com.lihb.babyvoice.customview.RefreshLayout;
 import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragment;
 import com.lihb.babyvoice.customview.base.BaseRecyclerView;
-import com.lihb.babyvoice.model.GrowUpRecord;
+import com.lihb.babyvoice.model.HealthQuota;
 import com.lihb.babyvoice.utils.CommonToast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by lihb on 2017/3/5.
+ * Created by lihb on 2017/3/11.
  */
 
-public class GrowUpFragment extends BaseFragment {
+public class HealthShowFragment extends BaseFragment {
 
     private RefreshLayout mRefreshLayout;
     private BaseRecyclerView mRecyclerView;
-    private GrowUpAdapter mGrowUpAdapter;
-    private List<GrowUpRecord> mData = new ArrayList<>();
+    private HealthProtectAdapter mHealthProtectAdapter;
+    private List<HealthQuota> mData = new ArrayList<>();
     private boolean hasMoreData = false;
     private View emptyView;
-    private ImageView mAdd_growup_record_img;
+    private ImageView mAdd_record_img;
 
     private static final int COUNT = 10;
 
     private TitleBar mTitleBar;
-    private EditGrowUpRecordActivity mEditGrowUpRecordFragment;
 
-    public static GrowUpFragment create() {
-        return new GrowUpFragment();
+    public static HealthShowFragment create() {
+        return new HealthShowFragment();
     }
 
     @Override
@@ -52,7 +50,7 @@ public class GrowUpFragment extends BaseFragment {
         if (bundle != null) {
 //            mFileName = bundle.getString("fileName");
         }
-        return inflater.inflate(R.layout.fragment_grow_up, container, false);
+        return inflater.inflate(R.layout.fragment_health_show, container, false);
     }
 
     @Override
@@ -71,24 +69,23 @@ public class GrowUpFragment extends BaseFragment {
                 getActivity().onBackPressed();
             }
         });
-        mAdd_growup_record_img = (ImageView) getView().findViewById(R.id.add_grow_up_record_img);
+        mAdd_record_img = (ImageView) getView().findViewById(R.id.add_health_record_img);
 
-        mAdd_growup_record_img.setOnClickListener(new View.OnClickListener() {
+        mAdd_record_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonToast.showShortToast("mAdd_grow_up_record_img was clicked!!");
-                gotoEditGrowUpRecordActivity();
+                CommonToast.showShortToast("mAdd_record_img was clicked!!");
             }
         });
 
-        mRefreshLayout = (RefreshLayout) getView().findViewById(R.id.grow_up_swipe_refresh_widget);
-        mRecyclerView = (BaseRecyclerView) getView().findViewById(R.id.grow_up_recycler_view);
+        mRefreshLayout = (RefreshLayout) getView().findViewById(R.id.health_swipe_refresh_widget);
+        mRecyclerView = (BaseRecyclerView) getView().findViewById(R.id.health_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 //        mRecyclerView.setEmptyView(emptyView);
 
-        mGrowUpAdapter = new GrowUpAdapter(getContext(), mData);
-        mRecyclerView.setAdapter(mGrowUpAdapter);
+        mHealthProtectAdapter = new HealthProtectAdapter(getContext(), mData);
+        mRecyclerView.setAdapter(mHealthProtectAdapter);
 
         mRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
 
@@ -116,6 +113,7 @@ public class GrowUpFragment extends BaseFragment {
     }
 
 
+
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
@@ -132,27 +130,61 @@ public class GrowUpFragment extends BaseFragment {
         ((LinearLayout) getActivity().findViewById(R.id.linearLayout1)).setVisibility(View.GONE);
         ((View) getActivity().findViewById(R.id.divider_line2)).setVisibility(View.GONE);
     }
-
     private void getData(final boolean refresh) {
 
-        List<GrowUpRecord> tempList = new ArrayList<>();
+        List<HealthQuota> tempList = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            String content = "宝贝今天会走路了，会叫爸爸妈妈了，哈哈。" + i;
-            List<String> picList = new ArrayList<>();
-            picList.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1489246556661&di=a277f1407cee312b4a555a80b32cbe4f&imgtype=0&src=http%3A%2F%2Fp.3761.com%2Fpic%2F95231402965163.jpg");
-//            picList.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1489246626842&di=60720be2120548c5a3455483e4561063&imgtype=0&src=http%3A%2F%2Fwww.wsfjq.com%2Fphotos%2Fbd16565644.jpg");
-            picList.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1489252122032&di=e00d02c7e75eca7741f7d01069ffbc61&imgtype=0&src=http%3A%2F%2Fimg.pconline.com.cn%2Fimages%2Fupload%2Fupc%2Ftx%2Fphotoblog%2F1112%2F28%2Fc11%2F10084076_10084076_1325087736046.jpg");
-            GrowUpRecord quota = new GrowUpRecord("2017/2/23",content,picList);
+            HealthQuota quota = new HealthQuota(40+i,70+i,20+i,35+i,"女",0,0);
             tempList.add(quota);
         }
         if (refresh) {
             mData.clear();
         }
         mData.addAll(tempList);
-        mGrowUpAdapter.notifyDataSetChanged();
+        mHealthProtectAdapter.notifyDataSetChanged();
         hasMoreData = mData.size() < 50;
         onLoadedData(refresh);
     }
+
+
+
+//    private void getData(final boolean refresh) {
+//        int start = 0;
+//        if (refresh) {
+//            start = 0;
+//        } else {
+//            start = mData.size();
+//        }
+//        ServiceGenerator.createService(ApiManager.class)
+//                .getBabyVoiceRecord(start, COUNT)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Action1<HttpResponse<HttpResList<BabyVoice>>>() {
+//                    @Override
+//                    public void call(HttpResponse<HttpResList<BabyVoice>> httpResListHttpResponse) {
+//                        if (httpResListHttpResponse.code == 200) {
+//                            HttpResList<BabyVoice> httpResList = httpResListHttpResponse.data;
+//                            if (refresh) {
+//                                mData.clear();
+//                            }
+//                            hasMoreData = mData.size() < httpResList.total;
+//                            List<BabyVoice> list = httpResList.dataList;
+//
+////                            mData.addAll(list);
+//                            mHealthProtectAdapter.notifyDataSetChanged();
+//                            onLoadedData(refresh);
+//                        }
+//                    }
+//                }, new Action1<Throwable>() {
+//                    @Override
+//                    public void call(Throwable throwable) {
+//                        CommonToast.showShortToast("获取数据失败");
+//                        Logger.e(throwable.toString());
+//                        onLoadedData(refresh);
+//                    }
+//                });
+//
+//    }
 
     private void onLoadedData(final boolean refresh) {
         if (refresh) {
@@ -160,11 +192,5 @@ public class GrowUpFragment extends BaseFragment {
         } else {
             mRefreshLayout.setLoading(false);
         }
-    }
-
-    private void gotoEditGrowUpRecordActivity() {
-        Intent intent = new Intent(getActivity(), EditGrowUpRecordActivity.class);
-
-        startActivity(intent);
     }
 }

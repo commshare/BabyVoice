@@ -44,6 +44,7 @@ public class PregnantExamineAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private HashMap<Integer, String> mGroupPosition = new HashMap<Integer, String>();
 
     private HashMap<Integer, ProductionInspection> mItemPosition = new HashMap<Integer, ProductionInspection>();
+    private int count;
 
 
     public PregnantExamineAdapter(Context mContext, List<ProductionInspection> mData) {
@@ -109,7 +110,7 @@ public class PregnantExamineAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             return 0;
         }
 
-        int count = 0;
+        count = 0;
         mGroupPosition.clear();
         mItemPosition.clear();
         Set<String> keys = dataMap.keySet();
@@ -193,14 +194,15 @@ public class PregnantExamineAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             int position = getLayoutPosition();
             if (mGroupPosition.containsKey(position - 1)) {
                 // 该组第一个item
-                if ((position + 1) <= getItemCount() && mGroupPosition.containsKey(position + 1)) {
+                if ((position + 1) < count && mGroupPosition.containsKey(position + 1) || (position == count - 1)) {
                     //同时，也是该组最后一个
                     dividerLine.setVisibility(View.GONE);
                     pregnantContentRl.setBackgroundResource(R.drawable.pregant_item_shape);
+                }else {
+                    dividerLine.setVisibility(View.VISIBLE);
+                    pregnantContentRl.setBackgroundResource(R.drawable.round_rect_top);
                 }
-                dividerLine.setVisibility(View.VISIBLE);
-                pregnantContentRl.setBackgroundResource(R.drawable.round_rect_top);
-            } else if ((position + 1) <= getItemCount() && mGroupPosition.containsKey(position + 1)) {
+            } else if ((position + 1) < count && mGroupPosition.containsKey(position + 1) || (position == count - 1)) {
                 // 该组最后一个
                 pregnantContentRl.setBackgroundResource(R.drawable.round_rect_bottom);
                 dividerLine.setVisibility(View.GONE);

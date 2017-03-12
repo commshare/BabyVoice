@@ -2,9 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/item_group_bg"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <com.lihb.babyvoice.customview.TitleBar
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
@@ -12,19 +10,20 @@
         android:background="@color/colorPrimary"
         android:paddingTop="@dimen/padding_top"
         app:leftDrawable="@mipmap/back"
+        app:rightDrawable="@mipmap/link"
         app:leftTextColor="@android:color/white"
         app:rightTextColor="@android:color/white"
-        app:leftText="@string/txt_growup_record"
+        app:leftText="@string/txt_health_protect_assist"
         />
     <com.lihb.babyvoice.customview.RefreshLayout
-        android:id="@+id/grow_up_swipe_refresh_widget"
+        android:id="@+id/health_swipe_refresh_widget"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/title_bar"
-        >
+        android:paddingTop="6dp">
 
         <com.lihb.babyvoice.customview.base.BaseRecyclerView
-            android:id="@+id/grow_up_recycler_view"
+            android:id="@+id/health_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="none" />
@@ -32,14 +31,13 @@
     </com.lihb.babyvoice.customview.RefreshLayout>
 
     <ImageView
-        android:id="@+id/add_grow_up_record_img"
+        android:id="@+id/add_health_record_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/edit_icon"
+        android:src="@mipmap/add_function"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true" />
-
 
 </RelativeLayout>

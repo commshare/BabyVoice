@@ -14,9 +14,9 @@
         app:titleTextColor="@android:color/white"
         app:titleText="@string/tab_baby_watch" />
 
-    <com.lihb.babyvoice.customview.AnalysisBarChartingView
+   <!-- <com.lihb.babyvoice.customview.AnalysisBarChartingView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" />-->
 
     <TextView
         android:layout_width="match_parent"

@@ -16,11 +16,15 @@
 
     <color name="base_color">#e47139</color>
     <color name="text_black">#333333</color>
+    <color name="coler_55555">#555555</color>
     <color name="item_voice_pressed">#f3f4f3</color>
     <color name="voice_line_color">#eeeeee</color>
     <color name="color_999999">#999999</color>
 
     <color name="item_group_bg">#faf9ff</color>
+    <color name="health_item_bg">#8d71fa</color>
+
+    <color name="grow_up_line_color">#e6e5eb</color>
 
     <color name="white">#ffffffff</color>
 </resources>
