@@ -51,6 +51,7 @@ public class HeartFragment extends BaseFragment {
     private ImageView mImgGoToRecord;
 
     private VoiceRecordFragment mVoiceRecordFragment;
+    private VoicePlayFragment mVoicePlayFragment;
 
     private static final int COUNT = 10;
     private PickRecordDialog mPickCategoryDialog;
@@ -127,6 +128,7 @@ public class HeartFragment extends BaseFragment {
             public void onItemClick(View view, int position) {
                 BabyVoice voice = mData.get(position);
                 CommonToast.showShortToast(voice.name + " " + voice.date + " " + voice.duration);
+                gotoVoicePlayFragment(voice);
             }
 
             @Override
@@ -212,6 +214,26 @@ public class HeartFragment extends BaseFragment {
         }
         transaction.add(R.id.main_layout, mVoiceRecordFragment, "VoiceRecordFragment")
                 .show(mVoiceRecordFragment)
+                .addToBackStack(null)
+                .commit();
+
+    }
+
+    private void gotoVoicePlayFragment(BabyVoice babyVoice) {
+        if (null == mVoicePlayFragment) {
+            mVoicePlayFragment = VoicePlayFragment.create();
+        }
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("babyVoice", babyVoice);
+        mVoicePlayFragment.setArguments(bundle);
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.hide(this);
+        int count = getActivity().getSupportFragmentManager().getBackStackEntryCount();
+        if (count > 0) {
+            getActivity().getSupportFragmentManager().popBackStackImmediate();
+        }
+        transaction.add(R.id.main_layout, mVoicePlayFragment, "VoicePlayFragment")
+                .show(mVoicePlayFragment)
                 .addToBackStack(null)
                 .commit();
 

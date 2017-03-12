@@ -24,6 +24,7 @@ public class AnimatedRecordingView extends BaseSurfaceView {
     private Context mContext;
     private Paint mEdgeLinePaint;
     private Paint mVolumeLinePaint;
+    private Paint mVerticalLinePaint;
     private int index = 0;
     private static int RECT_WIDTH = 3;
     private static int STEP = 3;
@@ -59,6 +60,12 @@ public class AnimatedRecordingView extends BaseSurfaceView {
         mVolumeLinePaint.setStrokeWidth(3);
         mVolumeLinePaint.setStyle(Paint.Style.STROKE);
         mVolumeLinePaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+
+        mVerticalLinePaint = new Paint();
+        mVerticalLinePaint.setColor(Color.RED);
+        mVerticalLinePaint.setStrokeWidth(4);
+        mVerticalLinePaint.setStyle(Paint.Style.STROKE);
+        mVerticalLinePaint.setFlags(Paint.ANTI_ALIAS_FLAG);
 
         rectFList = new CopyOnWriteArrayList<>();
         lineList = new CopyOnWriteArrayList<>();
@@ -120,7 +127,7 @@ public class AnimatedRecordingView extends BaseSurfaceView {
         MyLine line = new MyLine(index, 0, index, volume);
         lineList.add(line);
         index = index + STEP;
-        if (index >= mWidth) {
+        if (index >= mWidth*0.9) {
             mIsToEdge = true;
             lineList.remove(0);
             index = index - STEP;
@@ -128,6 +135,7 @@ public class AnimatedRecordingView extends BaseSurfaceView {
 
         canvas.save();
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+        canvas.drawLine(index, -mHeight/2, index, mHeight/2, mVerticalLinePaint);
 //        for (RectF rectF : rectFList) {
 //            if (mIsToEdge) {
 //                rectF.left = rectF.left - RECT_WIDTH - SPACE;
@@ -144,6 +152,7 @@ public class AnimatedRecordingView extends BaseSurfaceView {
             }
             canvas.drawLine(line1.startX, line1.startY, line1.stopX, line1.stopY, mVolumeLinePaint);
             canvas.drawLine(line1.startX, line1.startY, line1.stopX, -line1.stopY, mVolumeLinePaint);
+
         }
         drawEdge(canvas);
 

@@ -27,4 +27,7 @@
     <color name="grow_up_line_color">#e6e5eb</color>
 
     <color name="white">#ffffffff</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="seekbar_color">#5537cc</color>
 </resources>

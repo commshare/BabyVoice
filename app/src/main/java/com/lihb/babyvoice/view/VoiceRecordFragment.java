@@ -16,7 +16,6 @@ import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragment;
 import com.lihb.babyvoice.utils.FileUtils;
 import com.lihb.babyvoice.utils.RecorderHelper;
-import com.lihb.babyvoice.utils.SoftInputUtil;
 import com.lihb.babyvoice.utils.StringUtils;
 import com.orhanobut.logger.Logger;
 
@@ -166,7 +165,7 @@ public class VoiceRecordFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
-        RecorderHelper.getInstance().cancel();
+//        RecorderHelper.getInstance().cancel();
     }
 
     /**

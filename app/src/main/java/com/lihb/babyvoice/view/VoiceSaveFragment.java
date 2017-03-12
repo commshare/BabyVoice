@@ -96,6 +96,7 @@ public class VoiceSaveFragment extends BaseFragment {
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            mEditText.requestFocus();
             SoftInputUtil.hideSoftInput(getActivity());
             getActivity().onBackPressed();
             Logger.i(FileUtils.getAMRFilePath(mFileName));

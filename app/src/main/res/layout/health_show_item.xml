@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="6dp"
-    android:paddingRight="6dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
     android:layout_marginBottom="11dp"
     android:orientation="vertical">
 
@@ -30,7 +30,7 @@
             android:layout_marginLeft="5dp"
             android:text="年龄：一个月20天"
             android:textColor="@android:color/white"
-            android:textSize="18dp"
+            android:textSize="11.3sp"
             />
 
         <TextView
@@ -41,7 +41,7 @@
             android:gravity="center_vertical|right"
             android:text="2016/4/3"
             android:textColor="@android:color/white"
-            android:textSize="14dp"
+            android:textSize="7.3sp"
             android:layout_weight="1" />
 
     </LinearLayout>
@@ -70,7 +70,7 @@
             android:gravity="center_vertical"
             android:text="@string/head_height_size"
             android:textColor="@color/text_black"
-            android:textSize="18dp"
+            android:textSize="10.7sp"
              />
 
         <TextView
@@ -85,7 +85,7 @@
             android:gravity="center_vertical"
             android:text="@string/weight_temperature_size"
             android:textColor="@color/text_black"
-            android:textSize="18dp"
+            android:textSize="10.7sp"
             />
         <TextView
             android:id="@+id/health_show_prompt_txt"
@@ -99,7 +99,7 @@
             android:gravity="center_vertical"
             android:text="发育提示："
             android:textColor="@color/text_black"
-            android:textSize="18dp"
+            android:textSize="10.7sp"
             />
         <TextView
             android:id="@+id/health_show_grow_up_txt"
@@ -114,7 +114,7 @@
             android:gravity="center_vertical"
             android:text="体重低、头围大\n舒服舒服发舒服舒服"
             android:textColor="@color/text_black"
-            android:textSize="18dp"
+            android:textSize="10.7sp"
             />
 
     </RelativeLayout>

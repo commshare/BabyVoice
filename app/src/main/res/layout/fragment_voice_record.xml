@@ -25,25 +25,31 @@
          android:id="@+id/animated_recording_view"
          android:layout_width="match_parent"
          android:layout_height="200dp" />-->
-
-    <Chronometer
-        android:id="@+id/chronometer"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:gravity="center"
-        android:format="00:00:00"
-        android:textColor="@android:color/white"
-        android:textSize="40dp" />
+        android:gravity="center_horizontal"
+        android:layout_marginTop="30dp">
+        <Chronometer
+            android:id="@+id/chronometer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:format="00:00:00"
+            android:textColor="@android:color/white"
+            android:textSize="40dp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:paddingLeft="105dp"
-        android:text="HOUR     MIN       SEC"
-        android:textColor="@android:color/white"
-        android:textSize="15dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_below="@+id/chronometer"
+            android:layout_alignLeft="@+id/chronometer"
+            android:layout_alignRight="@+id/chronometer"
+            android:text="  HOUR     MIN       SEC"
+            android:textColor="@android:color/white"
+            android:textSize="15dp" />
+    </RelativeLayout>
 
 
     <TextView
