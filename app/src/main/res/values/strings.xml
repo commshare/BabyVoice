@@ -34,6 +34,7 @@
 
     <!-- 个人中心 -->
     <string name="txt_me_center">个人中心</string>
+    <string name="txt_find_password">找回密码</string>
     <string name="txt_pregnant_date">怀孕日期设置</string>
     <string name="txt_baby_info">儿童信息设置</string>
     <string name="txt_remote_video_address">远程视频连接地址设置</string>

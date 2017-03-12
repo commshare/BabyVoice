@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # 用来重命名资源文件
 import os
-path = 'E:\\AndroidStudioProjects\\BabyVoice\\app\\src\\main\\res\\mipmap-xxxhdpi'
+path = 'app/src/main/res/mipmap-xxxhdpi'
 keyword = '@3x'
 for file in os.listdir(path):
     if os.path.isfile(os.path.join(path,file))==True:

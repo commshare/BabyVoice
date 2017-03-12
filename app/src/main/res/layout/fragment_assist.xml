@@ -37,8 +37,8 @@
                 app:commonDividerVisible="true"
                 app:commonItemName="@string/txt_pregnant_zone"
                 app:commonItemSelector="@drawable/voice_item_selector"
-                app:commonLeftIcon="@mipmap/icon_my_next"
-                app:commonRightIcon="@mipmap/icon_my_next" />
+                app:commonLeftIcon="@mipmap/yyq"
+                app:commonRightIcon="@mipmap/next_icon" />
 
             <com.lihb.babyvoice.customview.DividerLine
                 android:layout_width="match_parent"
@@ -52,8 +52,8 @@
                 app:commonDividerVisible="true"
                 app:commonItemName="@string/txt_check_assist"
                 app:commonItemSelector="@drawable/voice_item_selector"
-                app:commonLeftIcon="@mipmap/icon_my_next"
-                app:commonRightIcon="@mipmap/icon_my_next" />
+                app:commonLeftIcon="@mipmap/cjzs"
+                app:commonRightIcon="@mipmap/next_icon" />
 
             <com.lihb.babyvoice.customview.CommonItem
                 android:id="@+id/item_vaccine_assist"
@@ -62,8 +62,8 @@
                 app:commonDividerVisible="true"
                 app:commonItemName="@string/txt_vaccine_assist"
                 app:commonItemSelector="@drawable/voice_item_selector"
-                app:commonLeftIcon="@mipmap/icon_my_next"
-                app:commonRightIcon="@mipmap/icon_my_next" />
+                app:commonLeftIcon="@mipmap/ymzs"
+                app:commonRightIcon="@mipmap/next_icon" />
 
             <com.lihb.babyvoice.customview.CommonItem
                 android:id="@+id/item_health_protect_assist"
@@ -72,8 +72,8 @@
                 app:commonDividerVisible="true"
                 app:commonItemName="@string/txt_health_protect_assist"
                 app:commonItemSelector="@drawable/voice_item_selector"
-                app:commonLeftIcon="@mipmap/icon_my_next"
-                app:commonRightIcon="@mipmap/icon_my_next" />
+                app:commonLeftIcon="@mipmap/ebzs"
+                app:commonRightIcon="@mipmap/next_icon" />
 
             <com.lihb.babyvoice.customview.CommonItem
                 android:id="@+id/item_growup_record"
@@ -82,8 +82,8 @@
                 app:commonDividerVisible="true"
                 app:commonItemName="@string/txt_growup_record"
                 app:commonItemSelector="@drawable/voice_item_selector"
-                app:commonLeftIcon="@mipmap/icon_my_next"
-                app:commonRightIcon="@mipmap/icon_my_next" />
+                app:commonLeftIcon="@mipmap/czjl"
+                app:commonRightIcon="@mipmap/next_icon" />
 
 
             <com.lihb.babyvoice.customview.DividerLine
@@ -98,18 +98,19 @@
                 app:commonDividerVisible="true"
                 app:commonItemName="@string/txt_care_mall"
                 app:commonItemSelector="@drawable/voice_item_selector"
-                app:commonLeftIcon="@mipmap/icon_my_next"
-                app:commonRightIcon="@mipmap/icon_my_next" />
+                app:commonLeftIcon="@mipmap/gasc"
+                app:commonRightIcon="@mipmap/next_icon" />
 
             <com.lihb.babyvoice.customview.CommonItem
                 android:id="@+id/item_expert_online"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:commonDividerVisible="true"
                 app:commonItemName="@string/txt_expert_online"
                 app:commonItemSelector="@drawable/voice_item_selector"
-                app:commonLeftIcon="@mipmap/icon_my_next"
-                app:commonRightIcon="@mipmap/icon_my_next" />
+                app:commonLeftIcon="@mipmap/zjzx"
+                app:commonRightIcon="@mipmap/next_icon"
+                />
 
         </LinearLayout>
     </ScrollView>
