@@ -3,12 +3,12 @@
 # 用法示例：python rename.py xxhdpi @3x
 import os, platform, sys
 
-#path = 'app/src/main/res/drawable-xxxhdpi'
+#path = 'app/src/main/res/mipmap-xxxhdpi'
 
 sysstr = platform.system()
 if(sysstr =="Windows"):
     print ("current OS is Windows")
-    path = 'app\\src\\main\\res\\drawable-'
+    path = 'app\\src\\main\\res\\mipmap-'
 else:
     print ("Other System")
     path = 'app/src/main/res/drawable-'
