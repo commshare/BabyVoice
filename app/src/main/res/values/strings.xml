@@ -76,4 +76,5 @@
     <string name="flash_unsupported">当前相机不支持闪光灯</string>
     <string name="photo_save_failed">图片保存失败，请检查手机空间</string>
     <string name="no_gallery">未检测到相册相关应用</string>
+    <string name="voice_analysis">声音分析</string>
 </resources>

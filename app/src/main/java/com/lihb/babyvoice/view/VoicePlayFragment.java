@@ -1,5 +1,6 @@
 package com.lihb.babyvoice.view;
 
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,6 +20,7 @@ import com.lihb.babyvoice.customview.AnimatedRecordingView;
 import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragment;
 import com.lihb.babyvoice.model.BabyVoice;
+import com.lihb.babyvoice.utils.CommonToast;
 import com.lihb.babyvoice.utils.StringUtils;
 
 /**
@@ -41,8 +43,6 @@ public class VoicePlayFragment extends BaseFragment {
     private MediaPlayer mediaPlayer;
     private boolean isperson;
     private int currentPos = 0;
-//    private Timer timer;
-//    private TimerTask task;
     private BabyVoice babyVoice;
     private MyHandler myHandler;
 
@@ -80,17 +80,15 @@ public class VoicePlayFragment extends BaseFragment {
         total_time_txt = (TextView) getView().findViewById(R.id.total_time_txt);
         animated_playing_view = (AnimatedRecordingView) getView().findViewById(R.id.animated_playing_view);
         play_bottom_layout = (RelativeLayout) getView().findViewById(R.id.play_bottom_layout);
+
         if (null != babyVoice) {
             mTitleBar.setLeftText(babyVoice.name);
             setCategoryImg(babyVoice.category);
         }
-
-        mediaPlayer = MediaPlayer.create(getActivity(), R.raw.test);
-        seekBar.setMax(mediaPlayer.getDuration());
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                current_time_txt.setText(StringUtils.formatTime(progress/1000));
+                current_time_txt.setText(StringUtils.formatTime(progress / 1000));
             }
 
             @Override
@@ -113,22 +111,6 @@ public class VoicePlayFragment extends BaseFragment {
                 doPauseResume();
             }
         });
-        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                play_pause_img.setImageResource(R.mipmap.play);
-            }
-        });
-        total_time_txt.setText(StringUtils.formatTime(mediaPlayer.getDuration()/1000));
-//        timer = new Timer();
-//        task = new TimerTask() {
-//            @Override
-//            public void run() {
-//                if (isperson)
-//                    return;
-//                seekBar.setProgress(mediaPlayer.getCurrentPosition());
-//            }
-//        };
         myHandler = new MyHandler();
 
     }
@@ -137,32 +119,26 @@ public class VoicePlayFragment extends BaseFragment {
         String[] items = getResources().getStringArray(R.array.voice_type);
         if (StringUtils.areEqual(category, items[0])) {
             category_img.setImageResource(R.mipmap.heart);
-        }
-        else if (StringUtils.areEqual(category, items[1])) {
+//            play_bottom_layout.setBackgroundResource(R.mipmap.heart);
+        } else if (StringUtils.areEqual(category, items[1])) {
             category_img.setImageResource(R.mipmap.lung);
-        }
-        else if (StringUtils.areEqual(category, items[2])) {
+//            play_bottom_layout.setBackgroundResource(R.mipmap.lung);
+        } else if (StringUtils.areEqual(category, items[2])) {
             category_img.setImageResource(R.mipmap.voice);
-        }
-        else {
+//            play_bottom_layout.setBackgroundResource(R.mipmap.voice);
+        } else {
             category_img.setImageResource(R.mipmap.other);
+//            play_bottom_layout.setBackgroundResource(R.mipmap.other);
         }
     }
 
     private void doPauseResume() {
         if (isPlaying()) {
+            play_pause_img.setImageResource(R.mipmap.play);
             pause();
         } else {
-            play();
-        }
-        updatePausePlay();
-    }
-
-    private void updatePausePlay() {
-        if (isPlaying()) {
             play_pause_img.setImageResource(R.mipmap.stop);
-        } else {
-            play_pause_img.setImageResource(R.mipmap.play);
+            play();
         }
     }
 
@@ -177,7 +153,7 @@ public class VoicePlayFragment extends BaseFragment {
      * 暂停
      */
     private void pause() {
-        if (mediaPlayer != null) {
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
         }
     }
@@ -186,17 +162,47 @@ public class VoicePlayFragment extends BaseFragment {
      * 播放
      */
     private void play() {
-        if (mediaPlayer != null) {
-            mediaPlayer.start();
-//            mediaPlayer.seekTo(0);
-//            seekBar.setProgress(0);
-            //更新进度
-//            timer.schedule(task, 0, 100);
-            myHandler.removeCallbacks(null);
-            myHandler.sendEmptyMessage(1000);
+        try {
+            if (null == mediaPlayer) { //开始播放
+                String url;
+                if (null != babyVoice) {
+                    url = babyVoice.url;
+                } else {
+                    throw new Exception("no play file find.");
+                }
+                mediaPlayer = new MediaPlayer();
+                mediaPlayer.setDataSource(url);
+
+                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                mediaPlayer.prepareAsync();
+                mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        mediaPlayer.start();
+                        seekBar.setMax(mediaPlayer.getDuration());
+                        total_time_txt.setText(StringUtils.formatTime(mediaPlayer.getDuration() / 1000));
+                        //更新进度
+                        myHandler.removeCallbacks(null);
+                        myHandler.sendEmptyMessage(1000);
+                    }
+                });
+            } else {
+                // 暂停后播放
+                mediaPlayer.start();
+            }
+
+            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    play_pause_img.setImageResource(R.mipmap.play);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            play_pause_img.setImageResource(R.mipmap.play);
+            CommonToast.showShortToast("播放文件失败。");
         }
     }
-
 
 
     @Override
@@ -208,7 +214,7 @@ public class VoicePlayFragment extends BaseFragment {
         }
     }
 
-    private void resetUI(){
+    private void resetUI() {
         seekBar.setProgress(0);
         current_time_txt.setText(StringUtils.formatTime(0));
         total_time_txt.setText(StringUtils.formatTime(0));
@@ -219,8 +225,6 @@ public class VoicePlayFragment extends BaseFragment {
         if (mediaPlayer != null) {
             mediaPlayer.release();
             mediaPlayer = null;
-//            timer.cancel();
-//            timer = null;
         }
     }
 
@@ -252,7 +256,7 @@ public class VoicePlayFragment extends BaseFragment {
         }
     };
 
-    private class MyHandler extends Handler{
+    private class MyHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
