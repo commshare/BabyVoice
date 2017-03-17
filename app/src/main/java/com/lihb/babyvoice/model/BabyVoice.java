@@ -13,12 +13,14 @@ public class BabyVoice implements Parcelable {
     public String date;
     public String duration;
     public String category;
+    public String url;
 
-    public BabyVoice(String name, String date, String duration, String category) {
+    public BabyVoice(String name, String date, String duration, String category, String url) {
         this.name = name;
         this.date = date;
         this.duration = duration;
         this.category = category;
+        this.url = url;
     }
 
     public String getName() {
@@ -53,6 +55,14 @@ public class BabyVoice implements Parcelable {
         this.category = category;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     @Override
     public String toString() {
         return "BabyVoice{" +
@@ -60,6 +70,7 @@ public class BabyVoice implements Parcelable {
                 ", date='" + date + '\'' +
                 ", duration='" + duration + '\'' +
                 ", category='" + category + '\'' +
+                ", url='" + url + '\'' +
                 '}';
     }
 
@@ -74,6 +85,7 @@ public class BabyVoice implements Parcelable {
         dest.writeString(this.date);
         dest.writeString(this.duration);
         dest.writeString(this.category);
+        dest.writeString(this.url);
     }
 
     protected BabyVoice(Parcel in) {
@@ -81,6 +93,7 @@ public class BabyVoice implements Parcelable {
         this.date = in.readString();
         this.duration = in.readString();
         this.category = in.readString();
+        this.url = in.readString();
     }
 
     public static final Parcelable.Creator<BabyVoice> CREATOR = new Parcelable.Creator<BabyVoice>() {

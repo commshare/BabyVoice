@@ -72,8 +72,8 @@
     <RelativeLayout
         android:id="@+id/play_bottom_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         >
         <ImageView
             android:id="@+id/category_img"
@@ -87,17 +87,17 @@
             android:id="@+id/voice_analysis_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/category_img"
+            android:background="@drawable/voice_analyse_shape"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
-            android:background="@drawable/voice_analyse_shape"
+            android:layout_alignBottom="@+id/category_img"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="20dp"
             android:gravity="center"
             android:textColor="@color/white"
-            android:text="声音分析"
+            android:text="@string/voice_analysis"
             android:textSize="11sp"
             />
     </RelativeLayout>
@@ -108,5 +108,6 @@
         android:layout_marginTop="8dp"
         android:layout="@layout/diagnose_propose_view"
         android:inflatedId="@+id/diagnose_inflated_id"
+        android:visibility="gone"
         />
 </LinearLayout>

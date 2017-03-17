@@ -11,7 +11,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.model.GrowUpRecord;
+import com.lihb.babyvoice.view.ImageBrowseActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -58,6 +60,7 @@ public class GrowUpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         public TextView grow_up_content_txt;
         public ImageView grow_up_content_img1;
         public ImageView grow_up_content_img2;
+        public ArrayList<String> pics;
 
 
         public GrowUpRecordViewHolder(View itemView) {
@@ -68,24 +71,39 @@ public class GrowUpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             grow_up_content_txt = (TextView) itemView.findViewById(R.id.grow_up_content_txt);
             grow_up_content_img1 = (ImageView) itemView.findViewById(R.id.grow_up_content_img1);
             grow_up_content_img2 = (ImageView) itemView.findViewById(R.id.grow_up_content_img2);
+
+            grow_up_content_img1.setOnClickListener(mOnClickListener);
+            grow_up_content_img2.setOnClickListener(mOnClickListener);
         }
 
         public void bindData(GrowUpRecord growUpRecord) {
             if (growUpRecord == null) {
                 return;
             }
+            pics = (ArrayList<String>) growUpRecord.picList;
             grow_up_title_txt.setText(growUpRecord.date);
             grow_up_content_txt.setText(growUpRecord.content);
 
             Glide.with(mContext)
-                    .load(growUpRecord.picList.get(0))
+                    .load(pics.get(0))
                     .placeholder(R.mipmap.add_photos)
                     .into(grow_up_content_img1);
             Glide.with(mContext)
-                    .load(growUpRecord.picList.get(1))
+                    .load(pics.get(1))
                     .placeholder(R.mipmap.add_photos)
                     .into(grow_up_content_img2);
-
         }
+
+        private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (v == grow_up_content_img1) {
+                    ImageBrowseActivity.startActivity(mContext, pics, 0);
+                } else if (v == grow_up_content_img2) {
+                    ImageBrowseActivity.startActivity(mContext, pics, 1);
+                }
+            }
+        };
+
     }
 }

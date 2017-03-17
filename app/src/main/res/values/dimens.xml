@@ -5,9 +5,9 @@
     <dimen name="divider_line_width">0.5dp</dimen>
 
     <dimen name="padding_top">0dp</dimen>
-    <dimen name="title_bar_height">56dp</dimen>
-    <dimen name="net_error_bar_height">48dp</dimen>
-    <dimen name="distance_6x">6px</dimen>
+    <dimen name="title_bar_height">40dp</dimen>
+    <dimen name="net_error_bar_height">40dp</dimen>
+    <dimen name="distance_25px">25px</dimen>
     <dimen name="sp_14">14sp</dimen>
     <dimen name="dp_25">25dp</dimen>
     <dimen name="top">32dp</dimen>

@@ -46,7 +46,7 @@
             android:layout_below="@+id/chronometer"
             android:layout_alignLeft="@+id/chronometer"
             android:layout_alignRight="@+id/chronometer"
-            android:text="  HOUR     MIN       SEC"
+            android:text=" HOUR     MIN       SEC"
             android:textColor="@android:color/white"
             android:textSize="15dp" />
     </RelativeLayout>

@@ -1,6 +1,6 @@
 #!flask/bin/python
 # -*- coding: utf-8 -*-  
-from flask import Flask, jsonify, abort, make_response,request
+from flask import Flask, jsonify, abort, make_response,request, send_from_directory
 import os, time, random
 from werkzeug import secure_filename
 from pydub import AudioSegment
@@ -399,6 +399,12 @@ def getProductionInfo():
         'data':httpRes
     }
     return jsonify(response), 201
+
+# 下载文件
+dirpath=os.path.join(basedir,'upload_folder')
+@app.route("/download/<path:filename>")
+def downloader(filename):
+    return send_from_directory(dirpath,filename,as_attachment=True)
 
 
 
