@@ -37,7 +37,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/pregnant_index_txt"
-            android:text="B超"
+            android:layout_toLeftOf="@+id/pregnant_done_img"
+            android:layout_marginRight="10dp"
+            android:text=""
             android:textColor="@color/text_black"
             android:textSize="13dp" />
 

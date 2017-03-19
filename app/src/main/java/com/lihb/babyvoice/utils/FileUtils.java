@@ -1,15 +1,18 @@
 package com.lihb.babyvoice.utils;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;
 
@@ -334,6 +337,48 @@ public class FileUtils {
             return true;
         else
             return false;
+    }
+
+    /**
+     * 从raw文件夹中读取数据
+     * @param context
+     * @param rawId
+     * @return
+     */
+    public static String getFromRaw(Context context,int rawId){
+        try {
+            InputStreamReader inputReader = new InputStreamReader(context.getResources().openRawResource(rawId));
+            BufferedReader bufReader = new BufferedReader(inputReader);
+            String line="";
+            String Result="";
+            while((line = bufReader.readLine()) != null)
+                Result += line;
+            return Result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    /**
+     * 从assets文件夹中读取数据
+     * @param context
+     * @param fileName
+     * @return
+     */
+    public String getFromAssets(Context context, String fileName){
+        try {
+            InputStreamReader inputReader = new InputStreamReader(context.getResources().getAssets().open(fileName) );
+            BufferedReader bufReader = new BufferedReader(inputReader);
+            String line="";
+            String Result="";
+            while((line = bufReader.readLine()) != null)
+                Result += line;
+            return Result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
 }

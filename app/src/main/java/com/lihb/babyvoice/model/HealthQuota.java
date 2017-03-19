@@ -41,6 +41,11 @@ public class HealthQuota {
      */
     public int fontanelSize;
 
+    /**
+     * 检测结果
+     */
+    public String examineResult;
+
     public HealthQuota() {
     }
 
@@ -52,5 +57,6 @@ public class HealthQuota {
         this.gender = gender;
         this.heartBeat = heartBeat;
         this.fontanelSize = fontanelSize;
+        this.examineResult = examineResult;
     }
 }

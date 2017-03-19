@@ -2,6 +2,7 @@ package com.lihb.babyvoice.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,15 +12,19 @@ import android.widget.TextView;
 
 import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.customview.DividerLine;
+import com.lihb.babyvoice.db.PregnantDataImpl;
 import com.lihb.babyvoice.model.ProductionInspection;
+import com.lihb.babyvoice.utils.CommonToast;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 
 /**
  * Created by lhb on 2017/3/8.
@@ -34,12 +39,7 @@ public class PregnantExamineAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private Context mContext;
     private List<ProductionInspection> mDataList;
 
-    private SortedMap<String, List<ProductionInspection>> dataMap = new TreeMap<>(new Comparator<String>() {
-        @Override
-        public int compare(String o1, String o2) {
-            return o1.compareTo(o2);
-        }
-    });
+    private SortedMap<Integer, List<ProductionInspection>> dataMap = new TreeMap<>();
 
     private HashMap<Integer, String> mGroupPosition = new HashMap<Integer, String>();
 
@@ -113,9 +113,9 @@ public class PregnantExamineAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         count = 0;
         mGroupPosition.clear();
         mItemPosition.clear();
-        Set<String> keys = dataMap.keySet();
-        for (String key : keys) {
-            mGroupPosition.put(count++, key);
+        Set<Integer> keys = dataMap.keySet();
+        for (Integer key : keys) {
+            mGroupPosition.put(count++, "第"+key+"次");
             List<ProductionInspection> list = dataMap.get(key);
             for (int i = 0; i < list.size(); i++) {
                 mItemPosition.put(count++, list.get(i));
@@ -137,21 +137,44 @@ public class PregnantExamineAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         }
 
         List<ProductionInspection> list = new ArrayList<>();
-        int oldWeek = mDataList.get(0).week;
+        int oldNo = mDataList.get(0).no;
         for (int i = 0; i < mDataList.size(); i++) {
             final ProductionInspection inspection = mDataList.get(i);
-            int newWeek = inspection.week;
-            if (oldWeek == newWeek) {
+            int newNo = inspection.no;
+            if (oldNo == newNo) {
                 list.add(inspection);
             } else {
-                dataMap.put("" + oldWeek, list);
+                dataMap.put(oldNo, list);
                 list = new ArrayList<>();
                 list.add(inspection);
-                oldWeek = newWeek;
+                oldNo = newNo;
             }
         }
-        dataMap.put("" + oldWeek, list); // 处理最后一组数据
+        dataMap.put(oldNo, list); // 处理最后一组数据
     }
+    private void updateDatabase(final ProductionInspection inspection){
+        PregnantDataImpl.getInstance()
+                .updateData(inspection)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Boolean>() {
+                    @Override
+                    public void call(Boolean aBoolean) {
+                        Log.i("PregnantExamineAdapter", inspection.toString());
+                        if (aBoolean) {
+                            CommonToast.showShortToast("更新数据成功");
+                        }else {
+                            CommonToast.showShortToast("更新数据失败");
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        CommonToast.showShortToast("error"+throwable.getMessage());
+                        Log.e("PregnantExamineAdapter", throwable.getMessage());
+                    }
+                });
+    }
+
 
     private class GroupViewHolder extends RecyclerView.ViewHolder {
 
@@ -179,13 +202,13 @@ public class PregnantExamineAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             dividerLine = (DividerLine) itemView.findViewById(R.id.divider_line);
         }
 
-        public void bindData(ProductionInspection inspection) {
+        public void bindData(final ProductionInspection inspection) {
             if (null == inspection) {
                 return;
             }
-            pregnantIndexTxt.setText(inspection.id + "");
-            pregnantTitleTxt.setText(inspection.name);
-            if (inspection.isDone) {
+            pregnantIndexTxt.setText(inspection.event_id + "");
+            pregnantTitleTxt.setText(inspection.event_name);
+            if (inspection.isDone == 1) {
                 pregnantDoneImg.setImageResource(R.mipmap.selected);
             } else {
                 pregnantDoneImg.setImageResource(R.mipmap.normal);
@@ -198,7 +221,7 @@ public class PregnantExamineAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     //同时，也是该组最后一个
                     dividerLine.setVisibility(View.GONE);
                     pregnantContentRl.setBackgroundResource(R.drawable.pregant_item_shape);
-                }else {
+                } else {
                     dividerLine.setVisibility(View.VISIBLE);
                     pregnantContentRl.setBackgroundResource(R.drawable.round_rect_top);
                 }
@@ -211,7 +234,22 @@ public class PregnantExamineAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 dividerLine.setVisibility(View.VISIBLE);
                 pregnantContentRl.setBackgroundResource(R.drawable.round_rect_center);
             }
+            pregnantDoneImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (inspection.isDone==1) {
+                        inspection.isDone = 0;
+                        pregnantDoneImg.setImageResource(R.mipmap.normal);
+                        updateDatabase(inspection);
+                    }else {
+                        inspection.isDone = 1;
+                        pregnantDoneImg.setImageResource(R.mipmap.selected);
+                        updateDatabase(inspection);
+                    }
+                }
+            });
 
         }
     }
+
 }
