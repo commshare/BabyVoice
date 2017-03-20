@@ -51,8 +51,8 @@
 
     <string name="show_more_item">+ 更多项目</string>
     <string name="hide_more_item">- 更多项目</string>
-    <string name="head_height_size">头围: %1$sCm 身高: %2$sCm</string>
-    <string name="weight_temperature_size">体重: %1$sKg 温度: %2$s℃</string>
+    <string name="head_height_size">头围: %1$sCm&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;身高: %2$sCm</string>
+    <string name="weight_temperature_size">体重: %1$sKg&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;温度: %2$s℃</string>
     <string name="think_in_this_monment">这一刻我在想...</string>
 
     <!-- cameraSurface translations -->

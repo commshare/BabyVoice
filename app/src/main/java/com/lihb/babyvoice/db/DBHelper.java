@@ -46,9 +46,10 @@ public class DBHelper extends SQLiteOpenHelper {
                     HEALTH_PROTECT_ENTRY.COLUMN_HEIGHT + INTEGER_TYPE + COMMA_SEP +
                     HEALTH_PROTECT_ENTRY.COLUMN_WEIGHT + INTEGER_TYPE + COMMA_SEP +
                     HEALTH_PROTECT_ENTRY.COLUMN_TEMPERATURE + INTEGER_TYPE + COMMA_SEP +
-                    HEALTH_PROTECT_ENTRY.COLUMN_GENDER + INTEGER_TYPE +
-                    HEALTH_PROTECT_ENTRY.COLUMN_HEARTBEAT + INTEGER_TYPE +
-                    HEALTH_PROTECT_ENTRY.COLUMN_FONTANELSIZE + INTEGER_TYPE +
+                    HEALTH_PROTECT_ENTRY.COLUMN_GENDER + INTEGER_TYPE + COMMA_SEP +
+                    HEALTH_PROTECT_ENTRY.COLUMN_HEARTBEAT + INTEGER_TYPE + COMMA_SEP +
+                    HEALTH_PROTECT_ENTRY.COLUMN_FONTANELSIZE + INTEGER_TYPE + COMMA_SEP +
+                    HEALTH_PROTECT_ENTRY.COLUMN_RECORD_DATE + TEXT_TYPE + COMMA_SEP +
                     HEALTH_PROTECT_ENTRY.COLUMN_EXAMINERESULT + TEXT_TYPE + " )";
 
     private static final String SQL_DELETE_HEALTH_PROTECT_ENTRY=
@@ -118,6 +119,7 @@ public class DBHelper extends SQLiteOpenHelper {
         public static final String COLUMN_HEARTBEAT = "heartBeat";
         public static final String COLUMN_FONTANELSIZE = "fontanelSize";
         public static final String COLUMN_EXAMINERESULT = "examineResult";
+        public static final String COLUMN_RECORD_DATE = "recordDate";
     }
 
     /* Inner class that defines the table contents */

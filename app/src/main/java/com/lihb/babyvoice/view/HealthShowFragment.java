@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,17 +17,24 @@ import com.lihb.babyvoice.customview.RefreshLayout;
 import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragment;
 import com.lihb.babyvoice.customview.base.BaseRecyclerView;
+import com.lihb.babyvoice.db.HealthDataImpl;
 import com.lihb.babyvoice.model.HealthQuota;
 import com.lihb.babyvoice.utils.CommonToast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
+
 /**
  * Created by lihb on 2017/3/11.
  */
 
 public class HealthShowFragment extends BaseFragment {
+
+    private static final String TAG = "HealthShowFragment";
 
     private RefreshLayout mRefreshLayout;
     private BaseRecyclerView mRecyclerView;
@@ -75,6 +83,7 @@ public class HealthShowFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 CommonToast.showShortToast("mAdd_record_img was clicked!!");
+                getActivity().onBackPressed();
             }
         });
 
@@ -96,18 +105,18 @@ public class HealthShowFragment extends BaseFragment {
                 getData(true);
             }
         });
-        mRefreshLayout.registerLoadMoreListenerForChildView(mRecyclerView, new RefreshLayout.OnLoadListener() {
-            @Override
-            public void onLoad() {
-                if (hasMoreData) {
-                    getData(false);
-                    return;
-                } else {
-                    CommonToast.showShortToast("加载完毕");
-                }
-                mRefreshLayout.setLoading(false);
-            }
-        });
+//        mRefreshLayout.registerLoadMoreListenerForChildView(mRecyclerView, new RefreshLayout.OnLoadListener() {
+//            @Override
+//            public void onLoad() {
+//                if (hasMoreData) {
+//                    getData(false);
+//                    return;
+//                } else {
+//                    CommonToast.showShortToast("加载完毕");
+//                }
+//                mRefreshLayout.setLoading(false);
+//            }
+//        });
         getData(true);
 
     }
@@ -131,66 +140,26 @@ public class HealthShowFragment extends BaseFragment {
         ((View) getActivity().findViewById(R.id.divider_line2)).setVisibility(View.GONE);
     }
     private void getData(final boolean refresh) {
-
-        List<HealthQuota> tempList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            HealthQuota quota = new HealthQuota(40+i,70+i,20+i,35+i,"女",0,0);
-            tempList.add(quota);
-        }
-        if (refresh) {
-            mData.clear();
-        }
-        mData.addAll(tempList);
-        mHealthProtectAdapter.notifyDataSetChanged();
-        hasMoreData = mData.size() < 50;
-        onLoadedData(refresh);
+        HealthDataImpl.getInstance()
+                .queryAllData()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Action1<List<HealthQuota>>() {
+                    @Override
+                    public void call(List<HealthQuota> healthQuotas) {
+//                        CommonToast.showShortToast("查询成功！");
+                        mData = healthQuotas;
+                        mHealthProtectAdapter.updateData(mData);
+                        mRefreshLayout.setRefreshing(false);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+//                        CommonToast.showShortToast("查询失败！" + throwable.getMessage());
+                        Log.e(TAG, throwable.getMessage());
+                        mRefreshLayout.setRefreshing(false);
+                    }
+                });
     }
 
-
-
-//    private void getData(final boolean refresh) {
-//        int start = 0;
-//        if (refresh) {
-//            start = 0;
-//        } else {
-//            start = mData.size();
-//        }
-//        ServiceGenerator.createService(ApiManager.class)
-//                .getBabyVoiceRecord(start, COUNT)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Action1<HttpResponse<HttpResList<BabyVoice>>>() {
-//                    @Override
-//                    public void call(HttpResponse<HttpResList<BabyVoice>> httpResListHttpResponse) {
-//                        if (httpResListHttpResponse.code == 200) {
-//                            HttpResList<BabyVoice> httpResList = httpResListHttpResponse.data;
-//                            if (refresh) {
-//                                mData.clear();
-//                            }
-//                            hasMoreData = mData.size() < httpResList.total;
-//                            List<BabyVoice> list = httpResList.dataList;
-//
-////                            mData.addAll(list);
-//                            mHealthProtectAdapter.notifyDataSetChanged();
-//                            onLoadedData(refresh);
-//                        }
-//                    }
-//                }, new Action1<Throwable>() {
-//                    @Override
-//                    public void call(Throwable throwable) {
-//                        CommonToast.showShortToast("获取数据失败");
-//                        Logger.e(throwable.toString());
-//                        onLoadedData(refresh);
-//                    }
-//                });
-//
-//    }
-
-    private void onLoadedData(final boolean refresh) {
-        if (refresh) {
-            mRefreshLayout.setRefreshing(false);
-        } else {
-            mRefreshLayout.setLoading(false);
-        }
-    }
 }

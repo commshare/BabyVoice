@@ -30,7 +30,7 @@
             android:layout_marginLeft="5dp"
             android:text="年龄：一个月20天"
             android:textColor="@android:color/white"
-            android:textSize="11.3sp"
+            android:textSize="14sp"
             />
 
         <TextView
@@ -41,7 +41,7 @@
             android:gravity="center_vertical|right"
             android:text="2016/4/3"
             android:textColor="@android:color/white"
-            android:textSize="7.3sp"
+            android:textSize="11sp"
             android:layout_weight="1" />
 
     </LinearLayout>
@@ -70,7 +70,7 @@
             android:gravity="center_vertical"
             android:text="@string/head_height_size"
             android:textColor="@color/text_black"
-            android:textSize="10.7sp"
+            android:textSize="12sp"
              />
 
         <TextView
@@ -85,7 +85,7 @@
             android:gravity="center_vertical"
             android:text="@string/weight_temperature_size"
             android:textColor="@color/text_black"
-            android:textSize="10.7sp"
+            android:textSize="12sp"
             />
         <TextView
             android:id="@+id/health_show_prompt_txt"
@@ -99,7 +99,7 @@
             android:gravity="center_vertical"
             android:text="发育提示："
             android:textColor="@color/text_black"
-            android:textSize="10.7sp"
+            android:textSize="12sp"
             />
         <TextView
             android:id="@+id/health_show_grow_up_txt"
@@ -114,7 +114,7 @@
             android:gravity="center_vertical"
             android:text="体重低、头围大\n舒服舒服发舒服舒服"
             android:textColor="@color/text_black"
-            android:textSize="10.7sp"
+            android:textSize="12sp"
             />
 
     </RelativeLayout>

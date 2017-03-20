@@ -48,6 +48,11 @@ public class HealthProtectAdapter extends RecyclerView.Adapter<RecyclerView.View
         return mData == null ? 0 : mData.size();
     }
 
+    public void updateData(List<HealthQuota> data) {
+        mData = data;
+        notifyDataSetChanged();
+    }
+
     private class HealthQuotaViewHolder extends RecyclerView.ViewHolder{
 
         public TextView health_show_title_txt;

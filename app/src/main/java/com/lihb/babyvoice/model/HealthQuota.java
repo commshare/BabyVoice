@@ -29,7 +29,7 @@ public class HealthQuota {
     /**
      * 性别
      */
-    public String gender;
+    public int gender;
 
     /**
      * 心跳
@@ -46,10 +46,15 @@ public class HealthQuota {
      */
     public String examineResult;
 
+    /**
+     * 年龄
+     */
+    public String recordDate;
+
     public HealthQuota() {
     }
 
-    public HealthQuota(int headSize, int height, int weight, int temperature, String gender, int heartBeat, int fontanelSize) {
+    public HealthQuota(int headSize, int height, int weight, int temperature, int gender, int heartBeat, int fontanelSize,String examineResult,String recordDate) {
         this.headSize = headSize;
         this.height = height;
         this.weight = weight;
@@ -58,5 +63,6 @@ public class HealthQuota {
         this.heartBeat = heartBeat;
         this.fontanelSize = fontanelSize;
         this.examineResult = examineResult;
+        this.recordDate = recordDate;
     }
 }

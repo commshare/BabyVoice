@@ -14,6 +14,7 @@ import java.util.List;
 
 import rx.Observable;
 import rx.Subscriber;
+import rx.functions.Action1;
 
 /**
  * Created by Administrator on 2017/3/20.
@@ -23,13 +24,13 @@ public class VaccineDataImpl implements IDBRxManager<VaccineInfo> {
 
     private DBHelper dbHelper;
 
-    private VaccineDataImpl(){
+    private VaccineDataImpl() {
         dbHelper = new DBHelper(BabyVoiceApp.getInstance());
     }
 
     private static VaccineDataImpl instance = new VaccineDataImpl();
 
-    public static VaccineDataImpl getInstance(){
+    public static VaccineDataImpl getInstance() {
         return instance;
     }
 
@@ -37,22 +38,31 @@ public class VaccineDataImpl implements IDBRxManager<VaccineInfo> {
     public Observable<Boolean> insertData(final VaccineInfo vaccineInfo) {
         return Observable.create(new Observable.OnSubscribe<Boolean>() {
             @Override
-            public void call(Subscriber<? super Boolean> subscriber) {
-                ContentValues values = new ContentValues();
-                values.put(DBHelper.VACCINE_ENTRY.COLUMN_NAME, vaccineInfo.vaccineName);
-                values.put(DBHelper.VACCINE_ENTRY.COLUMN_FREE, vaccineInfo.isFree);
-                values.put(DBHelper.VACCINE_ENTRY.COLUMN_INJECTDATE, vaccineInfo.injectDate);
-                values.put(DBHelper.VACCINE_ENTRY.COLUMN_INJECTED, vaccineInfo.isInjected);
-                values.put(DBHelper.VACCINE_ENTRY.COLUMN_AGETOINJECT, vaccineInfo.ageToInject);
-                SQLiteDatabase db = dbHelper.getWritableDatabase();
-                if (db.insert(DBHelper.VACCINE_ENTRY.TABLE_NAME, null, values) != -1) {
-                    subscriber.onNext(true);
-                    Logger.e("插入孕检数据成功");
-                }else {
-                    Logger.e("插入孕检数据失败");
-                    subscriber.onNext(false); 
-                }
-                subscriber.onCompleted();
+            public void call(final Subscriber<? super Boolean> subscriber) {
+                queryData(vaccineInfo)
+                        .subscribe(new Action1<Boolean>() {
+                            @Override
+                            public void call(Boolean aBoolean) {
+                                if (!aBoolean) {
+                                    ContentValues values = new ContentValues();
+                                    values.put(DBHelper.VACCINE_ENTRY.COLUMN_NAME, vaccineInfo.vaccineName);
+                                    values.put(DBHelper.VACCINE_ENTRY.COLUMN_FREE, vaccineInfo.isFree);
+                                    values.put(DBHelper.VACCINE_ENTRY.COLUMN_INJECTDATE, vaccineInfo.injectDate);
+                                    values.put(DBHelper.VACCINE_ENTRY.COLUMN_INJECTED, vaccineInfo.isInjected);
+                                    values.put(DBHelper.VACCINE_ENTRY.COLUMN_AGETOINJECT, vaccineInfo.ageToInject);
+                                    SQLiteDatabase db = dbHelper.getWritableDatabase();
+                                    if (db.insert(DBHelper.VACCINE_ENTRY.TABLE_NAME, null, values) != -1) {
+                                        subscriber.onNext(true);
+                                        Logger.e("插入疫苗数据成功");
+                                    } else {
+                                        Logger.e("插入疫苗数据失败");
+                                        subscriber.onNext(false);
+                                    }
+                                    subscriber.onCompleted();
+                                }
+                            }
+                        });
+
             }
         });
     }
@@ -62,17 +72,27 @@ public class VaccineDataImpl implements IDBRxManager<VaccineInfo> {
         return Observable.create(new Observable.OnSubscribe<Void>() {
             @Override
             public void call(Subscriber<? super Void> subscriber) {
-                SQLiteDatabase db = dbHelper.getWritableDatabase();
-                for (VaccineInfo vaccineInfo : dataList) {
-                    ContentValues values = new ContentValues();
-                    values.put(DBHelper.VACCINE_ENTRY.COLUMN_NAME, vaccineInfo.vaccineName);
-                    values.put(DBHelper.VACCINE_ENTRY.COLUMN_FREE, vaccineInfo.isFree);
-                    values.put(DBHelper.VACCINE_ENTRY.COLUMN_INJECTDATE, vaccineInfo.injectDate);
-                    values.put(DBHelper.VACCINE_ENTRY.COLUMN_INJECTED, vaccineInfo.isInjected);
-                    values.put(DBHelper.VACCINE_ENTRY.COLUMN_AGETOINJECT, vaccineInfo.ageToInject);
-                    if (db.insert(DBHelper.VACCINE_ENTRY.TABLE_NAME, null, values) == -1) {
-                        Log.e("VaccineDataImpl", vaccineInfo.toString()+"插入失败");
-                    }
+                final SQLiteDatabase db = dbHelper.getWritableDatabase();
+                for (final VaccineInfo vaccineInfo : dataList) {
+                    queryData(vaccineInfo)
+                            .subscribe(new Action1<Boolean>() {
+                                @Override
+                                public void call(Boolean aBoolean) {
+                                    if(!aBoolean){
+                                        ContentValues values = new ContentValues();
+                                        values.put(DBHelper.VACCINE_ENTRY.COLUMN_NAME, vaccineInfo.vaccineName);
+                                        values.put(DBHelper.VACCINE_ENTRY.COLUMN_FREE, vaccineInfo.isFree);
+                                        values.put(DBHelper.VACCINE_ENTRY.COLUMN_INJECTDATE, vaccineInfo.injectDate);
+                                        values.put(DBHelper.VACCINE_ENTRY.COLUMN_INJECTED, vaccineInfo.isInjected);
+                                        values.put(DBHelper.VACCINE_ENTRY.COLUMN_AGETOINJECT, vaccineInfo.ageToInject);
+                                        if (db.insert(DBHelper.VACCINE_ENTRY.TABLE_NAME, null, values) == -1) {
+                                            Log.e("VaccineDataImpl", vaccineInfo.toString() + "插入失败");
+                                        }
+                                    }
+
+                                }
+                            });
+
                 }
                 subscriber.onNext(null);
                 subscriber.onCompleted();
@@ -111,7 +131,21 @@ public class VaccineDataImpl implements IDBRxManager<VaccineInfo> {
 
     @Override
     public Observable<Boolean> queryData(final VaccineInfo vaccineInfo) {
-        return null;
+        return Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                SQLiteDatabase db = dbHelper.getReadableDatabase();
+                Cursor cursor = db.rawQuery("select * from " + DBHelper.VACCINE_ENTRY.TABLE_NAME + " where "
+                        + DBHelper.VACCINE_ENTRY.COLUMN_NAME + " = ? and "
+                        + DBHelper.VACCINE_ENTRY.COLUMN_AGETOINJECT + " = ?", new String[]{vaccineInfo.vaccineName + "", vaccineInfo.ageToInject + ""});
+                if (cursor != null && cursor.getCount() > 0) {
+                    subscriber.onNext(true);
+                } else {
+                    subscriber.onNext(false);
+                }
+                subscriber.onCompleted();
+            }
+        });
     }
 
     @Override
@@ -131,12 +165,12 @@ public class VaccineDataImpl implements IDBRxManager<VaccineInfo> {
                 values.put(DBHelper.VACCINE_ENTRY.COLUMN_INJECTDATE, vaccineInfo.injectDate);
                 values.put(DBHelper.VACCINE_ENTRY.COLUMN_INJECTED, vaccineInfo.isInjected);
                 values.put(DBHelper.VACCINE_ENTRY.COLUMN_AGETOINJECT, vaccineInfo.ageToInject);
-                int res= db.update(DBHelper.VACCINE_ENTRY.TABLE_NAME, values,
-                        DBHelper.VACCINE_ENTRY.COLUMN_NAME+"=? and "
-                                +DBHelper.VACCINE_ENTRY.COLUMN_AGETOINJECT +"=?", new String[]{vaccineInfo.vaccineName, vaccineInfo.ageToInject+""});
+                int res = db.update(DBHelper.VACCINE_ENTRY.TABLE_NAME, values,
+                        DBHelper.VACCINE_ENTRY.COLUMN_NAME + "=? and "
+                                + DBHelper.VACCINE_ENTRY.COLUMN_AGETOINJECT + "=?", new String[]{vaccineInfo.vaccineName, vaccineInfo.ageToInject + ""});
                 if (res != 0) {
                     subscriber.onNext(true);
-                }else {
+                } else {
                     subscriber.onNext(false);
                 }
                 subscriber.onCompleted();

@@ -14,9 +14,15 @@ import android.widget.TextView;
 import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragment;
+import com.lihb.babyvoice.db.HealthDataImpl;
 import com.lihb.babyvoice.model.HealthQuota;
 import com.lihb.babyvoice.utils.CommonToast;
 import com.lihb.babyvoice.utils.StringUtils;
+import com.orhanobut.logger.Logger;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by lihb on 2017/3/5.
@@ -88,11 +94,17 @@ public class HealthProtectFragment extends BaseFragment {
                 quota.weight = Integer.valueOf(weight_size_edit_txt.getText().toString().trim());
                 quota.temperature = Integer.valueOf(temperature_edit_txt.getText().toString().trim());
                 if (null != more_item_view) {
-                    quota.gender = gender_edit_txt.getText().toString();
+                    if (StringUtils.areEqual(gender_edit_txt.getText().toString().trim(), "男")) {
+                        quota.gender = 1;
+                    }else {
+                        quota.gender = 0;
+                    }
+//                    quota.gender = Integer.valueOf(gender_edit_txt.getText().toString().trim());
                     quota.fontanelSize = Integer.valueOf(fontanel_size_edit_txt.getText().toString().trim());
                     quota.heartBeat = Integer.valueOf(heart_count_edit_txt.getText().toString().trim());
                 }
-                gotoHealthShowFragment();
+                insertHealthData(quota);
+//                gotoHealthShowFragment();
 
             } else if (v == more_item_txt) {
                 if (null == more_item_view) {
@@ -112,6 +124,29 @@ public class HealthProtectFragment extends BaseFragment {
             }
         }
     };
+
+    private void insertHealthData(final HealthQuota quota) {
+        HealthDataImpl.getInstance()
+                .insertData(quota)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Action1<Boolean>() {
+                    @Override
+                    public void call(Boolean aBoolean) {
+                        if (aBoolean) {
+                            Logger.i("插入儿保数据成功");
+                            gotoHealthShowFragment();
+                        }else {
+                            Logger.i("插入儿保数据失败");
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Logger.e(throwable.getMessage());
+                    }
+                });
+    }
 
 
     @Override
@@ -135,15 +170,9 @@ public class HealthProtectFragment extends BaseFragment {
         if (null == mHealthShowFragment) {
             mHealthShowFragment = HealthShowFragment.create();
         }
-//        Bundle bundle = new Bundle();
-//        bundle.putInt("recordType", mRecordType);
-//        mVoiceRecordFragment.setArguments(bundle);
+
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.hide(this);
-//        int count = getActivity().getSupportFragmentManager().getBackStackEntryCount();
-//        if (count > 0) {
-//            getActivity().getSupportFragmentManager().popBackStackImmediate();
-//        }
         transaction.add(R.id.main_layout, mHealthShowFragment, "HealthShowFragment")
                 .show(mHealthShowFragment)
                 .addToBackStack(null)
