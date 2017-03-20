@@ -57,10 +57,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static final String SQL_CREATE_GROW_UP_ENTRY=
             "CREATE TABLE " + GROW_UP_ENTRY.TABLE_NAME + " (" +
-                    GROW_UP_ENTRY._ID + " INTEGER PRIMARY KEY," +
+                    GROW_UP_ENTRY._ID + " INTEGER PRIMARY KEY ," +
                     GROW_UP_ENTRY.COLUMN_DATE + TEXT_TYPE + COMMA_SEP +
                     GROW_UP_ENTRY.COLUMN_CONTENT + TEXT_TYPE + COMMA_SEP +
-                    GROW_UP_ENTRY.COLUMN_PICLIST + TEXT_TYPE  + " )";
+                    GROW_UP_ENTRY.COLUMN_PIC_FIRST + TEXT_TYPE + COMMA_SEP +
+                    GROW_UP_ENTRY.COLUMN_PIC_SECOND + TEXT_TYPE  + " )";
 
     private static final String SQL_DELETE_GROW_UP_ENTRY =
             "DROP TABLE IF EXISTS " + GROW_UP_ENTRY.TABLE_NAME;
@@ -127,7 +128,8 @@ public class DBHelper extends SQLiteOpenHelper {
         public static final String TABLE_NAME = "grow_up_table";
         public static final String COLUMN_DATE = "date";
         public static final String COLUMN_CONTENT = "content";
-        public static final String COLUMN_PICLIST = "picList";
+        public static final String COLUMN_PIC_FIRST = "pic1";
+        public static final String COLUMN_PIC_SECOND = "pic2";
 
     }
 

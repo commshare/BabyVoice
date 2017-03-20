@@ -8,15 +8,31 @@ import java.util.List;
 
 public class GrowUpRecord {
 
+    public int no;
+
     public String date;
 
     public String content;
 
     public List<String> picList;
 
+    public GrowUpRecord() {
+
+    }
+
     public GrowUpRecord(String date, String content, List<String> picList) {
         this.date = date;
         this.content = content;
         this.picList = picList;
+    }
+
+    @Override
+    public String toString() {
+        return "GrowUpRecord{" +
+                "no=" + no +
+                ", date='" + date + '\'' +
+                ", content='" + content + '\'' +
+                ", picList=" + picList +
+                '}';
     }
 }

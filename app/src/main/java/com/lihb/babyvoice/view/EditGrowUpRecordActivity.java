@@ -9,10 +9,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragmentActivity;
+import com.lihb.babyvoice.db.GrowUpImpl;
+import com.lihb.babyvoice.model.GrowUpRecord;
 import com.lihb.babyvoice.utils.CommonToast;
 import com.lihb.babyvoice.utils.NotificationCenter;
 import com.lihb.babyvoice.utils.UserProfileChangedNotification;
@@ -22,6 +25,11 @@ import com.orhanobut.logger.Logger;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by lihb on 2017/3/5.
@@ -33,8 +41,10 @@ public class EditGrowUpRecordActivity extends BaseFragmentActivity {
     private static final int AVATAR_WIDTH_HEIGHT = 480;
     private TitleBar mTitleBar;
     private EditText mEditRecordTxt;
+    private TextView mEditDateTxt;
     private ImageView mAddPicImg1, mAddPicImg2, mDelImg1, mDelImg2;
     private RelativeLayout mAddPicLayout1,mAddPicLayout2;
+    private String mPic1,mPic2;
 
 
 
@@ -59,10 +69,19 @@ public class EditGrowUpRecordActivity extends BaseFragmentActivity {
             @Override
             public void onClick(View v) {
                 CommonToast.showShortToast("save button was clicked.");
+                GrowUpRecord growUpRecord = new GrowUpRecord();
+                growUpRecord.date = mEditDateTxt.getText().toString();
+                growUpRecord.content = mEditRecordTxt.getText().toString();
+                growUpRecord.picList = new ArrayList<String>();
+                growUpRecord.picList.add(mPic1);
+                growUpRecord.picList.add(mPic2);
+                insertItem(growUpRecord);
+                finish();
             }
         });
 
         mEditRecordTxt = (EditText) findViewById(R.id.edit_grow_up_content_txt);
+        mEditDateTxt = (TextView) findViewById(R.id.edit_grow_up_title_txt);
 
         mAddPicImg1 = (ImageView) findViewById(R.id.edit_grow_up_content_img1);
         mAddPicImg2 = (ImageView) findViewById(R.id.edit_grow_up_content_img2);
@@ -130,10 +149,34 @@ public class EditGrowUpRecordActivity extends BaseFragmentActivity {
             Bitmap bitmap  = BitmapFactory.decodeStream(fis);
             if (index == 1) {
                 mAddPicImg1.setImageBitmap(bitmap);
+                mPic1 = picturePath;
             }else {
                 mAddPicImg2.setImageBitmap(bitmap);
+                mPic2 = picturePath;
             }
         }
+    }
+
+    private void insertItem(final GrowUpRecord growUpRecord) {
+        GrowUpImpl.getInstance()
+                .insertData(growUpRecord)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Action1<Boolean>() {
+                    @Override
+                    public void call(Boolean aBoolean) {
+                        if (aBoolean) {
+                            com.orhanobut.logger.Logger.i("insert growuprecord success,"+ growUpRecord.toString());
+                        }else {
+                            com.orhanobut.logger.Logger.i("insert growuprecord failed,"+ growUpRecord.toString());
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        com.orhanobut.logger.Logger.e(throwable.getMessage());
+                    }
+                });
     }
 
 

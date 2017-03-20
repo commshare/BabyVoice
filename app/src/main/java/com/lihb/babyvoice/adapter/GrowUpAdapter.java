@@ -10,11 +10,16 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.lihb.babyvoice.R;
+import com.lihb.babyvoice.db.GrowUpImpl;
 import com.lihb.babyvoice.model.GrowUpRecord;
 import com.lihb.babyvoice.view.ImageBrowseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by lihb on 2017/3/11.
@@ -52,6 +57,11 @@ public class GrowUpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return mData == null ? 0 : mData.size();
     }
 
+    public void updateData(List<GrowUpRecord> data) {
+        mData = data;
+        notifyDataSetChanged();
+    }
+
     private class GrowUpRecordViewHolder extends RecyclerView.ViewHolder{
 
         public TextView grow_up_title_txt;
@@ -61,6 +71,7 @@ public class GrowUpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         public ImageView grow_up_content_img1;
         public ImageView grow_up_content_img2;
         public ArrayList<String> pics;
+        public GrowUpRecord mRecord;
 
 
         public GrowUpRecordViewHolder(View itemView) {
@@ -74,24 +85,37 @@ public class GrowUpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
             grow_up_content_img1.setOnClickListener(mOnClickListener);
             grow_up_content_img2.setOnClickListener(mOnClickListener);
+            grow_up_del_img.setOnClickListener(mOnClickListener);
         }
 
         public void bindData(GrowUpRecord growUpRecord) {
             if (growUpRecord == null) {
                 return;
             }
+            mRecord = growUpRecord;
             pics = (ArrayList<String>) growUpRecord.picList;
             grow_up_title_txt.setText(growUpRecord.date);
             grow_up_content_txt.setText(growUpRecord.content);
+            if (pics.size() == 1) {
+                Glide.with(mContext)
+                        .load(pics.get(0))
+                        .into(grow_up_content_img1);
+                grow_up_content_img1.setVisibility(View.VISIBLE);
+                grow_up_content_img2.setVisibility(View.GONE);
+            }else if (pics.size() == 2) {
+                Glide.with(mContext)
+                        .load(pics.get(0))
+                        .into(grow_up_content_img1);
+                Glide.with(mContext)
+                        .load(pics.get(1))
+                        .into(grow_up_content_img2);
+                grow_up_content_img1.setVisibility(View.VISIBLE);
+                grow_up_content_img2.setVisibility(View.VISIBLE);
+            }else {
+                grow_up_content_img1.setVisibility(View.GONE);
+                grow_up_content_img2.setVisibility(View.GONE);
+            }
 
-            Glide.with(mContext)
-                    .load(pics.get(0))
-                    .placeholder(R.mipmap.add_photos)
-                    .into(grow_up_content_img1);
-            Glide.with(mContext)
-                    .load(pics.get(1))
-                    .placeholder(R.mipmap.add_photos)
-                    .into(grow_up_content_img2);
         }
 
         private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -101,9 +125,35 @@ public class GrowUpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     ImageBrowseActivity.startActivity(mContext, pics, 0);
                 } else if (v == grow_up_content_img2) {
                     ImageBrowseActivity.startActivity(mContext, pics, 1);
+                } else if (v == grow_up_del_img) {
+                    delItem(mRecord);
+                    mData.remove(mRecord);
+                    notifyItemRemoved(getLayoutPosition());
                 }
             }
         };
 
+    }
+
+    private void delItem(final GrowUpRecord growUpRecord) {
+        GrowUpImpl.getInstance()
+                .delData(growUpRecord)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Action1<Boolean>() {
+                    @Override
+                    public void call(Boolean aBoolean) {
+                        if (aBoolean) {
+                            com.orhanobut.logger.Logger.i("del growuprecord success, "+ growUpRecord.toString());
+                        }else {
+                            com.orhanobut.logger.Logger.i("del growuprecord failed, "+ growUpRecord.toString());
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        com.orhanobut.logger.Logger.e(throwable.getMessage());
+                    }
+                });
     }
 }
