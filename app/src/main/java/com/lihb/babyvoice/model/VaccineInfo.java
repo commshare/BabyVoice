@@ -14,12 +14,12 @@ public class VaccineInfo {
     /**
      * 是否免费
      */
-    public boolean isFree;
+    public int isFree;
 
     /**
      * 是否已经注射
      */
-    public boolean isInjected;
+    public int isInjected;
 
     /**
      * 注射日期

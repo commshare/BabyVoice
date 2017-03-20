@@ -17,14 +17,14 @@ public interface IDBRxManager<T> {
      * @param t
      * @return
      */
-    Observable<Boolean> insertData(T t);
+    Observable<Boolean> insertData(final T t);
 
     /**
      * 批量插入数据
      * @param dataList
      * @return
      */
-    Observable<Void> batchInsertData(List<T> dataList);
+    Observable<Void> batchInsertData(final List<T> dataList);
 
     /**
      * 查询所有数据
@@ -37,21 +37,21 @@ public interface IDBRxManager<T> {
      * 查询一条数据
      * @return
      */
-    Observable<Boolean> queryData(T t);
+    Observable<Boolean> queryData(final T t);
 
     /**
      * 删除数据
      * @param t
      * @return
      */
-    Observable<Boolean> delData(T t);
+    Observable<Boolean> delData(final T t);
 
     /**
      * 更新数据
      * @param t
      * @return
      */
-    Observable<Boolean> updateData(T t);
+    Observable<Boolean> updateData(final T t);
 
 
 

@@ -51,6 +51,11 @@ public class VaccineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return mData == null ? 0 : mData.size();
     }
 
+    public void updateData(List<VaccineInfo> dataList) {
+        mData = dataList;
+        notifyDataSetChanged();
+    }
+
     public class VaccineViewHolder extends RecyclerView.ViewHolder {
 
         public TextView vaccine_name_txt;
@@ -76,7 +81,7 @@ public class VaccineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 return;
             }
             vaccine_name_txt.setText(vaccineInfo.vaccineName);
-            if (vaccineInfo.isInjected) {
+            if (vaccineInfo.isInjected == 1) {
                 vaccine_inject_img.setImageResource(R.mipmap.selected);
                 vaccine_inject_txt.setText(vaccineInfo.injectDate + mContext.getString(R.string.injected));
                 vaccine_inject_txt.setTextColor(ContextCompat.getColor(mContext, R.color.color_999999));

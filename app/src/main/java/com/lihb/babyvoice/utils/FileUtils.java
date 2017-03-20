@@ -5,6 +5,12 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.util.Log;
+
+import com.lihb.babyvoice.db.PregnantDataImpl;
+import com.lihb.babyvoice.db.VaccineDataImpl;
+import com.lihb.babyvoice.model.ProductionInspection;
+import com.lihb.babyvoice.model.VaccineInfo;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,6 +21,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 public class FileUtils {
     public static final int SIZETYPE_B = 1;//获取文件大小单位为B的double值
@@ -379,6 +391,115 @@ public class FileUtils {
             e.printStackTrace();
         }
         return "";
+    }
+
+    public static  List<ProductionInspection> getPregnantData(Context context) {
+        List<ProductionInspection> dataList = new ArrayList<>();
+        try {
+            InputStreamReader inputReader = new InputStreamReader(context.getResources().getAssets().open("pregnant.txt"));
+            BufferedReader bufReader = new BufferedReader(inputReader);
+            String line = "";
+            String[] array;
+            while ((line = bufReader.readLine()) != null) {
+                array = line.split(",");
+                ProductionInspection productionInspection = new ProductionInspection();
+                productionInspection.no = Integer.valueOf(array[0]);
+                productionInspection.event_id = Integer.valueOf(array[1]);
+                productionInspection.week = Integer.valueOf(array[2]);
+                productionInspection.event_name = array[3];
+                productionInspection.isDone = Integer.valueOf(array[4]);
+                dataList.add(productionInspection);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return dataList;
+    }
+
+    public static void insertPregnantData(List<ProductionInspection> dataList) {
+        PregnantDataImpl.getInstance()
+                .batchInsertData(dataList)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Action1<Void>() {
+                    @Override
+                    public void call(Void avoid) {
+                        CommonToast.showShortToast("插入成功！");
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        CommonToast.showShortToast("插入失败！" + throwable.getMessage());
+                        Log.e("插入失败！", throwable.getMessage());
+                    }
+                });
+    }
+
+    public static List<VaccineInfo> getVaccineData(Context context) {
+        List<VaccineInfo> dataList = new ArrayList<>();
+        try {
+            InputStreamReader inputReader = new InputStreamReader(context.getResources().getAssets().open("vaccine.txt"));
+            BufferedReader bufReader = new BufferedReader(inputReader);
+            String line = "";
+            String[] array;
+            while ((line = bufReader.readLine()) != null) {
+                array = line.split(",");
+                VaccineInfo vaccineInfo = new VaccineInfo();
+                vaccineInfo.vaccineName = array[0];
+                vaccineInfo.isFree = Integer.valueOf(array[1]);
+                vaccineInfo.isInjected = Integer.valueOf(array[2]);
+                vaccineInfo.ageToInject = Integer.valueOf(array[3]);
+                vaccineInfo.injectDate = array[4];
+                dataList.add(vaccineInfo);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return dataList;
+    }
+
+    public static void insertVaccineData(List<VaccineInfo> dataList) {
+        VaccineDataImpl.getInstance()
+                .batchInsertData(dataList)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Action1<Void>() {
+                    @Override
+                    public void call(Void avoid) {
+                        CommonToast.showShortToast("插入成功！");
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        CommonToast.showShortToast("插入失败！" + throwable.getMessage());
+                        Log.e("插入失败！", throwable.getMessage());
+                    }
+                });
+    }
+
+    public static void queryPregnantData() {
+        PregnantDataImpl.getInstance()
+                .queryAllData()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Action1<List<ProductionInspection>>() {
+                    @Override
+                    public void call(List<ProductionInspection> productionInspections) {
+                        CommonToast.showShortToast("查询成功！");
+                        for (ProductionInspection inspection : productionInspections) {
+                            Log.i("lihbtest", inspection.toString());
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        CommonToast.showShortToast("查询失败！" + throwable.getMessage());
+                    }
+                });
     }
 
 }

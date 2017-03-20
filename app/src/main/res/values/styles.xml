@@ -29,9 +29,6 @@
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
-    progress_horizontal.xml
-    progress_thumb_horizontal.xml
-
     <style name="PlayerProgressBar">
         <item name="android:progressDrawable">@drawable/udpate_progressbar</item>
         <item name="android:thumb">@drawable/seekbar_thumb</item>

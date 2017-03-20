@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -16,23 +15,14 @@ import com.lihb.babyvoice.command.BaseAndroidCommand;
 import com.lihb.babyvoice.command.NetStateChangedCommand;
 import com.lihb.babyvoice.command.PickedCategoryCommand;
 import com.lihb.babyvoice.customview.base.BaseFragmentActivity;
-import com.lihb.babyvoice.db.PregnantDataImpl;
-import com.lihb.babyvoice.model.ProductionInspection;
-import com.lihb.babyvoice.utils.CommonToast;
 import com.lihb.babyvoice.utils.NetworkHelper;
 import com.lihb.babyvoice.utils.RecorderHelper;
 import com.lihb.babyvoice.utils.RxBus;
 import com.orhanobut.logger.Logger;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.sharesdk.framework.ShareSDK;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 public class NewMainActivity extends BaseFragmentActivity {
 
@@ -68,7 +58,8 @@ public class NewMainActivity extends BaseFragmentActivity {
         checkNetStatus();
 //        addStatusBarView();
 
-//        insertData(getData());
+//        FileUtils.insertPregnantData(FileUtils.getPregnantData(this));
+//        FileUtils.insertVaccineData(FileUtils.getVaccineData(this));
 //        queryData();
 
     }
@@ -246,68 +237,5 @@ public class NewMainActivity extends BaseFragmentActivity {
         return context.getResources().getDimensionPixelSize(resourceId);
     }
 
-    private List<ProductionInspection> getData() {
-        List<ProductionInspection> dataList = new ArrayList<>();
-        try {
-            InputStreamReader inputReader = new InputStreamReader(getResources().getAssets().open("pregnant.txt"));
-            BufferedReader bufReader = new BufferedReader(inputReader);
-            String line = "";
-            String[] array;
-            while ((line = bufReader.readLine()) != null) {
-                array = line.split(",");
-                ProductionInspection productionInspection = new ProductionInspection();
-                productionInspection.no = Integer.valueOf(array[0]);
-                productionInspection.event_id = Integer.valueOf(array[1]);
-                productionInspection.week = Integer.valueOf(array[2]);
-                productionInspection.event_name = array[3];
-                productionInspection.isDone = Integer.valueOf(array[4]);
-                dataList.add(productionInspection);
-            }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return dataList;
-    }
-
-    private void insertData(List<ProductionInspection> dataList) {
-        PregnantDataImpl.getInstance()
-                .batchInsertData(dataList)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Action1<Void>() {
-                    @Override
-                    public void call(Void avoid) {
-                        CommonToast.showShortToast("插入成功！");
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        CommonToast.showShortToast("插入失败！" + throwable.getMessage());
-                        Log.e("插入失败！", throwable.getMessage());
-                    }
-                });
-    }
-
-    private void queryData() {
-        PregnantDataImpl.getInstance()
-                .queryAllData()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Action1<List<ProductionInspection>>() {
-                    @Override
-                    public void call(List<ProductionInspection> productionInspections) {
-                        CommonToast.showShortToast("查询成功！");
-                        for (ProductionInspection inspection : productionInspections) {
-                            Log.i("lihbtest", inspection.toString());
-                        }
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        CommonToast.showShortToast("查询失败！" + throwable.getMessage());
-                    }
-                });
-    }
 }

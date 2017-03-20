@@ -10,19 +10,15 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.lihb.babyvoice.R;
-import com.lihb.babyvoice.action.ApiManager;
-import com.lihb.babyvoice.action.ServiceGenerator;
 import com.lihb.babyvoice.adapter.VaccineAdapter;
 import com.lihb.babyvoice.customview.RefreshLayout;
 import com.lihb.babyvoice.customview.StickyDecoration;
 import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragment;
 import com.lihb.babyvoice.customview.base.BaseRecyclerView;
-import com.lihb.babyvoice.model.HttpResList;
-import com.lihb.babyvoice.model.HttpResponse;
+import com.lihb.babyvoice.db.VaccineDataImpl;
 import com.lihb.babyvoice.model.VaccineInfo;
 import com.lihb.babyvoice.utils.CommonToast;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,7 +85,19 @@ public class VaccineFragment extends BaseFragment {
                 if (mData.size() == 0) {
                     return "";
                 }
-                return String.valueOf(mData.get(position).ageToInject);
+                int ageToInject = (mData.get(position).ageToInject);
+                if (ageToInject == 0) {
+                    return "24小时内";
+                } else if (ageToInject >= 12) {
+                    if (ageToInject % 12 == 0) {
+                        return ageToInject / 12 + "岁";
+                    }else {
+                        float xx = ageToInject / 12.0f;
+                        return xx + "岁";
+                    }
+
+                }
+                return mData.get(position).ageToInject+"个月";
             }
         });
         mRecyclerView.addItemDecoration(decoration);
@@ -105,18 +113,18 @@ public class VaccineFragment extends BaseFragment {
                 getData(true);
             }
         });
-        mRefreshLayout.registerLoadMoreListenerForChildView(mRecyclerView, new RefreshLayout.OnLoadListener() {
-            @Override
-            public void onLoad() {
-                if (hasMoreData) {
-                    getData(false);
-                    return;
-                } else {
-                    CommonToast.showShortToast("加载完毕");
-                }
-                mRefreshLayout.setLoading(false);
-            }
-        });
+//        mRefreshLayout.registerLoadMoreListenerForChildView(mRecyclerView, new RefreshLayout.OnLoadListener() {
+//            @Override
+//            public void onLoad() {
+//                if (hasMoreData) {
+//                    getData(false);
+//                    return;
+//                } else {
+//                    CommonToast.showShortToast("加载完毕");
+//                }
+//                mRefreshLayout.setLoading(false);
+//            }
+//        });
         getData(true);
 
     }
@@ -141,49 +149,71 @@ public class VaccineFragment extends BaseFragment {
     }
 
 
-    private void getData(final boolean refresh) {
-        int start = 0;
-        if (refresh) {
-            start = 0;
-        } else {
-            start = mData.size();
-        }
-        ServiceGenerator.createService(ApiManager.class)
-                .getVaccineInfo(start, COUNT)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<HttpResponse<HttpResList<VaccineInfo>>>() {
-                    @Override
-                    public void call(HttpResponse<HttpResList<VaccineInfo>> httpResListHttpResponse) {
-                        if (httpResListHttpResponse.code == 200) {
-                            HttpResList<VaccineInfo> httpResList = httpResListHttpResponse.data;
-                            if (refresh) {
-                                mData.clear();
-                            }
-                            hasMoreData = mData.size() < httpResList.total;
-                            List<VaccineInfo> list = httpResList.dataList;
+//    private void getData(final boolean refresh) {
+//        int start = 0;
+//        if (refresh) {
+//            start = 0;
+//        } else {
+//            start = mData.size();
+//        }
+//        ServiceGenerator.createService(ApiManager.class)
+//                .getVaccineInfo(start, COUNT)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Action1<HttpResponse<HttpResList<VaccineInfo>>>() {
+//                    @Override
+//                    public void call(HttpResponse<HttpResList<VaccineInfo>> httpResListHttpResponse) {
+//                        if (httpResListHttpResponse.code == 200) {
+//                            HttpResList<VaccineInfo> httpResList = httpResListHttpResponse.data;
+//                            if (refresh) {
+//                                mData.clear();
+//                            }
+//                            hasMoreData = mData.size() < httpResList.total;
+//                            List<VaccineInfo> list = httpResList.dataList;
+//
+//                            mData.addAll(list);
+//                            mVaccineAdapter.notifyDataSetChanged();
+//                            onLoadedData(refresh);
+//                        }
+//                    }
+//                }, new Action1<Throwable>() {
+//                    @Override
+//                    public void call(Throwable throwable) {
+//                        CommonToast.showShortToast("获取数据失败");
+//                        Logger.e(throwable.toString());
+//                        onLoadedData(refresh);
+//                    }
+//                });
+//
+//    }
+//
+//    private void onLoadedData(final boolean refresh) {
+//        if (refresh) {
+//            mRefreshLayout.setRefreshing(false);
+//        } else {
+//            mRefreshLayout.setLoading(false);
+//        }
+//    }
 
-                            mData.addAll(list);
-                            mVaccineAdapter.notifyDataSetChanged();
-                            onLoadedData(refresh);
-                        }
+    private void getData(boolean refresh) {
+        VaccineDataImpl.getInstance()
+                .queryAllData()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Action1<List<VaccineInfo>>() {
+                    @Override
+                    public void call(List<VaccineInfo> vaccineInfos) {
+                        CommonToast.showShortToast("查询成功！");
+                        mData = vaccineInfos;
+                        mVaccineAdapter.updateData(mData);
+                        mRefreshLayout.setRefreshing(false);
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        CommonToast.showShortToast("获取数据失败");
-                        Logger.e(throwable.toString());
-                        onLoadedData(refresh);
+                        CommonToast.showShortToast("查询失败！" + throwable.getMessage());
+                        mRefreshLayout.setRefreshing(false);
                     }
                 });
-
-    }
-
-    private void onLoadedData(final boolean refresh) {
-        if (refresh) {
-            mRefreshLayout.setRefreshing(false);
-        } else {
-            mRefreshLayout.setLoading(false);
-        }
     }
 }
