@@ -113,7 +113,7 @@ public class GrowUpImpl implements IDBRxManager<GrowUpRecord> {
                 Cursor cursor = db.rawQuery("select * from " + DBHelper.GROW_UP_ENTRY.TABLE_NAME + " where "
                         + DBHelper.GROW_UP_ENTRY.COLUMN_DATE + " = ? and "
                         + DBHelper.GROW_UP_ENTRY.COLUMN_CONTENT + " = ? ",
-                        new String[]{growUpRecord.no + "", growUpRecord.content});
+                        new String[]{growUpRecord.date + "", growUpRecord.content});
                 if (cursor != null && cursor.getCount() > 0) {
                     subscriber.onNext(true);
                 } else {

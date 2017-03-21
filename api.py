@@ -1,10 +1,10 @@
 #!flask/bin/python
 # -*- coding: utf-8 -*-  
+import os
+import random
+import time
 from flask import Flask, jsonify, abort, make_response,request, send_from_directory
-import os, time, random
-from werkzeug import secure_filename
 from pydub import AudioSegment
-
 
 app = Flask(__name__)
 
@@ -405,6 +405,20 @@ dirpath=os.path.join(basedir,'upload_folder')
 @app.route("/download/<path:filename>")
 def downloader(filename):
     return send_from_directory(dirpath,filename,as_attachment=True)
+
+growup_records=[]
+#创建成长记录
+@app.route("/growup/create", methods=['POST'])
+def create_growup_record():
+    if not request.json or not 'date' in request.json:
+        abort(400)
+    record = {
+        'date': request.json.get('date', ""),
+        'content': request.json.get('content', ""),
+        'description': request.json.get('description', ""),
+    }
+    growup_records.append(record)
+    return jsonify({'record': record}), 201
 
 
 

@@ -8,8 +8,6 @@ import java.util.List;
 
 public class GrowUpRecord {
 
-    public int no;
-
     public String date;
 
     public String content;
@@ -29,7 +27,6 @@ public class GrowUpRecord {
     @Override
     public String toString() {
         return "GrowUpRecord{" +
-                "no=" + no +
                 ", date='" + date + '\'' +
                 ", content='" + content + '\'' +
                 ", picList=" + picList +

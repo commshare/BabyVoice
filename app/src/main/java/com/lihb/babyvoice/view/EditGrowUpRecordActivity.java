@@ -75,7 +75,10 @@ public class EditGrowUpRecordActivity extends BaseFragmentActivity {
                 growUpRecord.picList = new ArrayList<String>();
                 growUpRecord.picList.add(mPic1);
                 growUpRecord.picList.add(mPic2);
+                // 保存到数据库
                 insertItem(growUpRecord);
+                // 保存到服务器
+
                 finish();
             }
         });
