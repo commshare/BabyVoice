@@ -5,12 +5,12 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
-import android.util.Log;
 
-import com.lihb.babyvoice.db.PregnantDataImpl;
-import com.lihb.babyvoice.db.VaccineDataImpl;
+import com.lihb.babyvoice.db.impl.PregnantDataImpl;
+import com.lihb.babyvoice.db.impl.VaccineDataImpl;
 import com.lihb.babyvoice.model.ProductionInspection;
 import com.lihb.babyvoice.model.VaccineInfo;
+import com.orhanobut.logger.Logger;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -44,7 +44,7 @@ public class FileUtils {
     public static String getHeadShotPath() {
         return Environment.getExternalStorageState().equals(
                 Environment.MEDIA_MOUNTED) ? Environment
-                .getExternalStorageDirectory().getPath() + "/WeWatch/headshot/" : null;
+                .getExternalStorageDirectory().getPath() + "/BabyVoice/headshot/" : null;
     }
 
     /**
@@ -426,13 +426,33 @@ public class FileUtils {
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void avoid) {
-                        CommonToast.showShortToast("插入成功！");
+                        Logger.i("insert PregnantData success.");
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        CommonToast.showShortToast("插入失败！" + throwable.getMessage());
-                        Log.e("插入失败！", throwable.getMessage());
+                        Logger.e("insert PregnantData failed.", throwable.getMessage());
+                    }
+                });
+    }
+
+    public static void queryPregnantData() {
+        PregnantDataImpl.getInstance()
+                .queryAllData()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Action1<List<ProductionInspection>>() {
+                    @Override
+                    public void call(List<ProductionInspection> productionInspections) {
+                        Logger.i("query PregnantData success.");
+                        for (ProductionInspection inspection : productionInspections) {
+                            Logger.i(inspection.toString());
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        CommonToast.showShortToast("query PregnantData failed." + throwable.getMessage());
                     }
                 });
     }
@@ -470,34 +490,12 @@ public class FileUtils {
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void avoid) {
-                        CommonToast.showShortToast("插入成功！");
+                        Logger.i("insert vaccineData success.");
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        CommonToast.showShortToast("插入失败！" + throwable.getMessage());
-                        Log.e("插入失败！", throwable.getMessage());
-                    }
-                });
-    }
-
-    public static void queryPregnantData() {
-        PregnantDataImpl.getInstance()
-                .queryAllData()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Action1<List<ProductionInspection>>() {
-                    @Override
-                    public void call(List<ProductionInspection> productionInspections) {
-                        CommonToast.showShortToast("查询成功！");
-                        for (ProductionInspection inspection : productionInspections) {
-                            Log.i("lihbtest", inspection.toString());
-                        }
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        CommonToast.showShortToast("查询失败！" + throwable.getMessage());
+                        Logger.e("insert vaccineData failed. " + throwable.getMessage());
                     }
                 });
     }

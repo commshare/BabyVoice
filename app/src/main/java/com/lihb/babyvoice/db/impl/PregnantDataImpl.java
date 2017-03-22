@@ -1,11 +1,12 @@
-package com.lihb.babyvoice.db;
+package com.lihb.babyvoice.db.impl;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.lihb.babyvoice.BabyVoiceApp;
+import com.lihb.babyvoice.db.DBHelper;
+import com.lihb.babyvoice.db.IDBRxManager;
 import com.lihb.babyvoice.model.ProductionInspection;
 import com.orhanobut.logger.Logger;
 
@@ -48,9 +49,9 @@ public class PregnantDataImpl implements IDBRxManager<ProductionInspection> {
                 SQLiteDatabase db = dbHelper.getWritableDatabase();
                 if (db.insert(DBHelper.PREGNANT_EXAM_ENTRY.TABLE_NAME, null, values) != -1) {
                     subscriber.onNext(true);
-                    Logger.e("插入孕检数据成功");
+                    Logger.i("insert pregnant data success!");
                 }else {
-                    Logger.e("插入孕检数据失败");
+                    Logger.e("insert pregnant data failed!");
                     subscriber.onNext(false);
                 }
                 subscriber.onCompleted();
@@ -72,7 +73,7 @@ public class PregnantDataImpl implements IDBRxManager<ProductionInspection> {
                     values.put(DBHelper.PREGNANT_EXAM_ENTRY.COLUMN_EVENT_IS_DONE, productionInspection.isDone);
                     values.put(DBHelper.PREGNANT_EXAM_ENTRY.COLUMN_WEEK, productionInspection.week);
                     if (db.insert(DBHelper.PREGNANT_EXAM_ENTRY.TABLE_NAME, null, values) == -1) {
-                        Log.e("PregnantDataImpl", productionInspection.toString()+"插入失败");
+                        Logger.e("PregnantDataImpl", productionInspection.toString() + " insert failed");
                     }
                 }
                 subscriber.onNext(null);

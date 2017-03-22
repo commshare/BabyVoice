@@ -15,7 +15,7 @@ import com.lihb.babyvoice.adapter.PregnantExamineAdapter;
 import com.lihb.babyvoice.customview.RefreshLayout;
 import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragment;
-import com.lihb.babyvoice.db.PregnantDataImpl;
+import com.lihb.babyvoice.db.impl.PregnantDataImpl;
 import com.lihb.babyvoice.model.ProductionInspection;
 import com.lihb.babyvoice.utils.CommonToast;
 

@@ -84,6 +84,7 @@
             android:src="@mipmap/add_photos"
             android:scaleType="fitXY"
             android:layout_marginLeft="13dp"
+            android:layout_marginBottom="16dp"
             />
         <ImageView
             android:id="@+id/grow_up_content_img2"

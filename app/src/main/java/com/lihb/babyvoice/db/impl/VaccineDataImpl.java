@@ -1,4 +1,4 @@
-package com.lihb.babyvoice.db;
+package com.lihb.babyvoice.db.impl;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.lihb.babyvoice.BabyVoiceApp;
+import com.lihb.babyvoice.db.DBHelper;
+import com.lihb.babyvoice.db.IDBRxManager;
 import com.lihb.babyvoice.model.VaccineInfo;
 import com.orhanobut.logger.Logger;
 
@@ -53,9 +55,9 @@ public class VaccineDataImpl implements IDBRxManager<VaccineInfo> {
                                     SQLiteDatabase db = dbHelper.getWritableDatabase();
                                     if (db.insert(DBHelper.VACCINE_ENTRY.TABLE_NAME, null, values) != -1) {
                                         subscriber.onNext(true);
-                                        Logger.e("插入疫苗数据成功");
+                                        Logger.i("insert  data success!");
                                     } else {
-                                        Logger.e("插入疫苗数据失败");
+                                        Logger.e("insert  data failed!");
                                         subscriber.onNext(false);
                                     }
                                     subscriber.onCompleted();

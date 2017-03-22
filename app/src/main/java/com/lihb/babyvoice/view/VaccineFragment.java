@@ -16,7 +16,7 @@ import com.lihb.babyvoice.customview.StickyDecoration;
 import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragment;
 import com.lihb.babyvoice.customview.base.BaseRecyclerView;
-import com.lihb.babyvoice.db.VaccineDataImpl;
+import com.lihb.babyvoice.db.impl.VaccineDataImpl;
 import com.lihb.babyvoice.model.VaccineInfo;
 import com.lihb.babyvoice.utils.CommonToast;
 

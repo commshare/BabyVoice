@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragment;
-import com.lihb.babyvoice.db.HealthDataImpl;
+import com.lihb.babyvoice.db.impl.HealthDataImpl;
 import com.lihb.babyvoice.model.HealthQuota;
 import com.lihb.babyvoice.utils.CommonToast;
 import com.lihb.babyvoice.utils.StringUtils;

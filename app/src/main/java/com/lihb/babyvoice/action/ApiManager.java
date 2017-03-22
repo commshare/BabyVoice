@@ -2,6 +2,7 @@ package com.lihb.babyvoice.action;
 
 import com.lihb.babyvoice.model.BabyVoice;
 import com.lihb.babyvoice.model.Contributor;
+import com.lihb.babyvoice.model.GrowUpRecord;
 import com.lihb.babyvoice.model.HttpResList;
 import com.lihb.babyvoice.model.HttpResponse;
 import com.lihb.babyvoice.model.ProductionInspection;
@@ -76,6 +77,12 @@ public interface ApiManager {
     Observable<HttpResponse<HttpResList<ProductionInspection>>> getProductionInfo(
             @Query("start") int start,
             @Query("end") int end);
+
+    /**
+     * 上传成长记录数据
+     */
+    @POST("/growup/create")
+    Observable<HttpResponse<GrowUpRecord>> createGrowupRecord(@Body GrowUpRecord record);
 }
 
 

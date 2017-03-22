@@ -21,6 +21,7 @@ import com.lihb.babyvoice.command.PickedCategoryCommand;
 import com.lihb.babyvoice.customview.PickRecordDialog;
 import com.lihb.babyvoice.customview.RefreshLayout;
 import com.lihb.babyvoice.customview.RemovedRecyclerView;
+import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragment;
 import com.lihb.babyvoice.model.BabyVoice;
 import com.lihb.babyvoice.model.HttpResList;
@@ -145,13 +146,13 @@ public class HeartFragment extends BaseFragment {
                 showPickCategoryDialog();
             }
         });
-//        ((TitleBar) getView().findViewById(R.id.title_bar)).setLeftText("分享测试");
-//        ((TitleBar) getView().findViewById(R.id.title_bar)).setLeftOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showShare();
-//            }
-//        });
+        ((TitleBar) getView().findViewById(R.id.title_bar)).setLeftText("分享测试");
+        ((TitleBar) getView().findViewById(R.id.title_bar)).setLeftOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showShare();
+            }
+        });
         getData(true);
     }
 

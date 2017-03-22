@@ -18,7 +18,7 @@ import com.lihb.babyvoice.customview.RefreshLayout;
 import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragment;
 import com.lihb.babyvoice.customview.base.BaseRecyclerView;
-import com.lihb.babyvoice.db.GrowUpImpl;
+import com.lihb.babyvoice.db.impl.GrowUpImpl;
 import com.lihb.babyvoice.model.GrowUpRecord;
 import com.lihb.babyvoice.utils.CommonToast;
 import com.orhanobut.logger.Logger;

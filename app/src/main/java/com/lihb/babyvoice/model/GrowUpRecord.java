@@ -27,7 +27,7 @@ public class GrowUpRecord {
     @Override
     public String toString() {
         return "GrowUpRecord{" +
-                ", date='" + date + '\'' +
+                "date='" + date + '\'' +
                 ", content='" + content + '\'' +
                 ", picList=" + picList +
                 '}';

@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.lihb.babyvoice.BabyVoiceApp;
 import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.command.BaseAndroidCommand;
 import com.lihb.babyvoice.command.NetStateChangedCommand;
@@ -58,9 +59,11 @@ public class NewMainActivity extends BaseFragmentActivity {
         initViews();
         checkNetStatus();
 //        addStatusBarView();
-
-        FileUtils.insertPregnantData(FileUtils.getPregnantData(this));
-        FileUtils.insertVaccineData(FileUtils.getVaccineData(this));
+        if (BabyVoiceApp.getInstance().isFirstLaunch()) {
+            FileUtils.insertPregnantData(FileUtils.getPregnantData(this));
+            FileUtils.insertVaccineData(FileUtils.getVaccineData(this));
+        }
+        BabyVoiceApp.getInstance().setFirstLaunch(false);
 //        queryData();
 
     }

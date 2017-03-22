@@ -1,10 +1,12 @@
-package com.lihb.babyvoice.db;
+package com.lihb.babyvoice.db.impl;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.lihb.babyvoice.BabyVoiceApp;
+import com.lihb.babyvoice.db.DBHelper;
+import com.lihb.babyvoice.db.IDBRxManager;
 import com.lihb.babyvoice.model.GrowUpRecord;
 import com.orhanobut.logger.Logger;
 
@@ -32,6 +34,7 @@ public class GrowUpImpl implements IDBRxManager<GrowUpRecord> {
     public static GrowUpImpl getInstance() {
         return instance;
     }
+
     @Override
     public Observable<Boolean> insertData(final GrowUpRecord growUpRecord) {
         return Observable.create(new Observable.OnSubscribe<Boolean>() {
@@ -43,7 +46,6 @@ public class GrowUpImpl implements IDBRxManager<GrowUpRecord> {
                             public void call(Boolean aBoolean) {
                                 if (!aBoolean) {
                                     ContentValues values = new ContentValues();
-//                                    values.put(DBHelper.GROW_UP_ENTRY.COLUMN_NO, growUpRecord.no);
                                     values.put(DBHelper.GROW_UP_ENTRY.COLUMN_CONTENT, growUpRecord.content);
                                     values.put(DBHelper.GROW_UP_ENTRY.COLUMN_DATE, growUpRecord.date);
                                     values.put(DBHelper.GROW_UP_ENTRY.COLUMN_PIC_FIRST, growUpRecord.picList.get(0));
@@ -51,13 +53,13 @@ public class GrowUpImpl implements IDBRxManager<GrowUpRecord> {
                                     SQLiteDatabase db = dbHelper.getWritableDatabase();
                                     if (db.insert(DBHelper.GROW_UP_ENTRY.TABLE_NAME, null, values) != -1) {
                                         subscriber.onNext(true);
-                                        Logger.e("插入成长记录数据成功");
+                                        Logger.i("insert growup record success!");
                                     } else {
-                                        Logger.e("插入成长记录数据失败");
+                                        Logger.e("insert growup record failed!");
                                         subscriber.onNext(false);
                                     }
                                     subscriber.onCompleted();
-                                }     
+                                }
                             }
                         });
             }
@@ -111,8 +113,8 @@ public class GrowUpImpl implements IDBRxManager<GrowUpRecord> {
             public void call(Subscriber<? super Boolean> subscriber) {
                 SQLiteDatabase db = dbHelper.getReadableDatabase();
                 Cursor cursor = db.rawQuery("select * from " + DBHelper.GROW_UP_ENTRY.TABLE_NAME + " where "
-                        + DBHelper.GROW_UP_ENTRY.COLUMN_DATE + " = ? and "
-                        + DBHelper.GROW_UP_ENTRY.COLUMN_CONTENT + " = ? ",
+                                + DBHelper.GROW_UP_ENTRY.COLUMN_DATE + " = ? and "
+                                + DBHelper.GROW_UP_ENTRY.COLUMN_CONTENT + " = ? ",
                         new String[]{growUpRecord.date + "", growUpRecord.content});
                 if (cursor != null && cursor.getCount() > 0) {
                     subscriber.onNext(true);
@@ -132,11 +134,11 @@ public class GrowUpImpl implements IDBRxManager<GrowUpRecord> {
                 SQLiteDatabase db = dbHelper.getWritableDatabase();
                 int result = db.delete(DBHelper.GROW_UP_ENTRY.TABLE_NAME,
                         DBHelper.GROW_UP_ENTRY.COLUMN_DATE + " = ? and "
-                        +DBHelper.GROW_UP_ENTRY.COLUMN_CONTENT + " = ? ",
+                                + DBHelper.GROW_UP_ENTRY.COLUMN_CONTENT + " = ? ",
                         new String[]{growUpRecord.date, growUpRecord.content});
                 if (result != 0) {
                     subscriber.onNext(true);
-                }else {
+                } else {
                     subscriber.onNext(false);
                 }
                 subscriber.onCompleted();

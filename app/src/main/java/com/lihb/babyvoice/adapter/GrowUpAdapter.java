@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.lihb.babyvoice.R;
-import com.lihb.babyvoice.db.GrowUpImpl;
+import com.lihb.babyvoice.db.impl.GrowUpImpl;
 import com.lihb.babyvoice.model.GrowUpRecord;
 import com.lihb.babyvoice.view.ImageBrowseActivity;
 

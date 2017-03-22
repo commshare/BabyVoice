@@ -1,10 +1,12 @@
-package com.lihb.babyvoice.db;
+package com.lihb.babyvoice.db.impl;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.lihb.babyvoice.BabyVoiceApp;
+import com.lihb.babyvoice.db.DBHelper;
+import com.lihb.babyvoice.db.IDBRxManager;
 import com.lihb.babyvoice.model.HealthQuota;
 import com.orhanobut.logger.Logger;
 
@@ -49,9 +51,9 @@ public class HealthDataImpl implements IDBRxManager<HealthQuota> {
                 SQLiteDatabase db = dbHelper.getWritableDatabase();
                 if (db.insert(DBHelper.HEALTH_PROTECT_ENTRY.TABLE_NAME, null, values) != -1) {
                     subscriber.onNext(true);
-                    Logger.i("插入儿保数据成功");
+                    Logger.i("insert health data success!");
                 }else {
-                    Logger.i("插入儿保数据失败");
+                    Logger.e("insert health data failed!");
                     subscriber.onNext(false);
                 }
                 subscriber.onCompleted();

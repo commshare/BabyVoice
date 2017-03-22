@@ -12,10 +12,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lihb.babyvoice.R;
+import com.lihb.babyvoice.action.ApiManager;
+import com.lihb.babyvoice.action.ServiceGenerator;
 import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragmentActivity;
-import com.lihb.babyvoice.db.GrowUpImpl;
+import com.lihb.babyvoice.db.impl.GrowUpImpl;
 import com.lihb.babyvoice.model.GrowUpRecord;
+import com.lihb.babyvoice.model.HttpResponse;
 import com.lihb.babyvoice.utils.CommonToast;
 import com.lihb.babyvoice.utils.NotificationCenter;
 import com.lihb.babyvoice.utils.UserProfileChangedNotification;
@@ -78,7 +81,7 @@ public class EditGrowUpRecordActivity extends BaseFragmentActivity {
                 // 保存到数据库
                 insertItem(growUpRecord);
                 // 保存到服务器
-
+                uploadToServer(growUpRecord);
                 finish();
             }
         });
@@ -99,6 +102,33 @@ public class EditGrowUpRecordActivity extends BaseFragmentActivity {
         mDelImg1.setOnClickListener(mOnClickListener);
         mDelImg2.setOnClickListener(mOnClickListener);
 
+    }
+
+    /**
+     * 保存到服务器
+     *
+     * @param growUpRecord
+     */
+    private void uploadToServer(final GrowUpRecord growUpRecord) {
+        ServiceGenerator.createService(ApiManager.class)
+                .createGrowupRecord(growUpRecord)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Action1<HttpResponse<GrowUpRecord>>() {
+                    @Override
+                    public void call(HttpResponse<GrowUpRecord> growUpRecordHttpResponse) {
+                        Logger.i(growUpRecordHttpResponse.toString());
+                        if (growUpRecordHttpResponse.code == 200) {
+//                            GrowUpRecord record = growUpRecordHttpResponse.data;
+                            Logger.i("success");
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Logger.e("error-->" + throwable.toString());
+                    }
+                });
     }
 
     private int index=1;

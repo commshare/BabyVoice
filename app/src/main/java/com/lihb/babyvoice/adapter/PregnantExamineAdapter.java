@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.customview.DividerLine;
-import com.lihb.babyvoice.db.PregnantDataImpl;
+import com.lihb.babyvoice.db.impl.PregnantDataImpl;
 import com.lihb.babyvoice.model.ProductionInspection;
 import com.lihb.babyvoice.utils.CommonToast;
 

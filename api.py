@@ -410,15 +410,21 @@ growup_records=[]
 #创建成长记录
 @app.route("/growup/create", methods=['POST'])
 def create_growup_record():
+    print request.json
     if not request.json or not 'date' in request.json:
         abort(400)
     record = {
         'date': request.json.get('date', ""),
         'content': request.json.get('content', ""),
-        'description': request.json.get('description', ""),
+        'picList': request.json.get('picList', ""),
     }
     growup_records.append(record)
-    return jsonify({'record': record}), 201
+    response = {
+        'code': 200,
+        'msg': 'success!',
+        'data': record
+    }
+    return jsonify(response), 201
 
 
 
