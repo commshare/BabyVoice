@@ -1,7 +1,10 @@
 #!flask/bin/python
 # -*- coding: utf-8 -*-  
+import fcntl
 import os
 import random
+import socket
+import struct
 import time
 from flask import Flask, jsonify, abort, make_response,request, send_from_directory
 from pydub import AudioSegment
@@ -58,6 +61,15 @@ ALLOWED_EXTENSIONS = set(['txt','mp3','amr','3gp','jpg','PNG','xlsx','gif','GIF'
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.',1)[1] in ALLOWED_EXTENSIONS
 
+
+# 得到ip地址
+def get_ip_address(ifname):
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    return socket.inet_ntoa(fcntl.ioctl(
+        s.fileno(),
+        0x8915,  # SIOCGIFADDR
+        struct.pack('256s', ifname[:15])
+    )[20:24])
 
 # 上传文件接口
 @app.route('/uploadfiles', methods=['POST'])
@@ -121,7 +133,8 @@ def getVoiceRecord():
                 'name':f,
                 'date':TimeStampToTime(os.path.getctime(tmpfile)),
                 'duration':int(len(sound)/1000.0),
-                'category':random.choice(p) # random select a element from p.
+                'category': random.choice(p),  # random select a element from p.
+                'url': get_ip_address('eth0') + ':5000/download/' + f
             }
         babyRecords.append(record)
         start = start + 1
