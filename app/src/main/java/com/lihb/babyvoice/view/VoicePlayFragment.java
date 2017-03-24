@@ -3,6 +3,7 @@ package com.lihb.babyvoice.view;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
@@ -22,6 +23,8 @@ import com.lihb.babyvoice.customview.base.BaseFragment;
 import com.lihb.babyvoice.model.BabyVoice;
 import com.lihb.babyvoice.utils.CommonToast;
 import com.lihb.babyvoice.utils.StringUtils;
+
+import java.io.File;
 
 /**
  * Created by lihb on 2017/3/12.
@@ -166,7 +169,8 @@ public class VoicePlayFragment extends BaseFragment {
             if (null == mediaPlayer) { //开始播放
                 String url;
                 if (null != babyVoice) {
-                    url = babyVoice.url;
+                    url = getFilename();
+//                    url = babyVoice.url;
                 } else {
                     throw new Exception("no play file find.");
                 }
@@ -203,6 +207,18 @@ public class VoicePlayFragment extends BaseFragment {
             CommonToast.showShortToast("播放文件失败。");
         }
     }
+
+    private String getFilename() {
+        String filepath = Environment.getExternalStorageDirectory().getAbsolutePath();
+        File file = new File(filepath, "AudioRecorder");
+
+        if (file.exists()) {
+            file.delete();
+        }
+
+        return (file.getAbsolutePath() + "/speaker.wav");
+    }
+
 
 
     @Override

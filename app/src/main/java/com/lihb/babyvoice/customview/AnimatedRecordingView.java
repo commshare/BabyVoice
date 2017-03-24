@@ -112,7 +112,7 @@ public class AnimatedRecordingView extends BaseSurfaceView {
             volume = 30;
         }
 
-        Log.i("lihbtest", "onRender: volume = " + volume);
+//        Log.i("lihbtest", "onRender: volume = " + volume);
         if (volume >= mHeight / 2) {
             volume = mHeight / 2 - 10;
         }

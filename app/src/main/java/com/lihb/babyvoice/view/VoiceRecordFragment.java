@@ -14,7 +14,7 @@ import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.customview.AnimatedRecordingView;
 import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragment;
-import com.lihb.babyvoice.utils.FileUtils;
+import com.lihb.babyvoice.utils.AudioRecordHelper;
 import com.lihb.babyvoice.utils.RecorderHelper;
 import com.lihb.babyvoice.utils.StringUtils;
 import com.orhanobut.logger.Logger;
@@ -55,12 +55,14 @@ public class VoiceRecordFragment extends BaseFragment {
     }
 
     private void initRecordHelper() {
-        String[] items = getResources().getStringArray(R.array.voice_type);
-
-        mFileName = items[mRecordType] + System.currentTimeMillis() + ".amr";
-
-        RecorderHelper.getInstance().setPath(FileUtils.getAMRFilePath(mFileName));
-        RecorderHelper.getInstance().setRecorderListener(mOnRecorderListener);
+//        String[] items = getResources().getStringArray(R.array.voice_type);
+//
+//        mFileName = items[mRecordType] + System.currentTimeMillis() + ".amr";
+//
+//        RecorderHelper.getInstance().setPath(FileUtils.getAMRFilePath(mFileName));
+//        RecorderHelper.getInstance().setRecorderListener(mOnRecorderListener);
+        AudioRecordHelper.getInstance().init();
+        AudioRecordHelper.getInstance().setRecorderListener(mOnRecorderListener);
     }
 
     @Override
@@ -96,7 +98,22 @@ public class VoiceRecordFragment extends BaseFragment {
                 String text = recordText.getText().toString().trim();
                 if (StringUtils.areEqual(text, "开始")) {
                     recordText.setText("完成");
-                    RecorderHelper.getInstance().startRecord();
+//                    RecorderHelper.getInstance().startRecord();
+                    AudioRecordHelper.getInstance()
+                            .startRecord();
+//                            .observeOn(AndroidSchedulers.mainThread())
+//                            .subscribeOn(AndroidSchedulers.mainThread())
+//                            .subscribe(new Action1<Void>() {
+//                                @Override
+//                                public void call(Void aVoid) {
+//                                    Logger.i("11111111111");
+//                                }
+//                            }, new Action1<Throwable>() {
+//                                @Override
+//                                public void call(Throwable throwable) {
+//                                    Logger.e("11111111111---%s", throwable.toString());
+//                                }
+//                            });
                 } else {
 //                    RecorderHelper.getInstance().cancel();
                     mAnimatedRecordingView.stop();
