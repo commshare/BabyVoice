@@ -1,8 +1,18 @@
 package com.lihb.babyvoice.view;
 
+import android.graphics.PixelFormat;
+import android.media.AudioFormat;
+import android.media.AudioManager;
+import android.media.AudioRecord;
+import android.media.AudioTrack;
+import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,60 +20,67 @@ import android.widget.Chronometer;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.cokus.wavelibrary.draw.WaveCanvas;
+import com.cokus.wavelibrary.view.WaveSurfaceView;
 import com.lihb.babyvoice.R;
-import com.lihb.babyvoice.customview.AnimatedRecordingView;
 import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragment;
-import com.lihb.babyvoice.utils.AudioRecordHelper;
-import com.lihb.babyvoice.utils.RecorderHelper;
-import com.lihb.babyvoice.utils.StringUtils;
+import com.lihb.babyvoice.utils.FileUtils;
 import com.orhanobut.logger.Logger;
 
 /**
  * Created by lhb on 2017/2/10.
  */
-public class VoiceRecordFragment extends BaseFragment {
+public class VoiceRecordFragmentV2 extends BaseFragment {
 
     private TextView recordText;
     private Chronometer mChronometer;
     private TitleBar mTitleBar;
-    private String mFileName;
+    private String mFileName ="test";
     private int mRecordType;
-    private AnimatedRecordingView mAnimatedRecordingView;
-//    private RecordingView mRecordingView;
+    private WaveSurfaceView mWaveSfv;
+    private WaveCanvas waveCanvas;
+    public static final String DATA_DIRECTORY = Environment
+            .getExternalStorageDirectory() + "/babyVoiceRecord/";
 
-    public static VoiceRecordFragment create() {
-        return new VoiceRecordFragment();
+    private static final int FREQUENCY = 16000;// 设置音频采样率，44100是目前的标准，但是某些设备仍然支持22050，16000，11025
+    private static final int CHANNELCONGIFIGURATION = AudioFormat.CHANNEL_IN_MONO;// 设置单声道声道
+    private static final int AUDIOENCODING = AudioFormat.ENCODING_PCM_16BIT;// 音频数据格式：每个样本16位
+    public final static int AUDIO_SOURCE = MediaRecorder.AudioSource.MIC;// 音频获取源
+    private int recBufSize;// 录音最小buffer大小
+    private AudioRecord audioRecord;
+    private AudioTrack audioTrack;
+
+
+
+    public static VoiceRecordFragmentV2 create() {
+        return new VoiceRecordFragmentV2();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         Bundle bundle = getArguments();
         if (bundle != null) {
             mRecordType = bundle.getInt("recordType");
         }
-        return inflater.inflate(R.layout.fragment_voice_record, container, false);
+        return inflater.inflate(R.layout.fragment_voice_recordv2, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         hideBottomTab();
-        initRecordHelper();
         initView();
+        FileUtils.createDirectory(DATA_DIRECTORY);
+        if(mWaveSfv != null) {
+            mWaveSfv.setLine_off(42);
+            //解决surfaceView黑色闪动效果
+            mWaveSfv.setZOrderOnTop(true);
+            mWaveSfv.getHolder().setFormat(PixelFormat.TRANSPARENT);
+        }
     }
 
-    private void initRecordHelper() {
-//        String[] items = getResources().getStringArray(R.array.voice_type);
-//
-//        mFileName = items[mRecordType] + System.currentTimeMillis() + ".amr";
-//
-//        RecorderHelper.getInstance().setPath(FileUtils.getAMRFilePath(mFileName));
-//        RecorderHelper.getInstance().setRecorderListener(mOnRecorderListener);
-        AudioRecordHelper.getInstance().init();
-        AudioRecordHelper.getInstance().setRecorderListener(mOnRecorderListener);
-    }
+
 
     @Override
     public void onHiddenChanged(boolean hidden) {
@@ -71,14 +88,12 @@ public class VoiceRecordFragment extends BaseFragment {
         if (hidden == false) {
             hideBottomTab();
             mChronometer.setBase(System.currentTimeMillis());
+            if (mWaveSfv != null) {
+                mWaveSfv.initDraw();
+            }
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        Logger.i("onResume");
-    }
 
     private void hideBottomTab() {
         if (getActivity() == null) {
@@ -95,33 +110,14 @@ public class VoiceRecordFragment extends BaseFragment {
         recordText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String text = recordText.getText().toString().trim();
-                if (StringUtils.areEqual(text, "开始")) {
+                if (waveCanvas == null || !waveCanvas.isRecording) {
                     recordText.setText("完成");
-//                    RecorderHelper.getInstance().startRecord();
-                    AudioRecordHelper.getInstance()
-                            .startRecord();
-//                            .observeOn(AndroidSchedulers.mainThread())
-//                            .subscribeOn(AndroidSchedulers.mainThread())
-//                            .subscribe(new Action1<Void>() {
-//                                @Override
-//                                public void call(Void aVoid) {
-//                                    Logger.i("11111111111");
-//                                }
-//                            }, new Action1<Throwable>() {
-//                                @Override
-//                                public void call(Throwable throwable) {
-//                                    Logger.e("11111111111---%s", throwable.toString());
-//                                }
-//                            });
+                    initAudio();
                 } else {
-//                    RecorderHelper.getInstance().cancel();
-                    mAnimatedRecordingView.stop();
                     recordText.setText("开始");
+                    waveCanvas.stop();
+                    waveCanvas = null;
                     gotoVoiceSaveFragment();
-                    AudioRecordHelper.getInstance()
-                            .stopRecord();
-
                 }
             }
         });
@@ -133,32 +129,43 @@ public class VoiceRecordFragment extends BaseFragment {
             }
         });
 
-        mAnimatedRecordingView = (AnimatedRecordingView) getView().findViewById(R.id.animated_recording_view);
-//        mRecordingView = (RecordingView) getView().findViewById(R.id.animated_recording_view);
+        mWaveSfv = (WaveSurfaceView) getView().findViewById(R.id.wavesfv);
+
     }
 
-    private RecorderHelper.onRecorderListener mOnRecorderListener = new RecorderHelper.onRecorderListener() {
-        @Override
-        public void recorderStart() {
-            startChronometer(System.currentTimeMillis());
-            mAnimatedRecordingView.start();
-//            mRecordingView.start();
-        }
+    public void initAudio(){
+        recBufSize = AudioRecord.getMinBufferSize(FREQUENCY,
+                CHANNELCONGIFIGURATION, AUDIOENCODING);// 录音组件
+        audioRecord = new AudioRecord(AUDIO_SOURCE,// 指定音频来源，这里为麦克风
+                FREQUENCY, // 16000HZ采样频率
+                CHANNELCONGIFIGURATION,// 录制通道
+                AUDIO_SOURCE,// 录制编码格式
+                recBufSize);// 录制缓冲区大小 //先修改
 
-        @Override
-        public void recorderStop() {
-            stopChronometer();
-            mAnimatedRecordingView.stop();
-        }
+        audioTrack = new AudioTrack( AudioManager.STREAM_MUSIC, FREQUENCY,
+                AudioFormat.CHANNEL_OUT_MONO, AUDIOENCODING, recBufSize,
+                AudioTrack.MODE_STREAM);
 
-        @Override
-        public void volumeChange(float vol) {
-//            Log.e("lihb", "vol = " + vol);
-            mAnimatedRecordingView.setVolume(vol);
-//            mRecordingView.setVolume(vol);
-        }
-    };
+        waveCanvas = new WaveCanvas();
+        waveCanvas.baseLine = mWaveSfv.getHeight() / 2;
+        String[] items = getResources().getStringArray(R.array.voice_type);
 
+        mFileName = items[mRecordType] + System.currentTimeMillis();
+        waveCanvas.Start(audioRecord, audioTrack,recBufSize, mWaveSfv, mFileName, DATA_DIRECTORY, new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                if(msg.what == WaveCanvas.MSG_SINGAL_START){
+                    startChronometer(System.currentTimeMillis());
+                }else if(msg.what == WaveCanvas.MSG_SINGAL_STOP){
+                    stopChronometer();
+                }else {
+                    String errorMsg = (String) msg.obj;
+                    Logger.e(errorMsg);
+                }
+                return true;
+            }
+        });
+    }
     public void startChronometer(long startTime) {
         mChronometer.setBase(startTime);
         mChronometer.setOnChronometerTickListener(mOnChronometerTickListener);
@@ -190,6 +197,7 @@ public class VoiceRecordFragment extends BaseFragment {
     /**
      * 计时器的时间变化监听
      */
+    //region 计时器监听器
     private Chronometer.OnChronometerTickListener mOnChronometerTickListener = new Chronometer.OnChronometerTickListener() {
         @Override
         public void onChronometerTick(Chronometer var1) {
@@ -224,6 +232,8 @@ public class VoiceRecordFragment extends BaseFragment {
         }
     };
 
+    //endregion
+
     private long getPublishTime() {
         if (mChronometer == null) {
             return 0;
@@ -239,6 +249,7 @@ public class VoiceRecordFragment extends BaseFragment {
         }
         Bundle bundle = new Bundle();
         bundle.putString("fileName", mFileName);
+        Log.e("VoiceRecordFragmentV2", "gotoVoiceSaveFragment: filename = " +mFileName );
         mVoiceSaveFragment.setArguments(bundle);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.hide(this);

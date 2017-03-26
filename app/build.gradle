@@ -78,6 +78,7 @@ dependencies {
 
     //PhotoView
     compile 'com.github.chrisbanes.photoview:library:+'
+    compile project(':wavelibrary')
 
 
 }

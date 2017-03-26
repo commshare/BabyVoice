@@ -69,12 +69,17 @@ public class VoiceSaveFragment extends BaseFragment {
         mTitleBar.setRightOnClickListener(mOnClickListener);
 
         mEditText = (EditText) getView().findViewById(R.id.voice_save_title);
-        mEditText.setText(mFileName.substring(0, mFileName.indexOf(".")));
+        mEditText.setText(mFileName);
         mEditText.requestFocus();
-        mEditText.setSelection(mFileName.indexOf(".")-1);
+        mEditText.setSelection(mFileName.length());
         SoftInputUtil.showSoftInput(mEditText, getActivity());
     }
 
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        mEditText.setText("");
+        super.onViewStateRestored(savedInstanceState);
+    }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
@@ -82,6 +87,12 @@ public class VoiceSaveFragment extends BaseFragment {
         if (hidden == false) {
             hideBottomTab();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mEditText.setText(mFileName);
     }
 
     private void hideBottomTab() {

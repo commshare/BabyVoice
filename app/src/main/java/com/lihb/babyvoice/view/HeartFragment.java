@@ -51,7 +51,7 @@ public class HeartFragment extends BaseFragment {
     private View emptyView;
     private ImageView mImgGoToRecord;
 
-    private VoiceRecordFragment mVoiceRecordFragment;
+    private VoiceRecordFragmentV2 mVoiceRecordFragment;
     private VoicePlayFragment mVoicePlayFragment;
 
     private static final int COUNT = 10;
@@ -202,7 +202,7 @@ public class HeartFragment extends BaseFragment {
 
     private void gotoVoiceRecordFragment() {
         if (null == mVoiceRecordFragment) {
-            mVoiceRecordFragment = VoiceRecordFragment.create();
+            mVoiceRecordFragment = VoiceRecordFragmentV2.create();
         }
         Bundle bundle = new Bundle();
         bundle.putInt("recordType", mRecordType);

@@ -373,6 +373,23 @@ public class FileUtils {
     }
 
     /**
+     * 创建不同的目录
+     */
+    public static void createDirectory(String path) {
+        if (isSdcardExit()) {
+            File file = new File(path);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+        } else {
+            File file = new File(path);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+        }
+    }
+
+    /**
      * 从assets文件夹中读取数据
      * @param context
      * @param fileName

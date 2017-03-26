@@ -7,6 +7,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,9 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.cokus.wavelibrary.utils.SoundFile;
+import com.cokus.wavelibrary.view.WaveformView;
 import com.lihb.babyvoice.R;
-import com.lihb.babyvoice.customview.AnimatedRecordingView;
 import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragment;
 import com.lihb.babyvoice.model.BabyVoice;
@@ -25,6 +27,8 @@ import com.lihb.babyvoice.utils.CommonToast;
 import com.lihb.babyvoice.utils.StringUtils;
 
 import java.io.File;
+
+import static com.lihb.babyvoice.R.id.waveview;
 
 /**
  * Created by lihb on 2017/3/12.
@@ -36,7 +40,7 @@ public class VoicePlayFragment extends BaseFragment {
     private TitleBar mTitleBar;
     private SeekBar seekBar;
     private ImageView play_pause_img;
-    private AnimatedRecordingView animated_playing_view;
+    private WaveformView waveformView;
     private RelativeLayout play_bottom_layout;
     private ImageView category_img;
     private TextView current_time_txt;
@@ -81,7 +85,8 @@ public class VoicePlayFragment extends BaseFragment {
         voice_analysis_txt = (TextView) getView().findViewById(R.id.voice_analysis_txt);
         current_time_txt = (TextView) getView().findViewById(R.id.current_time_txt);
         total_time_txt = (TextView) getView().findViewById(R.id.total_time_txt);
-        animated_playing_view = (AnimatedRecordingView) getView().findViewById(R.id.animated_playing_view);
+        waveformView = (WaveformView) getView().findViewById(waveview);
+        waveformView.setLine_offset(42);
         play_bottom_layout = (RelativeLayout) getView().findViewById(R.id.play_bottom_layout);
 
         if (null != babyVoice) {
@@ -116,22 +121,74 @@ public class VoicePlayFragment extends BaseFragment {
         });
         myHandler = new MyHandler();
 
+        loadDataFromFile();
+
+    }
+
+    File mFile;
+    Thread mLoadSoundFileThread;
+    SoundFile mSoundFile;
+    boolean mLoadingKeepGoing;
+//    SamplePlayer mPlayer;
+    /** 载入wav文件显示波形 */
+    private void loadDataFromFile() {
+        try {
+            Thread.sleep(300);//让文件写入完成后再载入波形 适当的休眠下
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        mFile = new File(getFilename());
+        mLoadingKeepGoing = true;
+        // Load the sound file in a background thread
+        mLoadSoundFileThread = new Thread() {
+            public void run() {
+                try {
+                    mSoundFile = SoundFile.create(mFile.getAbsolutePath(),null);
+                    if (mSoundFile == null) {
+                        return;
+                    }
+//                    mPlayer = new SamplePlayer(mSoundFile);
+                } catch (final Exception e) {
+                    e.printStackTrace();
+                    return;
+                }
+                if (mLoadingKeepGoing) {
+                    Runnable runnable = new Runnable() {
+                        public void run() {
+                            finishOpeningSoundFile();
+//                            waveSfv.setVisibility(View.INVISIBLE);
+//                            waveView.setVisibility(View.VISIBLE);
+                        }
+                    };
+                    getActivity().runOnUiThread(runnable);
+                }
+            }
+        };
+        mLoadSoundFileThread.start();
+    }
+
+
+
+    float mDensity;
+    /**waveview载入波形完成*/
+    private void finishOpeningSoundFile() {
+        waveformView.setSoundFile(mSoundFile);
+        DisplayMetrics metrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        mDensity = metrics.density;
+        waveformView.recomputeHeights(mDensity);
     }
 
     private void setCategoryImg(String category) {
         String[] items = getResources().getStringArray(R.array.voice_type);
         if (StringUtils.areEqual(category, items[0])) {
             category_img.setImageResource(R.mipmap.heart);
-//            play_bottom_layout.setBackgroundResource(R.mipmap.heart);
         } else if (StringUtils.areEqual(category, items[1])) {
             category_img.setImageResource(R.mipmap.lung);
-//            play_bottom_layout.setBackgroundResource(R.mipmap.lung);
         } else if (StringUtils.areEqual(category, items[2])) {
             category_img.setImageResource(R.mipmap.voice);
-//            play_bottom_layout.setBackgroundResource(R.mipmap.voice);
         } else {
             category_img.setImageResource(R.mipmap.other);
-//            play_bottom_layout.setBackgroundResource(R.mipmap.other);
         }
     }
 
@@ -210,13 +267,13 @@ public class VoicePlayFragment extends BaseFragment {
 
     private String getFilename() {
         String filepath = Environment.getExternalStorageDirectory().getAbsolutePath();
-        File file = new File(filepath, "AudioRecorder");
+        File file = new File(filepath, "/babyVoiceRecord");
 
         if (file.exists()) {
             file.delete();
         }
 
-        return (file.getAbsolutePath() + "/speaker.wav");
+        return (file.getAbsolutePath() + "/儿童语音1490534481461.wav");
     }
 
 

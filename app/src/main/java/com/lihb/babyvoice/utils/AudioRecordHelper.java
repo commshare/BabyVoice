@@ -43,13 +43,14 @@ public class AudioRecordHelper {
 
 
     private int bufferSize;
-    private short[] audioData;
+    private byte[] audioData;
     private DataOutputStream dos;
     private AudioTrack audioTrack;
 
     private static AudioRecordHelper sInst;
     private int bufferReadResult;
     private int sumOfSquares;
+    private double volume;
 
 
     private AudioRecordHelper() {
@@ -79,7 +80,7 @@ public class AudioRecordHelper {
         bufferSize = AudioRecord.getMinBufferSize(frequency,
                 channelConfiguration, EncodingBitRate);
 
-        audioData = new short[bufferSize / 4];
+        audioData = new byte[bufferSize];
 
         audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, frequency,
                 channelConfiguration, EncodingBitRate, bufferSize);
@@ -100,36 +101,46 @@ public class AudioRecordHelper {
     }
 
     public void startRecord() {
-        try {
-            audioRecord.startRecording();
-            audioTrack.play();
-            updateMicStatus();
-            isRecording = true;
-            if (null != mListener) {
-                mListener.recorderStart();
-            }
-            while (isRecording) {
-                bufferReadResult = audioRecord.read(audioData, 0, bufferSize);
-                // 播放
-                audioTrack.write(audioData, 0, bufferReadResult);
 
-                if (AudioRecord.ERROR_INVALID_OPERATION != bufferReadResult) {
-                    for (int i = 0; i < bufferReadResult; i++) {
-                        dos.writeShort(audioData[i]);
-                        int abs = Math.abs(audioData[i]);
-                        sumOfSquares += abs * abs;
+        audioRecord.startRecording();
+        audioTrack.play();
+        updateMicStatus();
+        isRecording = true;
+        if (null != mListener) {
+            mListener.recorderStart();
+        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    while (isRecording) {
+                        bufferReadResult = audioRecord.read(audioData, 0, bufferSize);
+                        // 播放
+                        audioTrack.write(audioData, 0, bufferReadResult);
+                        short[] shortArray = toShortArray(audioData);
+                        // 写文件
+                        dos.write(audioData);
+                        // 计算音量
+                        int shortLen = bufferReadResult >> 1;
+                        if (AudioRecord.ERROR_INVALID_OPERATION != bufferReadResult) {
+                            for (int i = 0; i < shortLen; i++) {
+                                int abs = Math.abs(shortArray[i]);
+                                sumOfSquares += abs * abs;
+                                // 平方和除以数据总长度，得到音量大小。
+                                double mean = sumOfSquares / (double) shortLen;
+                                volume = 10 * Math.log10(mean);
+                                Log.d(TAG, "分贝值:" + volume);
+
+                            }
+                        }
                     }
+                } catch (Exception e) {
+                    Logger.e(e.toString());
                 }
             }
-        } catch (Exception e) {
-            Logger.e(e.toString());
-        }
+        }).start();
 
-        try {
-            dos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
 //        return Observable.create(new Observable.OnSubscribe<Void>() {
 //
 //            @Override
@@ -168,7 +179,25 @@ public class AudioRecordHelper {
 //        });
     }
 
+    public short[] toShortArray(byte[] src) {
+
+        int count = src.length >> 1;
+        short[] dest = new short[count];
+        for (int i = 0; i < count; i++) {
+//            dest[i] = (short) (src[i * 2] << 8 | src[2 * i + 1] & 0xff);
+            dest[i] = (short) ((src[i * 2] & 0xff) | ((src[2 * i + 1] & 0xff) << 8));
+        }
+        return dest;
+    }
+
+
     public void stopRecord() {
+
+        try {
+            dos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         if (null != audioRecord || null != audioTrack) {
             isRecording = false;
 
@@ -187,15 +216,17 @@ public class AudioRecordHelper {
 
         copyWaveFile(getTempFilename(), getFilename());
         deleteTempFile();
+        mHandler.removeCallbacksAndMessages(null);
     }
 
 
     private void updateMicStatus() {
 
-        int ratio = (Math.abs((int) (sumOfSquares / (float) bufferReadResult) / 10000) >> 1);
-        Log.e(TAG, "updateMicStatus: ratio = " + ratio);
+//        int ratio = (Math.abs((int) (sumOfSquares / (float) bufferReadResult*2) / 10000) /*>> 1*/);
+////        int ratio = maxValue;
+//        Log.e(TAG, "updateMicStatus: ratio = " + ratio);
         if (null != mListener) {
-            mListener.volumeChange((float) ratio);
+            mListener.volumeChange((float) volume);
         }
 
         mHandler.postDelayed(mUpdateMicStatusTimer, SPACE);

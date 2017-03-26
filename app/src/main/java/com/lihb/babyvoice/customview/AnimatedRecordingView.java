@@ -7,12 +7,10 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 
 import com.lihb.babyvoice.customview.base.BaseSurfaceView;
 
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -89,7 +87,7 @@ public class AnimatedRecordingView extends BaseSurfaceView {
     @Override
     public void setVolume(float volume) {
         super.setVolume(volume);
-        Log.d(TAG, "setVolume: volume = " + volume);
+//        Log.d(TAG, "setVolume: volume = " + volume);
     }
 
     @Override
@@ -105,12 +103,12 @@ public class AnimatedRecordingView extends BaseSurfaceView {
             return;
         }
 
-        if (volume < 60) {
-            volume = new Random().nextInt(60);
-        }
-        if (volume < 30) {
-            volume = 30;
-        }
+//        if (volume < 60) {
+//            volume = new Random().nextInt(60);
+//        }
+//        if (volume < 30) {
+//            volume = 30;
+//        }
 
 //        Log.i("lihbtest", "onRender: volume = " + volume);
         if (volume >= mHeight / 2) {
