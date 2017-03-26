@@ -28,6 +28,8 @@ import com.lihb.babyvoice.utils.StringUtils;
 
 import java.io.File;
 
+import cn.sharesdk.onekeyshare.OnekeyShare;
+
 import static com.lihb.babyvoice.R.id.waveview;
 
 /**
@@ -52,6 +54,7 @@ public class VoicePlayFragment extends BaseFragment {
     private int currentPos = 0;
     private BabyVoice babyVoice;
     private MyHandler myHandler;
+    private int mPlayEndMsec;
 
     public static VoicePlayFragment create() {
         return new VoicePlayFragment();
@@ -242,6 +245,7 @@ public class VoicePlayFragment extends BaseFragment {
                         mediaPlayer.start();
                         seekBar.setMax(mediaPlayer.getDuration());
                         total_time_txt.setText(StringUtils.formatTime(mediaPlayer.getDuration() / 1000));
+                        mPlayEndMsec = mediaPlayer.getDuration();
                         //更新进度
                         myHandler.removeCallbacks(null);
                         myHandler.sendEmptyMessage(1000);
@@ -256,6 +260,8 @@ public class VoicePlayFragment extends BaseFragment {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
                     play_pause_img.setImageResource(R.mipmap.play);
+                    waveformView.setPlayback(-1);
+                    updateDisplay();
                 }
             });
         } catch (Exception e) {
@@ -263,6 +269,24 @@ public class VoicePlayFragment extends BaseFragment {
             play_pause_img.setImageResource(R.mipmap.play);
             CommonToast.showShortToast("播放文件失败。");
         }
+    }
+
+    /**更新upd
+     * ateview 中的播放进度*/
+    private void updateDisplay() {
+        int now = mediaPlayer.getCurrentPosition();// nullpointer
+//        int frames = waveformView.millisecsToPixels(now);
+        waveformView.setPlayback(now);//通过这个更新当前播放的位置
+        if (now >= mPlayEndMsec ) {
+            waveformView.setPlayFinish(1);
+//            if (mPlayer != null && mPlayer.isPlaying()) {
+//                mPlayer.pause();
+//                updateTime.removeMessages(UPDATE_WAV);
+//            }
+        }else{
+            waveformView.setPlayFinish(0);
+        }
+        waveformView.invalidate();//刷新真个视图
     }
 
     private String getFilename() {
@@ -324,7 +348,7 @@ public class VoicePlayFragment extends BaseFragment {
             if (v == mTitleBar.getLeftText()) {
                 getActivity().onBackPressed();
             } else if (v == mTitleBar.getRightText()) {
-
+                showShare();
             }
         }
     };
@@ -339,7 +363,35 @@ public class VoicePlayFragment extends BaseFragment {
             }
             if (mediaPlayer != null) {
                 seekBar.setProgress(mediaPlayer.getCurrentPosition());
+                updateDisplay();
             }
         }
+    }
+
+
+    private void showShare() {
+        OnekeyShare oks = new OnekeyShare();
+        //关闭sso授权
+        oks.disableSSOWhenAuthorize();
+
+        // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间等使用
+        oks.setTitle("标题");
+        // titleUrl是标题的网络链接，QQ和QQ空间等使用
+        oks.setTitleUrl("http://sharesdk.cn");
+        // text是分享文本，所有平台都需要这个字段
+        oks.setText("我是分享文本");
+        // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
+        //oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
+        // url仅在微信（包括好友和朋友圈）中使用
+        oks.setUrl("http://sharesdk.cn");
+        // comment是我对这条分享的评论，仅在人人网和QQ空间使用
+        oks.setComment("我是测试评论文本");
+        // site是分享此内容的网站名称，仅在QQ空间使用
+        oks.setSite(getString(R.string.app_name));
+        // siteUrl是分享此内容的网站地址，仅在QQ空间使用
+        oks.setSiteUrl("http://sharesdk.cn");
+
+        // 启动分享GUI
+        oks.show(getActivity());
     }
 }
