@@ -74,7 +74,7 @@ public class FileUtils {
     /**
      * 从手机或者sd卡获取Bitmap
      *
-     * @param fileName
+     * @param filePath
      * @return
      */
     public static Bitmap getBitmap(String filePath) {
@@ -124,7 +124,7 @@ public class FileUtils {
     /**
      * 判断文件是否存在
      *
-     * @param fileName
+     * @param filePath
      * @return
      */
     public static boolean isFileExists(String filePath) {
@@ -134,7 +134,7 @@ public class FileUtils {
     /**
      * 获取文件的大小
      *
-     * @param fileName
+     * @param file
      * @return
      */
     private static long getFileSize(File file) {
@@ -418,11 +418,11 @@ public class FileUtils {
             String line = "";
             String[] array;
             while ((line = bufReader.readLine()) != null) {
-                array = line.split(",");
+                array = line.split("\\s+");
                 ProductionInspection productionInspection = new ProductionInspection();
                 productionInspection.no = Integer.valueOf(array[0]);
                 productionInspection.event_id = Integer.valueOf(array[1]);
-                productionInspection.week = Integer.valueOf(array[2]);
+                productionInspection.week = array[2];
                 productionInspection.event_name = array[3];
                 productionInspection.isDone = Integer.valueOf(array[4]);
                 dataList.add(productionInspection);
@@ -482,7 +482,7 @@ public class FileUtils {
             String line = "";
             String[] array;
             while ((line = bufReader.readLine()) != null) {
-                array = line.split(",");
+                array = line.split("\\s+");
                 VaccineInfo vaccineInfo = new VaccineInfo();
                 vaccineInfo.vaccineName = array[0];
                 vaccineInfo.isFree = Integer.valueOf(array[1]);

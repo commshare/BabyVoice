@@ -100,7 +100,7 @@ public class PregnantDataImpl implements IDBRxManager<ProductionInspection> {
                         inspection.event_id = cursor.getInt(cursor.getColumnIndex(DBHelper.PREGNANT_EXAM_ENTRY.COLUMN_EVENT_ID));
                         inspection.event_name = cursor.getString(cursor.getColumnIndex(DBHelper.PREGNANT_EXAM_ENTRY.COLUMN_EVENT_NAME));
                         inspection.isDone = cursor.getInt(cursor.getColumnIndex(DBHelper.PREGNANT_EXAM_ENTRY.COLUMN_EVENT_IS_DONE));
-                        inspection.week = cursor.getInt(cursor.getColumnIndex(DBHelper.PREGNANT_EXAM_ENTRY.COLUMN_WEEK));
+                        inspection.week = cursor.getString(cursor.getColumnIndex(DBHelper.PREGNANT_EXAM_ENTRY.COLUMN_WEEK));
                         result.add(inspection);
                     }
                     cursor.close();

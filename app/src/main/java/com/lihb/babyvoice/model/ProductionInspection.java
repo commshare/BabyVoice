@@ -22,7 +22,7 @@ public class ProductionInspection {
     /**
      * 第几周
      */
-    public int week;
+    public String week;
     /**
      * 是否已做
      */
