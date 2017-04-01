@@ -8,8 +8,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.facebook.stetho.Stetho;
+import com.lihb.babyvoice.command.LoginStateChangedCommand;
 import com.lihb.babyvoice.utils.BroadcastWatcher;
 import com.lihb.babyvoice.utils.NotificationCenter;
+import com.lihb.babyvoice.utils.RxBus;
 import com.lihb.babyvoice.utils.SingleOkHttpClient;
 import com.lihb.babyvoice.utils.UserProfileChangedNotification;
 
@@ -26,6 +28,8 @@ public class BabyVoiceApp extends Application {
 
     private BroadcastWatcher mBroadcastWatcher;
     private SharedPreferences mSharedPref;
+
+    private boolean mIsLogin = false;
 
 
 
@@ -64,6 +68,23 @@ public class BabyVoiceApp extends Application {
             mBroadcastWatcher = null;
         }
     }
+
+    public boolean getLogin() {
+        return mIsLogin;
+    }
+
+    public void setLogin(boolean value) {
+        if (mIsLogin != value) {
+            mIsLogin = value;
+            LoginStateChangedCommand.LoginState loginState = LoginStateChangedCommand.LoginState.LOGIN_OFF;
+            if (value) {
+                loginState = LoginStateChangedCommand.LoginState.LOGIN_ON;
+            }
+            LoginStateChangedCommand loginStateChangedCommand = new LoginStateChangedCommand(loginState);
+            RxBus.getDefault().post(loginStateChangedCommand);
+        }
+    }
+
 
     public boolean isScreenOn() {
         return mScreenOn;

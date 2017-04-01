@@ -30,4 +30,7 @@
 
     <color name="transparent">#00000000</color>
     <color name="seekbar_color">#5537cc</color>
+
+    <color name="startup_button_color">#f85455</color>
+    <color name="black">#000000</color>
 </resources>

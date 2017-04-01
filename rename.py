@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 # 用来批量重命名资源文件
 # 用法示例：python rename.py xxhdpi @3x
-import os, platform, sys
+import os
+import platform
+import sys
 
 #path = 'app/src/main/res/mipmap-xxxhdpi'
 
@@ -11,7 +13,7 @@ if(sysstr =="Windows"):
     path = 'app\\src\\main\\res\\mipmap-'
 else:
     print ("Other System")
-    path = 'app/src/main/res/drawable-'
+    path = 'app/src/main/res/mipmap-'
 path = path+sys.argv[1]
 keyword = sys.argv[2]
 for file in os.listdir(path):
