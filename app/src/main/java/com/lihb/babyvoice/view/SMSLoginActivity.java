@@ -1,57 +1,35 @@
-/*
- * 文 件 名:  LoginActivity.java
- * 描    述:  <描述>
- * 修 改 人:  liuxinyang
- * 修改时间:  2015年4月1日
- * 跟踪单号:  <跟踪单号>
- * 修改单号:  <修改单号>
- * 修改内容:  <修改内容>
- */
 package com.lihb.babyvoice.view;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.lihb.babyvoice.BabyVoiceApp;
 import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragmentActivity;
 import com.lihb.babyvoice.utils.CommonToast;
-import com.orhanobut.logger.Logger;
 
 /**
- * Created by lhb on 2017/4/1.
+ * Created by Administrator on 2017/4/3.
  */
-public class LoginActivity extends BaseFragmentActivity {
-
+public class SMSLoginActivity  extends BaseFragmentActivity {
 
     private EditText mUserAccountEditText;
 
     private EditText mUserPasswordEditText;
 
     private Button mLoginBtn;
-
-    private String mUserAccount;
-
-    private String mPassword;
-
-    private String mLoginAccount = null;
-
-    private ProgressDialog mProgressDialog = null;
 
     private ImageView mAccountClearInputImg = null;
     private ImageView mPwdClearInputImg = null;
@@ -60,13 +38,18 @@ public class LoginActivity extends BaseFragmentActivity {
     private ImageView mPwdShowImg = null;
     private boolean mIsPwdVisiable = false;
     private TitleBar mTitleBar;
-    private TextView mSmsLoginTxt;
+
+    private Button mSendCodeBtn = null;
+    private CheckBox mCheckBox = null;
+    private CountDownTimer mCountDownTimer;
+    private String mLoginAccount;
+    private String mPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_sms_login);
         initViews();
         getWindow().setBackgroundDrawable(null);
 
@@ -74,43 +57,54 @@ public class LoginActivity extends BaseFragmentActivity {
 
     private void initViews() {
         mAccountClearInputImg = (ImageView) findViewById(R.id.account_clear_input);
-        mAccountClearInputImg.setOnClickListener(new OnClickListener() {
+        mAccountClearInputImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mUserAccountEditText.setText("");
             }
         });
         mPwdClearInputImg = (ImageView) findViewById(R.id.pwd_clear_input);
-        mPwdClearInputImg.setOnClickListener(new OnClickListener() {
+        mPwdClearInputImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mUserPasswordEditText.setText("");
             }
         });
         mLoginBtn = (Button) findViewById(R.id.login_btn);
-        mLoginBtn.setOnClickListener(new OnClickListener() {
+        mLoginBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
                 mLoginAccount = mUserAccountEditText.getText().toString();
                 mPassword = mUserPasswordEditText.getText().toString();
-                login(mLoginAccount, mPassword);
-//				loginWithPassword(mLoginAccount, mPassword);
+                if (!mCheckBox.isChecked()) {
+                    CommonToast.showShortToast("请勾选同意协议");
+                    return;
+                }
+//                login(mLoginAccount, mPassword);
+                if (TextUtils.equals(mLoginAccount, "admin") && TextUtils.equals(mPassword, "123456")) {
+                    CommonToast.showShortToast("登录成功");
+                    Intent intent = new Intent(SMSLoginActivity.this, NewMainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else {
+                    CommonToast.showShortToast("登录失败，账户：admin，密码：123456,请重新登录");
+                }
             }
         });
         mTitleBar = (TitleBar) findViewById(R.id.title_bar);
         mTitleBar.setLeftOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, StartupActivity.class);
+                Intent intent = new Intent(SMSLoginActivity.this, StartupActivity.class);
                 startActivity(intent);
                 finish();
             }
         });
 
         mPwdShowImg = (ImageView) findViewById(R.id.pwd_show);
-        mPwdShowImg.setOnClickListener(new OnClickListener() {
+        mPwdShowImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!mIsPwdVisiable) {
@@ -119,6 +113,7 @@ public class LoginActivity extends BaseFragmentActivity {
                     mIsPwdVisiable = true;
                 } else {
                     mUserPasswordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    ;
                     mPwdShowImg.setImageResource(R.mipmap.by);
                     mIsPwdVisiable = false;
                 }
@@ -153,11 +148,11 @@ public class LoginActivity extends BaseFragmentActivity {
                 } else {
                     mPwdClearInputImg.setVisibility(View.GONE);
                 }
-
                 if (s.length() > 5) {
                     mLoginBtn.setBackgroundResource(R.drawable.register_login_pressed_shape);
                 } else {
                     mLoginBtn.setBackgroundResource(R.drawable.register_login_normal_shape);
+
                 }
 
             }
@@ -196,100 +191,73 @@ public class LoginActivity extends BaseFragmentActivity {
                 // TODO Auto-generated method stub
                 if (s.length() > 0) {
                     mAccountClearInputImg.setVisibility(View.VISIBLE);
+                    mSendCodeBtn.setEnabled(true);
+                    mSendCodeBtn.setBackgroundResource(R.drawable.register_login_pressed_shape);
                 } else {
                     mAccountClearInputImg.setVisibility(View.GONE);
+                    mSendCodeBtn.setEnabled(false);
+                    mSendCodeBtn.setBackgroundResource(R.drawable.register_login_normal_shape);
+                }
+
+
+            }
+        });
+
+        mCheckBox = (CheckBox) findViewById(R.id.sms_check_box);
+        mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    CommonToast.showShortToast("选中");
+                }else {
+                    CommonToast.showShortToast("not选中");
+                }
+            }
+        });
+        mCountDownTimer = new CountDownTimer(1000 * 60, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                mSendCodeBtn.setEnabled(false);
+                mSendCodeBtn.setText(millisUntilFinished /1000 + "秒后可重发");
+            }
+
+            @Override
+            public void onFinish() {
+                mSendCodeBtn.setEnabled(true);
+                mSendCodeBtn.setText("重新发送");
+            }
+        };
+
+        mSendCodeBtn = (Button) findViewById(R.id.send_code_btn);
+        mSendCodeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CommonToast.showLongToast("验证码正火速发往您的手机中，请及时查收！");
+                // FIXME: 2017/4/3 发送短信
+
+//                修改ui,倒计时1分钟
+                if (null != mCountDownTimer) {
+                    mCountDownTimer.start();
                 }
 
             }
         });
 
-        mSmsLoginTxt = (TextView) findViewById(R.id.sms_login_txt);
-        mSmsLoginTxt.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, SMSLoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
-    }
-
-    private void handleLoginSuccess() {
-        Logger.i("handleLoginSuccess");
-        BabyVoiceApp.getInstance().setFirstLaunch(false);
-        // 账号的保存，用于自动登录
-//		BabyVoiceApp.getInstance().getUserInfo().getAccountManager()
-//				.saveLoginAccount(mLoginAccount);
-//		BabyVoiceApp.getInstance().getUserInfo().getAccountManager()
-//				.saveAccount(mLoginAccount);
-//		BabyVoiceApp.getInstance().getUserInfo().getAccountManager()
-//				.savePassword(mPassword);
-        // 跳转到主界面
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(intent);
-        finish();
     }
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(LoginActivity.this, StartupActivity.class);
+        Intent intent = new Intent(SMSLoginActivity.this, LoginActivity.class);
         startActivity(intent);
         finish();
     }
 
     @Override
     protected void onDestroy() {
-        // TODO Auto-generated method stub
         super.onDestroy();
-        dismissLoginDialog();
-
-        mProgressDialog = null;
-    }
-
-
-    private void showProgressDialog(String msg) {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setMessage("Login...");
-            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            mProgressDialog.setIndeterminate(true);
-            mProgressDialog.setCanceledOnTouchOutside(false);
+        if (null != mCountDownTimer) {
+            mCountDownTimer.cancel();
+            mCountDownTimer = null;
         }
-        mProgressDialog.show();
     }
-
-    private void dismissLoginDialog() {
-        if (mProgressDialog == null) {
-            return;
-        }
-        mProgressDialog.dismiss();
-    }
-
-
-    private void showDialog(String tips) {
-        Toast toast = Toast.makeText(getApplicationContext(),
-                tips, Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.show();
-    }
-
-    private void login(final String userAccount, final String password) {
-        if (TextUtils.isEmpty(userAccount) /* || TextUtils.isEmpty(password) */) {
-
-            showDialog("帐号不能为空！");
-            return;
-        }
-        if (TextUtils.equals(mLoginAccount, "admin") && TextUtils.equals(mPassword, "123456")) {
-            CommonToast.showShortToast("登录成功");
-            Intent intent = new Intent(LoginActivity.this, NewMainActivity.class);
-            startActivity(intent);
-            finish();
-        }else {
-            CommonToast.showShortToast("登录失败，账户：admin，密码：123456,请重新登录");
-        }
-
-    }
-
-
 }

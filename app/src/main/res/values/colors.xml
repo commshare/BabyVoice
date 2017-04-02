@@ -33,4 +33,6 @@
 
     <color name="startup_button_color">#f85455</color>
     <color name="black">#000000</color>
+
+    <color name="custom_gray">#d2d2d2</color>
 </resources>

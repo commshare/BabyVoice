@@ -1,11 +1,13 @@
 package com.lihb.babyvoice.view;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -15,13 +17,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lihb.babyvoice.R;
+import com.lihb.babyvoice.customview.TitleBar;
+import com.lihb.babyvoice.customview.base.BaseFragmentActivity;
+import com.lihb.babyvoice.utils.CommonToast;
 
 /**
  * Created by lhb on 2017/4/1.
  */
-public class RegisterActivity extends Activity {
-
-    private ImageView mBackBtn = null;
+public class RegisterActivity extends BaseFragmentActivity {
 
     private Button mRegisterBtn = null;
 
@@ -29,7 +32,9 @@ public class RegisterActivity extends Activity {
 
     private TextView mTipsTextView = null;
 
-    private ImageView mClearInputImg = null;
+    private ImageView mAccountClearInputImg = null;
+
+    private ImageView mPwdClearInputImg = null;
 
     private EditText mPwdEditText = null;
 
@@ -39,7 +44,9 @@ public class RegisterActivity extends Activity {
 
     private ProgressDialog mProgressDialog = null;
 
-    private String mUdbCallback = "";
+    private TitleBar mTitleBar;
+
+    private TextView mSmsLoginTxt = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,10 +69,11 @@ public class RegisterActivity extends Activity {
     }
 
     private void initView() {
-        mBackBtn = (ImageView) findViewById(R.id.iv_back);
-        mBackBtn.setOnClickListener(new View.OnClickListener() {
+
+        mTitleBar = (TitleBar) findViewById(R.id.title_bar);
+        mTitleBar.setLeftOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 Intent intent = new Intent(RegisterActivity.this, StartupActivity.class);
                 startActivity(intent);
                 finish();
@@ -81,11 +89,19 @@ public class RegisterActivity extends Activity {
             }
         });
 
-        mClearInputImg = (ImageView) findViewById(R.id.clear_input);
-        mClearInputImg.setOnClickListener(new View.OnClickListener() {
+        mAccountClearInputImg = (ImageView) findViewById(R.id.account_clear_input);
+        mAccountClearInputImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mAccountEditText.setText("");
+            }
+        });
+
+        mPwdClearInputImg = (ImageView) findViewById(R.id.pwd_clear_input);
+        mPwdClearInputImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPwdEditText.setText("");
             }
         });
 
@@ -99,7 +115,6 @@ public class RegisterActivity extends Activity {
                     mIsPwdVisiable = true;
                 } else {
                     mPwdEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    ;
                     mPwdShowImg.setImageResource(R.mipmap.by);
                     mIsPwdVisiable = false;
                 }
@@ -109,8 +124,39 @@ public class RegisterActivity extends Activity {
         });
 
         mAccountEditText = (EditText) findViewById(R.id.account);
+        InputFilter[] filters = {new InputFilter.LengthFilter(255)};
+        mAccountEditText.setFilters(filters);
+        mAccountEditText.addTextChangedListener(new TextWatcher() {
 
-        mPwdEditText = (EditText) findViewById(R.id.pwd);
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+                // TODO Auto-generated method stub
+                mPwdEditText.setText("");
+                mRegisterBtn.setEnabled(true);
+                mRegisterBtn.setClickable(true);
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
+                if (s.length() > 0) {
+                    mAccountClearInputImg.setVisibility(View.VISIBLE);
+                } else {
+                    mAccountClearInputImg.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        mPwdEditText = (EditText) findViewById(R.id.password);
         mPwdEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -119,10 +165,44 @@ public class RegisterActivity extends Activity {
                 }
             }
         });
+        mPwdEditText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
+                if (s.length() > 0) {
+                    mPwdClearInputImg.setVisibility(View.VISIBLE);
+                } else {
+                    mPwdClearInputImg.setVisibility(View.GONE);
+                }
+                if (s.length() > 5) {
+                    mRegisterBtn.setBackgroundResource(R.drawable.register_login_pressed_shape);
+                } else {
+                    mRegisterBtn.setBackgroundResource(R.drawable.register_login_normal_shape);
+
+                }
+
+            }
+        });
 
 
         mTipsTextView = (TextView) findViewById(R.id.tips);
         mTipsTextView.setVisibility(View.GONE);
+
     }
 
     private void check(String passport) {
@@ -136,19 +216,22 @@ public class RegisterActivity extends Activity {
     private void register() {
         final String userAccount = mAccountEditText.getText().toString();
         final String password = mPwdEditText.getText().toString();
-        final String udbCallback = mUdbCallback;
         if (TextUtils.isEmpty(userAccount) || TextUtils.isEmpty(password)) {
             showDialog("帐号和密码不能为空！");
             return;
         }
-        showProgressDialog("正在注册...");
+//        showProgressDialog("正在注册...");
+        CommonToast.showShortToast("注册成功");
+        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
 
     }
 
     private void showProgressDialog(String msg) {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setMessage("Login...");
+            mProgressDialog.setMessage(msg);
             mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             mProgressDialog.setIndeterminate(true);
             mProgressDialog.setCanceledOnTouchOutside(false);
