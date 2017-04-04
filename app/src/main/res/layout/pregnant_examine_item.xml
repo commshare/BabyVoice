@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
+    android:layout_height="100dp"
     android:paddingLeft="32dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -27,6 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:text="事项1"
+            android:layout_centerVertical="true"
             android:textStyle="bold"
             android:textColor="@color/text_black"
             android:textSize="13dp" />
@@ -39,6 +40,7 @@
             android:layout_toRightOf="@+id/pregnant_index_txt"
             android:layout_toLeftOf="@+id/pregnant_done_img"
             android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
             android:text=""
             android:textColor="@color/text_black"
             android:textSize="13dp" />
@@ -48,6 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="8dp"
             android:src="@mipmap/normal" />
 

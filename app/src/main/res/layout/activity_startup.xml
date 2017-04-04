@@ -25,14 +25,6 @@
         android:layout_marginTop="96dp"
         android:src="@mipmap/big_logo" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/big_logo"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="28.3dp"
-        android:src="@mipmap/listentobabytxt" />
-
     <TextView
         android:id="@+id/copyright"
         android:clickable="true"
@@ -81,5 +73,14 @@
         android:text="注册"
         android:textColor="@color/startup_txt_color_selector"
         android:textSize="20sp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        android:src="@mipmap/listentobabytxt"
+        android:layout_below="@+id/big_logo"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/imageView" />
 
 </RelativeLayout>
