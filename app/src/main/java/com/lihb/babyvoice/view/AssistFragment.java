@@ -19,7 +19,7 @@ import com.lihb.babyvoice.utils.CommonToast;
 
 public class AssistFragment extends BaseFragment {
 
-    private CommonItem itemPregnantZone;
+//    private CommonItem itemPregnantZone;
     private CommonItem itemCheckAssist;
     private CommonItem itemVaccineAssist;
     private CommonItem itemHealthProtectAssist;
@@ -71,13 +71,13 @@ public class AssistFragment extends BaseFragment {
     }
 
     private void initView() {
-        itemPregnantZone = (CommonItem) getView().findViewById(R.id.item_pregnant_zone);
+       /* itemPregnantZone = (CommonItem) getView().findViewById(R.id.item_pregnant_zone);
         itemPregnantZone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CommonToast.showShortToast("itemPregnantZone");
             }
-        });
+        });*/
 
         itemCheckAssist = (CommonItem) getView().findViewById(R.id.item_check_assist);
         itemCheckAssist.setOnClickListener(new View.OnClickListener() {

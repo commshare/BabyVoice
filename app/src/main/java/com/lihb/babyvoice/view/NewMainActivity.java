@@ -38,7 +38,7 @@ public class NewMainActivity extends BaseFragmentActivity {
     private Fragment[] mFragmentList;
 
     private MeFragment mMeFragment;
-    private WatchFragment mWatchFragment;
+    private PregnantZoneFragment mPregnantZoneFragment;
     private HeartFragment mHeartFragment;
     private AssistFragment mAssistFragment;
 
@@ -82,21 +82,21 @@ public class NewMainActivity extends BaseFragmentActivity {
         mNetErrorNoticeBar = (RelativeLayout) findViewById(R.id.net_error_notice_bar);
 
         mHeartFragment = HeartFragment.create();
-        mWatchFragment = WatchFragment.create();
+        mPregnantZoneFragment = PregnantZoneFragment.create();
         mAssistFragment = AssistFragment.create();
         mMeFragment = MeFragment.create();
 
-        mFragmentList = new Fragment[]{mHeartFragment, mWatchFragment, mAssistFragment, mMeFragment};
+        mFragmentList = new Fragment[]{mHeartFragment, mPregnantZoneFragment, mAssistFragment, mMeFragment};
 
         // 加入fragment,显示爱听贝tab
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.main_layout, mHeartFragment)
                 .add(R.id.main_layout, mMeFragment)
-                .add(R.id.main_layout, mWatchFragment)
+                .add(R.id.main_layout, mPregnantZoneFragment)
                 .add(R.id.main_layout, mAssistFragment)
                 .show(mHeartFragment)
                 .hide(mMeFragment)
-                .hide(mWatchFragment)
+                .hide(mPregnantZoneFragment)
                 .hide(mAssistFragment)
                 .commit();
 

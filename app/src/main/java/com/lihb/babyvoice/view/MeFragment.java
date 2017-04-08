@@ -21,7 +21,7 @@ public class MeFragment extends BaseFragment {
     private CommonItem itemMeCenter;
     private CommonItem itemPregnantDate;
     private CommonItem itemBabyInfo;
-    private CommonItem itemRemoteVideoAddress;
+//    private CommonItem itemRemoteVideoAddress;
     private CommonItem itemLanguageSelect;
     private CommonItem itemAboutApp;
 
@@ -84,13 +84,13 @@ public class MeFragment extends BaseFragment {
             }
         });
 
-        itemRemoteVideoAddress = (CommonItem) getView().findViewById(R.id.item_remote_video_address);
-        itemRemoteVideoAddress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CommonToast.showShortToast("itemRemoteVideoAddress");
-            }
-        });
+//        itemRemoteVideoAddress = (CommonItem) getView().findViewById(R.id.item_remote_video_address);
+//        itemRemoteVideoAddress.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                CommonToast.showShortToast("itemRemoteVideoAddress");
+//            }
+//        });
 
         itemLanguageSelect = (CommonItem) getView().findViewById(R.id.item_language_select);
         itemLanguageSelect.setOnClickListener(new View.OnClickListener() {

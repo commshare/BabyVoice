@@ -78,9 +78,9 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:drawableTop="@drawable/tab_watch_img_selector"
+                android:drawableTop="@drawable/tab_pregnant_zone_img_selector"
                 android:gravity="center"
-                android:text="@string/tab_baby_watch"
+                android:text="@string/tab_pregnant_zone"
                 android:textColor="@color/tab_txt_color_selector"
                 android:textSize="10sp" />
 

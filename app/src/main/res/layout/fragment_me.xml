@@ -65,7 +65,7 @@
                 app:commonLeftIcon="@mipmap/xx"
                 app:commonRightIcon="@mipmap/next_icon" />
 
-            <com.lihb.babyvoice.customview.CommonItem
+          <!--  <com.lihb.babyvoice.customview.CommonItem
                 android:id="@+id/item_remote_video_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
                 app:commonItemSelector="@drawable/voice_item_selector"
                 app:commonLeftIcon="@mipmap/lj"
                 app:commonRightIcon="@mipmap/next_icon" />
-
+-->
 
             <com.lihb.babyvoice.customview.DividerLine
                 android:layout_width="match_parent"

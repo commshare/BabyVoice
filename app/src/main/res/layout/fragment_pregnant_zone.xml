@@ -12,7 +12,7 @@
         android:paddingTop="@dimen/padding_top"
         android:background="@color/colorPrimary"
         app:titleTextColor="@android:color/white"
-        app:titleText="@string/tab_baby_watch" />
+        app:titleText="@string/tab_pregnant_zone" />
 
    <!-- <com.lihb.babyvoice.customview.AnalysisBarChartingView
         android:layout_width="match_parent"
@@ -22,6 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="fragment_爱视贝" />
+        android:text="fragment_孕婴圈" />
 
 </LinearLayout>
