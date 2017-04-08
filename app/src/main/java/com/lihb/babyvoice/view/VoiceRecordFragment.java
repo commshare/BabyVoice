@@ -59,7 +59,7 @@ public class VoiceRecordFragment extends BaseFragment {
 //
 //        mFileName = items[mRecordType] + System.currentTimeMillis() + ".amr";
 //
-//        RecorderHelper.getInstance().setPath(FileUtils.getAMRFilePath(mFileName));
+//        RecorderHelper.getInstance().setPath(FileUtils.getVoiceFilePath(mFileName));
 //        RecorderHelper.getInstance().setRecorderListener(mOnRecorderListener);
         AudioRecordHelper.getInstance().init();
         AudioRecordHelper.getInstance().setRecorderListener(mOnRecorderListener);

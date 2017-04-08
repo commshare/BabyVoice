@@ -7,7 +7,6 @@ import android.media.AudioRecord;
 import android.media.AudioTrack;
 import android.media.MediaRecorder;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
@@ -23,10 +22,19 @@ import android.widget.TextView;
 import com.cokus.wavelibrary.draw.WaveCanvas;
 import com.cokus.wavelibrary.view.WaveSurfaceView;
 import com.lihb.babyvoice.R;
+import com.lihb.babyvoice.command.HeadSetPluginChangedCommand;
+import com.lihb.babyvoice.command.PickedCategoryCommand;
 import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragment;
+import com.lihb.babyvoice.utils.CommonToast;
 import com.lihb.babyvoice.utils.FileUtils;
+import com.lihb.babyvoice.utils.RxBus;
 import com.orhanobut.logger.Logger;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+
+import static com.lihb.babyvoice.BabyVoiceApp.DATA_DIRECTORY;
 
 /**
  * Created by lhb on 2017/2/10.
@@ -40,8 +48,6 @@ public class VoiceRecordFragmentV2 extends BaseFragment {
     private int mRecordType;
     private WaveSurfaceView mWaveSfv;
     private WaveCanvas waveCanvas;
-    public static final String DATA_DIRECTORY = Environment
-            .getExternalStorageDirectory() + "/babyVoiceRecord/";
 
     private static final int FREQUENCY = 16000;// 设置音频采样率，44100是目前的标准，但是某些设备仍然支持22050，16000，11025
     private static final int CHANNELCONGIFIGURATION = AudioFormat.CHANNEL_IN_MONO;// 设置单声道声道
@@ -50,7 +56,7 @@ public class VoiceRecordFragmentV2 extends BaseFragment {
     private int recBufSize;// 录音最小buffer大小
     private AudioRecord audioRecord;
     private AudioTrack audioTrack;
-
+    private boolean mIsBegin = false;
 
 
     public static VoiceRecordFragmentV2 create() {
@@ -78,6 +84,31 @@ public class VoiceRecordFragmentV2 extends BaseFragment {
             mWaveSfv.setZOrderOnTop(true);
             mWaveSfv.getHolder().setFormat(PixelFormat.TRANSPARENT);
         }
+
+        RxBus.getDefault().registerOnFragment(HeadSetPluginChangedCommand.class, this)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<HeadSetPluginChangedCommand>() {
+                    @Override
+                    public void call(HeadSetPluginChangedCommand headSetPluginChangedCommand) {
+                        if (headSetPluginChangedCommand.getState() == HeadSetPluginChangedCommand.HeadSetPluginState.HEAD_SET_OUT) {
+                            Logger.i("headset is out!!");
+
+                            if ((mRecordType == PickedCategoryCommand.TYPE_HEART || mRecordType == PickedCategoryCommand.TYPE_LUNG) && mIsBegin) {
+                                CommonToast.showLongToast(R.string.plugin_headset_first);
+                                if (null != waveCanvas) {
+                                    waveCanvas.stop();
+                                    waveCanvas = null;
+                                }
+                                getActivity().onBackPressed();
+                            }
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Logger.e("headset out ,error: %s", throwable.getMessage());
+                    }
+                });
     }
 
 
@@ -125,6 +156,10 @@ public class VoiceRecordFragmentV2 extends BaseFragment {
         mTitleBar.setLeftOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (null != waveCanvas) {
+                    waveCanvas.stop();
+                    waveCanvas = null;
+                }
                 getActivity().onBackPressed();
             }
         });
@@ -155,10 +190,13 @@ public class VoiceRecordFragmentV2 extends BaseFragment {
             @Override
             public boolean handleMessage(Message msg) {
                 if(msg.what == WaveCanvas.MSG_SINGAL_START){
+                    mIsBegin = true;
                     startChronometer(System.currentTimeMillis());
                 }else if(msg.what == WaveCanvas.MSG_SINGAL_STOP){
+                    mIsBegin = false;
                     stopChronometer();
                 }else {
+                    mIsBegin = false;
                     String errorMsg = (String) msg.obj;
                     Logger.e(errorMsg);
                 }

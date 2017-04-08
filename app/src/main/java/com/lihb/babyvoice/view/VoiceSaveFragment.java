@@ -41,6 +41,8 @@ public class VoiceSaveFragment extends BaseFragment {
     private String mFileName;
     private TitleBar mTitleBar;
 
+    private static final String SUFFIX = ".wav";
+
 
     public static VoiceSaveFragment create() {
         return new VoiceSaveFragment();
@@ -110,20 +112,20 @@ public class VoiceSaveFragment extends BaseFragment {
             mEditText.requestFocus();
             SoftInputUtil.hideSoftInput(getActivity());
             getActivity().onBackPressed();
-            Logger.i(FileUtils.getAMRFilePath(mFileName));
-            Logger.i(FileUtils.getAMRFilePath(mEditText.getText().toString().trim() + ".amr"));
+            Logger.i(FileUtils.getVoiceFilePath(mFileName));
+            Logger.i(FileUtils.getVoiceFilePath(mEditText.getText().toString().trim() + SUFFIX));
             if (v == mTitleBar.getLeftText()) {
-                FileUtils.deleteFile(FileUtils.getAMRFilePath(mFileName));
+                FileUtils.deleteFile(FileUtils.getVoiceFilePath(mFileName));
             } else if (v == mTitleBar.getRightText()) {
-                FileUtils.renameFile(FileUtils.getAMRFilePath(mFileName), FileUtils.getAMRFilePath(mEditText.getText().toString().trim() + ".amr"));
+                FileUtils.renameFile(FileUtils.getVoiceFilePath(mFileName)+ SUFFIX, FileUtils.getVoiceFilePath(mEditText.getText().toString().trim() + SUFFIX));
 //                new Thread(new Runnable() {
 //                    @Override
 //                    public void run() {
-//                        HttpUploadUtil.uploadFile(FileUtils.getAMRFilePath(mEditText.getText().toString().trim() + ".amr"));
+//                        HttpUploadUtil.uploadFile(FileUtils.getVoiceFilePath(mEditText.getText().toString().trim() + ".amr"));
 //                    }
 //                }).start();
                 List<File> files = new ArrayList<>();
-                File file = new File(FileUtils.getAMRFilePath(mEditText.getText().toString().trim() + ".amr"));
+                File file = new File(FileUtils.getVoiceFilePath(mEditText.getText().toString().trim() + SUFFIX));
                 files.add(file);
                 MultipartBody body = filesToMultipartBody(files);
                 ServiceGenerator.createService(ApiManager.class)
@@ -137,14 +139,14 @@ public class VoiceSaveFragment extends BaseFragment {
                                 if (stringBaseResponse.code == 200) {
                                     CommonToast.showShortToast("上传成功！！");
                                 }
-                                FileUtils.deleteFile(FileUtils.getAMRFilePath(mEditText.getText().toString().trim() + ".amr"));
+//                                FileUtils.deleteFile(FileUtils.getVoiceFilePath(mEditText.getText().toString().trim() + SUFFIX));
                             }
                         }, new Action1<Throwable>() {
                             @Override
                             public void call(Throwable throwable) {
                                 Logger.e(throwable.getMessage());
                                 CommonToast.showShortToast("error : " + throwable.getMessage());
-                                FileUtils.deleteFile(FileUtils.getAMRFilePath(mEditText.getText().toString().trim() + ".amr"));
+//                                FileUtils.deleteFile(FileUtils.getVoiceFilePath(mEditText.getText().toString().trim() + SUFFIX));
                             }
                         });
 

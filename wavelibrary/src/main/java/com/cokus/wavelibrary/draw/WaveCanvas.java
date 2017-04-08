@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static android.content.ContentValues.TAG;
 
 /**
  * 录音和写入文件使用了两个不同的线程，以免造成卡机现象
@@ -32,7 +31,7 @@ import static android.content.ContentValues.TAG;
  * @author cokus
  */
 public class WaveCanvas {
-
+    private static final String TAG = "WaveCanvas";
 
     public static final int MSG_SINGAL_START = 1000;
     public static final int MSG_SINGAL_STOP = 1001;
@@ -361,6 +360,7 @@ public class WaveCanvas {
             } catch (Throwable t) {
                 Log.e(TAG, "save file failed..");
             }finally {
+                Log.i(TAG, "finally, always delete pcm file..");
                 deleteFile(savePcmPath);
             }
         }

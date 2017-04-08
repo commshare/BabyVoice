@@ -18,7 +18,7 @@ import com.lihb.babyvoice.customview.base.BaseFragment;
 import com.lihb.babyvoice.customview.base.BaseRecyclerView;
 import com.lihb.babyvoice.db.impl.VaccineDataImpl;
 import com.lihb.babyvoice.model.VaccineInfo;
-import com.lihb.babyvoice.utils.CommonToast;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,17 +87,17 @@ public class VaccineFragment extends BaseFragment {
                 }
                 int ageToInject = (mData.get(position).ageToInject);
                 if (ageToInject == 0) {
-                    return "24小时内";
+                    return getString(R.string.in_twenty_four_hours);
                 } else if (ageToInject >= 12) {
                     if (ageToInject % 12 == 0) {
-                        return ageToInject / 12 + "岁";
+                        return ageToInject / 12 + getString(R.string.years);
                     }else {
                         float xx = ageToInject / 12.0f;
-                        return xx + "岁";
+                        return xx +  getString(R.string.years);
                     }
 
                 }
-                return mData.get(position).ageToInject+"个月";
+                return mData.get(position).ageToInject+getString(R.string.month);
             }
         });
         mRecyclerView.addItemDecoration(decoration);
@@ -203,7 +203,8 @@ public class VaccineFragment extends BaseFragment {
                 .subscribe(new Action1<List<VaccineInfo>>() {
                     @Override
                     public void call(List<VaccineInfo> vaccineInfos) {
-                        CommonToast.showShortToast("查询成功！");
+//                        CommonToast.showShortToast("查询成功！");
+                        Logger.i("query vaccine data success");
                         mData = vaccineInfos;
                         mVaccineAdapter.updateData(mData);
                         mRefreshLayout.setRefreshing(false);
@@ -211,7 +212,8 @@ public class VaccineFragment extends BaseFragment {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        CommonToast.showShortToast("查询失败！" + throwable.getMessage());
+//                        CommonToast.showShortToast("查询失败！" + throwable.getMessage());
+                        Logger.e("query vaccine data failed. cause :%s", throwable.getMessage());
                         mRefreshLayout.setRefreshing(false);
                     }
                 });

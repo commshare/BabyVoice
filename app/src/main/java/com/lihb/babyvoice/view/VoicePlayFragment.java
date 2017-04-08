@@ -267,7 +267,7 @@ public class VoicePlayFragment extends BaseFragment {
         } catch (Exception e) {
             e.printStackTrace();
             play_pause_img.setImageResource(R.mipmap.play);
-            CommonToast.showShortToast("播放文件失败。");
+            CommonToast.showShortToast(R.string.play_failed);
         }
     }
 

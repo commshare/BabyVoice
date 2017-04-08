@@ -63,7 +63,6 @@
     <string name="camera_permission">相机权限</string>
     <string name="mic_permission">麦克风权限</string>
     <string name="picture_permission">相册权限</string>
-    <string name="check_permission_title">正常上课须开通以下权限</string>
     <string name="from_camera">拍照</string>
     <string name="from_gallery">从相册选择</string>
     <string name="from_recommanded">精选头像</string>
@@ -78,4 +77,9 @@
     <string name="no_gallery">未检测到相册相关应用</string>
     <string name="voice_analysis">声音分析</string>
     <string name="ack_protocal_str">我已阅读并同意使用条款和隐私政策</string>
+    <string name="in_twenty_four_hours">24小时内</string>
+    <string name="years">岁</string>
+    <string name="month">个月</string>
+    <string name="play_failed">播放文件失败，请稍后重试</string>
+    <string name="plugin_headset_first">录制胎心音或肺音，你需先插入耳机！</string>
 </resources>

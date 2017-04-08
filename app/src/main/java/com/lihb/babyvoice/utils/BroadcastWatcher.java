@@ -82,6 +82,28 @@ public class BroadcastWatcher {
                 }
             });
             watchRssiChangedAction();
+
+            /**
+             * 耳机是否插入监听
+             */
+            mReceiver.addEventHandler(new BroadcastEventHandler(Intent.ACTION_HEADSET_PLUG) {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    Logger.d("headset plug in?");
+                    if (intent.hasExtra("state")){
+                        if (intent.getIntExtra("state", 0) == 0){
+//                            Toast.makeText(context, "headset not connected", Toast.LENGTH_LONG).show();
+                            Logger.i("headset not connected");
+                            BabyVoiceApp.getInstance().setPlugIn(false);
+                        }
+                        else if (intent.getIntExtra("state", 0) == 1){
+//                            Toast.makeText(context, "headset connected", Toast.LENGTH_LONG).show();
+                            Logger.i("headset connected");
+                            BabyVoiceApp.getInstance().setPlugIn(true);
+                        }
+                    }
+                }
+            });
             mApp.registerReceiver(mReceiver, mReceiver.intentFilter);
         }
     }

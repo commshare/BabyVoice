@@ -18,6 +18,7 @@ import com.lihb.babyvoice.customview.base.BaseFragment;
 import com.lihb.babyvoice.db.impl.PregnantDataImpl;
 import com.lihb.babyvoice.model.ProductionInspection;
 import com.lihb.babyvoice.utils.CommonToast;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -184,7 +185,8 @@ public class PregnantExamineFragment extends BaseFragment {
                 .subscribe(new Action1<List<ProductionInspection>>() {
                     @Override
                     public void call(List<ProductionInspection> productionInspections) {
-                        CommonToast.showShortToast("查询成功！");
+//                        CommonToast.showShortToast("查询成功！");
+                        Logger.i("query pregnant data success");
                         mData = productionInspections;
                         mAdapter.updateData(mData);
                         mRefreshLayout.setRefreshing(false);
@@ -192,7 +194,8 @@ public class PregnantExamineFragment extends BaseFragment {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        CommonToast.showShortToast("查询失败！" + throwable.getMessage());
+//                        CommonToast.showShortToast("查询失败！" + throwable.getMessage());
+                        Logger.e("query pregnant data failed. cause :%s", throwable.getMessage());
                         mRefreshLayout.setRefreshing(false);
                     }
                 });

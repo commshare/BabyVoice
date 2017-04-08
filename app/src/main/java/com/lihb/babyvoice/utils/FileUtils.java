@@ -28,6 +28,8 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
+import static com.lihb.babyvoice.BabyVoiceApp.DATA_DIRECTORY;
+
 public class FileUtils {
     public static final int SIZETYPE_B = 1;//获取文件大小单位为B的double值
     public static final int SIZETYPE_KB = 2;//获取文件大小单位为KB的double值
@@ -329,11 +331,10 @@ public class FileUtils {
      *
      * @return
      */
-    public static String getAMRFilePath(String fileName) {
+    public static String getVoiceFilePath(String fileName) {
         String mAudioAMRPath = "";
         if (isSdcardExit()) {
-            String fileBasePath = Environment.getExternalStorageDirectory().getAbsolutePath();
-            mAudioAMRPath = fileBasePath + "/" + fileName;
+            mAudioAMRPath = DATA_DIRECTORY  + fileName;
 
         }
         return mAudioAMRPath;

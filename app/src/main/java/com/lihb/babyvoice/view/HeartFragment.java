@@ -13,6 +13,7 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.lihb.babyvoice.BabyVoiceApp;
 import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.action.ApiManager;
 import com.lihb.babyvoice.action.ServiceGenerator;
@@ -158,7 +159,11 @@ public class HeartFragment extends BaseFragment {
                 @Override
                 public void onClick(int type) {
                     mRecordType = type;
-                    gotoVoiceRecordFragment();
+                    if ((type == PickedCategoryCommand.TYPE_HEART || type == PickedCategoryCommand.TYPE_LUNG) && !BabyVoiceApp.getInstance().isPlugIn()) {
+                            CommonToast.showShortToast(R.string.plugin_headset_first);
+                    }else {
+                        gotoVoiceRecordFragment();
+                    }
                 }
             });
         }

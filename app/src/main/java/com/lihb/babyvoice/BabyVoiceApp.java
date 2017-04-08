@@ -3,11 +3,13 @@ package com.lihb.babyvoice;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Environment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.facebook.stetho.Stetho;
+import com.lihb.babyvoice.command.HeadSetPluginChangedCommand;
 import com.lihb.babyvoice.command.LoginStateChangedCommand;
 import com.lihb.babyvoice.utils.BroadcastWatcher;
 import com.lihb.babyvoice.utils.NotificationCenter;
@@ -21,6 +23,8 @@ public class BabyVoiceApp extends Application {
 
     private final static String SHARED_PREF_NAME = "SHARE_PREF_FOR_100_ASK";
     private final static String ISFIRST_LAUNCH_KEY = "isfirst_launch_pref_key";
+    public static final String DATA_DIRECTORY = Environment
+            .getExternalStorageDirectory() + "/babyVoiceRecord/";
 
     private static BabyVoiceApp instance = null;
 
@@ -31,7 +35,10 @@ public class BabyVoiceApp extends Application {
 
     private boolean mIsLogin = false;
 
-
+    /**
+     * 耳机是否插入
+     */
+    private boolean mIsPlugIn = false;
 
     @Override
     public void onCreate() {
@@ -85,6 +92,21 @@ public class BabyVoiceApp extends Application {
         }
     }
 
+    public boolean isPlugIn() {
+        return mIsPlugIn;
+    }
+
+    public void setPlugIn(boolean isPlugIn) {
+        if (mIsPlugIn != isPlugIn) {
+            mIsPlugIn = isPlugIn;
+            HeadSetPluginChangedCommand.HeadSetPluginState headSetPluginState = HeadSetPluginChangedCommand.HeadSetPluginState.HEAD_SET_OUT;
+            if (isPlugIn) {
+                headSetPluginState = HeadSetPluginChangedCommand.HeadSetPluginState.HEAD_SET_IN;
+            }
+            HeadSetPluginChangedCommand headSetPluginChangedCommand = new HeadSetPluginChangedCommand(headSetPluginState);
+            RxBus.getDefault().post(headSetPluginChangedCommand);
+        }
+    }
 
     public boolean isScreenOn() {
         return mScreenOn;
