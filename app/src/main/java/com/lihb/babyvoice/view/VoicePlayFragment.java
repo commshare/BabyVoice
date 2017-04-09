@@ -3,7 +3,6 @@ package com.lihb.babyvoice.view;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
@@ -140,7 +139,7 @@ public class VoicePlayFragment extends BaseFragment {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        mFile = new File(getFilename());
+        mFile = new File(babyVoice.url);
         mLoadingKeepGoing = true;
         // Load the sound file in a background thread
         mLoadSoundFileThread = new Thread() {
@@ -229,8 +228,7 @@ public class VoicePlayFragment extends BaseFragment {
             if (null == mediaPlayer) { //开始播放
                 String url;
                 if (null != babyVoice) {
-                    url = getFilename();
-//                    url = babyVoice.url;
+                    url = babyVoice.url;
                 } else {
                     throw new Exception("no play file find.");
                 }
@@ -289,16 +287,17 @@ public class VoicePlayFragment extends BaseFragment {
         waveformView.invalidate();//刷新真个视图
     }
 
-    private String getFilename() {
-        String filepath = Environment.getExternalStorageDirectory().getAbsolutePath();
-        File file = new File(filepath, "/babyVoiceRecord");
-
-        if (file.exists()) {
-            file.delete();
-        }
-
-        return (file.getAbsolutePath() + "/儿童语音1490534481461.wav");
-    }
+//    private String getFilename() {
+//        String filepath = Environment.getExternalStorageDirectory().getAbsolutePath();
+////        File file = new File(filepath, "/babyVoiceRecord");
+//        File file = new File(babyVoice.url);
+//
+//        if (file.exists()) {
+//            file.delete();
+//        }
+//
+//        return (file.getAbsolutePath() + "/儿童语音1490534481461.wav");
+//    }
 
 
 

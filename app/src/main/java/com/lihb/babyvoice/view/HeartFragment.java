@@ -15,17 +15,14 @@ import android.widget.LinearLayout;
 
 import com.lihb.babyvoice.BabyVoiceApp;
 import com.lihb.babyvoice.R;
-import com.lihb.babyvoice.action.ApiManager;
-import com.lihb.babyvoice.action.ServiceGenerator;
 import com.lihb.babyvoice.adapter.HeartAdapter;
 import com.lihb.babyvoice.command.PickedCategoryCommand;
 import com.lihb.babyvoice.customview.PickRecordDialog;
 import com.lihb.babyvoice.customview.RefreshLayout;
 import com.lihb.babyvoice.customview.RemovedRecyclerView;
 import com.lihb.babyvoice.customview.base.BaseFragment;
+import com.lihb.babyvoice.db.impl.BabyVoiceDataImpl;
 import com.lihb.babyvoice.model.BabyVoice;
-import com.lihb.babyvoice.model.HttpResList;
-import com.lihb.babyvoice.model.HttpResponse;
 import com.lihb.babyvoice.utils.CommonToast;
 import com.orhanobut.logger.Logger;
 
@@ -218,22 +215,48 @@ public class HeartFragment extends BaseFragment {
         } else {
             start = mData.size();
         }
-        ServiceGenerator.createService(ApiManager.class)
-                .getBabyVoiceRecord(start, COUNT)
+//        ServiceGenerator.createService(ApiManager.class)
+//                .getBabyVoiceRecord(start, COUNT)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Action1<HttpResponse<HttpResList<BabyVoice>>>() {
+//                    @Override
+//                    public void call(HttpResponse<HttpResList<BabyVoice>> httpResListHttpResponse) {
+//                        if (httpResListHttpResponse.code == 200) {
+//                            HttpResList<BabyVoice> httpResList = httpResListHttpResponse.data;
+//                            if (refresh) {
+//                                mData.clear();
+//                            }
+//                            hasMoreData = mData.size() < httpResList.total;
+//                            List<BabyVoice> list = httpResList.dataList;
+//
+//                            mData.addAll(list);
+//                            mHeartAdapter.notifyDataSetChanged();
+//                            onLoadedData(refresh);
+//                        }
+//                    }
+//                }, new Action1<Throwable>() {
+//                    @Override
+//                    public void call(Throwable throwable) {
+//                        CommonToast.showShortToast("获取数据失败");
+//                        Logger.e(throwable.toString());
+//                        onLoadedData(refresh);
+//                    }
+//                });
+        BabyVoiceDataImpl.getInstance().queryDataByCondition(start, COUNT)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<HttpResponse<HttpResList<BabyVoice>>>() {
+                .subscribe(new Action1<List<BabyVoice>>() {
                     @Override
-                    public void call(HttpResponse<HttpResList<BabyVoice>> httpResListHttpResponse) {
-                        if (httpResListHttpResponse.code == 200) {
-                            HttpResList<BabyVoice> httpResList = httpResListHttpResponse.data;
+                    public void call(List<BabyVoice> babyVoices) {
+                        if (!babyVoices.isEmpty()) {
                             if (refresh) {
                                 mData.clear();
                             }
-                            hasMoreData = mData.size() < httpResList.total;
-                            List<BabyVoice> list = httpResList.dataList;
 
-                            mData.addAll(list);
+                            hasMoreData = COUNT <= babyVoices.size();
+
+                            mData.addAll(babyVoices);
                             mHeartAdapter.notifyDataSetChanged();
                             onLoadedData(refresh);
                         }
@@ -241,7 +264,6 @@ public class HeartFragment extends BaseFragment {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        CommonToast.showShortToast("获取数据失败");
                         Logger.e(throwable.toString());
                         onLoadedData(refresh);
                     }

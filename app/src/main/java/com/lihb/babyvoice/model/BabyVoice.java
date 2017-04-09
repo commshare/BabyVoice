@@ -23,6 +23,9 @@ public class BabyVoice implements Parcelable {
         this.url = url;
     }
 
+    public BabyVoice() {
+    }
+
     public String getName() {
         return name;
     }

@@ -15,6 +15,9 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String INTEGER_TYPE = " INTEGER";
     private static final String TEXT_TYPE = " TEXT";
     private static final String COMMA_SEP = ",";
+    /**
+     * 产检表
+     */
     private static final String SQL_CREATE_PREGNANT_EXAM_ENTRY =
             "CREATE TABLE " + PREGNANT_EXAM_ENTRY.TABLE_NAME + " (" +
                     PREGNANT_EXAM_ENTRY._ID + " INTEGER PRIMARY KEY," +
@@ -27,6 +30,9 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String SQL_DELETE_PREGNANT_EXAM_ENTRY =
             "DROP TABLE IF EXISTS " + PREGNANT_EXAM_ENTRY.TABLE_NAME;
 
+    /**
+     * 疫苗助手表
+     */
     private static final String SQL_CREATE_VACCINE_ENTRY =
             "CREATE TABLE " + VACCINE_ENTRY.TABLE_NAME + " (" +
                     VACCINE_ENTRY._ID + " INTEGER PRIMARY KEY," +
@@ -39,6 +45,10 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String SQL_DELETE_VACCINE_ENTRY =
             "DROP TABLE IF EXISTS " + VACCINE_ENTRY.TABLE_NAME;
 
+
+    /**
+     * 儿保助手表
+     */
     private static final String SQL_CREATE_HEALTH_PROTECT_ENTRY =
             "CREATE TABLE " + HEALTH_PROTECT_ENTRY.TABLE_NAME + " (" +
                     HEALTH_PROTECT_ENTRY._ID + " INTEGER PRIMARY KEY," +
@@ -55,6 +65,26 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String SQL_DELETE_HEALTH_PROTECT_ENTRY=
             "DROP TABLE IF EXISTS " + HEALTH_PROTECT_ENTRY.TABLE_NAME;
 
+
+    /**
+     * 录音记录表
+     */
+    private static final String SQL_CREATE_BABY_VOICE_ENTRY=
+            "CREATE TABLE " + BABY_VOICE_ENTRY.TABLE_NAME + " (" +
+                    BABY_VOICE_ENTRY._ID + " INTEGER PRIMARY KEY ," +
+                    BABY_VOICE_ENTRY.COLUMN_NAME + TEXT_TYPE + COMMA_SEP +
+                    BABY_VOICE_ENTRY.COLUMN_DATE + TEXT_TYPE + COMMA_SEP +
+                    BABY_VOICE_ENTRY.COLUMN_DURATION + TEXT_TYPE + COMMA_SEP +
+                    BABY_VOICE_ENTRY.COLUMN_CATEGORY + TEXT_TYPE + COMMA_SEP +
+                    BABY_VOICE_ENTRY.COLUMN_URL + TEXT_TYPE  + " )";
+
+    private static final String SQL_DELETE_BABY_VOICE_ENTRY =
+            "DROP TABLE IF EXISTS " + BABY_VOICE_ENTRY.TABLE_NAME;
+
+
+    /**
+     * 成长记录表
+     */
     private static final String SQL_CREATE_GROW_UP_ENTRY=
             "CREATE TABLE " + GROW_UP_ENTRY.TABLE_NAME + " (" +
                     GROW_UP_ENTRY._ID + " INTEGER PRIMARY KEY ," +
@@ -77,6 +107,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_GROW_UP_ENTRY);
         db.execSQL(SQL_CREATE_HEALTH_PROTECT_ENTRY);
         db.execSQL(SQL_CREATE_VACCINE_ENTRY);
+        db.execSQL(SQL_CREATE_BABY_VOICE_ENTRY);
     }
 
     @Override
@@ -85,6 +116,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_DELETE_VACCINE_ENTRY);
         db.execSQL(SQL_DELETE_HEALTH_PROTECT_ENTRY);
         db.execSQL(SQL_DELETE_GROW_UP_ENTRY);
+        db.execSQL(SQL_DELETE_BABY_VOICE_ENTRY);
         onCreate(db);
     }
 
@@ -130,6 +162,17 @@ public class DBHelper extends SQLiteOpenHelper {
         public static final String COLUMN_CONTENT = "content";
         public static final String COLUMN_PIC_FIRST = "pic1";
         public static final String COLUMN_PIC_SECOND = "pic2";
+
+    }
+
+    /* Inner class that defines the table contents */
+    public static class BABY_VOICE_ENTRY implements BaseColumns {
+        public static final String TABLE_NAME = "baby_voice_table";
+        public static final String COLUMN_DATE = "date";
+        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_DURATION = "duration";
+        public static final String COLUMN_CATEGORY = "category";
+        public static final String COLUMN_URL = "url";
 
     }
 

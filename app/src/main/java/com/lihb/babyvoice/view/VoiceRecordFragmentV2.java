@@ -286,6 +286,7 @@ public class VoiceRecordFragmentV2 extends BaseFragment {
             mVoiceSaveFragment = VoiceSaveFragment.create();
         }
         Bundle bundle = new Bundle();
+        bundle.putInt("type", mRecordType);
         bundle.putString("fileName", mFileName);
         Log.e("VoiceRecordFragmentV2", "gotoVoiceSaveFragment: filename = " +mFileName );
         mVoiceSaveFragment.setArguments(bundle);
