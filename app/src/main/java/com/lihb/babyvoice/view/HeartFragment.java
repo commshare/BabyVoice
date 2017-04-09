@@ -47,7 +47,8 @@ public class HeartFragment extends BaseFragment {
     private View emptyView;
     private ImageView mImgGoToRecord;
 
-    private VoiceRecordFragmentV2 mVoiceRecordFragment;
+    private VoiceRecordFragmentV2 mVoiceRecordFragmentV2;
+    private VoiceRecordFragment mVoiceRecordFragment;
     private VoicePlayFragment mVoicePlayFragment;
 
     private static final int COUNT = 10;
@@ -156,10 +157,14 @@ public class HeartFragment extends BaseFragment {
                 @Override
                 public void onClick(int type) {
                     mRecordType = type;
-                    if ((type == PickedCategoryCommand.TYPE_HEART || type == PickedCategoryCommand.TYPE_LUNG) && !BabyVoiceApp.getInstance().isPlugIn()) {
+                    if (type == PickedCategoryCommand.TYPE_HEART || type == PickedCategoryCommand.TYPE_LUNG) {
+                        if (!BabyVoiceApp.getInstance().isPlugIn()) {
                             CommonToast.showShortToast(R.string.plugin_headset_first);
+                        }else {
+                            gotoVoiceRecordFragmentV2();
+                        }
                     }else {
-                        gotoVoiceRecordFragment();
+                       gotoVoiceRecordFragment();
                     }
                 }
             });
@@ -168,9 +173,29 @@ public class HeartFragment extends BaseFragment {
     }
 
 
+    private void gotoVoiceRecordFragmentV2() {
+        if (null == mVoiceRecordFragmentV2) {
+            mVoiceRecordFragmentV2 = VoiceRecordFragmentV2.create();
+        }
+        Bundle bundle = new Bundle();
+        bundle.putInt("recordType", mRecordType);
+        mVoiceRecordFragmentV2.setArguments(bundle);
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.hide(this);
+        int count = getActivity().getSupportFragmentManager().getBackStackEntryCount();
+        if (count > 0) {
+            getActivity().getSupportFragmentManager().popBackStackImmediate();
+        }
+        transaction.add(R.id.main_layout, mVoiceRecordFragmentV2, "VoiceRecordFragmentV2")
+                .show(mVoiceRecordFragmentV2)
+                .addToBackStack(null)
+                .commit();
+
+    }
+
     private void gotoVoiceRecordFragment() {
         if (null == mVoiceRecordFragment) {
-            mVoiceRecordFragment = VoiceRecordFragmentV2.create();
+            mVoiceRecordFragment = VoiceRecordFragment.create();
         }
         Bundle bundle = new Bundle();
         bundle.putInt("recordType", mRecordType);

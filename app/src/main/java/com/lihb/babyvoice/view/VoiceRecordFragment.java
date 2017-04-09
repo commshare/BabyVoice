@@ -10,14 +10,17 @@ import android.widget.Chronometer;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.lihb.babyvoice.BabyVoiceApp;
 import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.customview.AnimatedRecordingView;
 import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragment;
-import com.lihb.babyvoice.utils.AudioRecordHelper;
+import com.lihb.babyvoice.utils.FileUtils;
 import com.lihb.babyvoice.utils.RecorderHelper;
 import com.lihb.babyvoice.utils.StringUtils;
 import com.orhanobut.logger.Logger;
+
+import static com.lihb.babyvoice.BabyVoiceApp.DATA_DIRECTORY;
 
 /**
  * Created by lhb on 2017/2/10.
@@ -50,19 +53,18 @@ public class VoiceRecordFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         hideBottomTab();
+        FileUtils.createDirectory(DATA_DIRECTORY);
         initRecordHelper();
         initView();
     }
 
     private void initRecordHelper() {
-//        String[] items = getResources().getStringArray(R.array.voice_type);
-//
-//        mFileName = items[mRecordType] + System.currentTimeMillis() + ".amr";
-//
-//        RecorderHelper.getInstance().setPath(FileUtils.getVoiceFilePath(mFileName));
-//        RecorderHelper.getInstance().setRecorderListener(mOnRecorderListener);
-        AudioRecordHelper.getInstance().init();
-        AudioRecordHelper.getInstance().setRecorderListener(mOnRecorderListener);
+        String[] items = getResources().getStringArray(R.array.voice_type);
+
+        mFileName = items[mRecordType] + System.currentTimeMillis() + ".wav";
+
+        RecorderHelper.getInstance().setPath(BabyVoiceApp.DATA_DIRECTORY + mFileName);
+        RecorderHelper.getInstance().setRecorderListener(mOnRecorderListener);
     }
 
     @Override
@@ -98,29 +100,12 @@ public class VoiceRecordFragment extends BaseFragment {
                 String text = recordText.getText().toString().trim();
                 if (StringUtils.areEqual(text, "开始")) {
                     recordText.setText("完成");
-//                    RecorderHelper.getInstance().startRecord();
-                    AudioRecordHelper.getInstance()
-                            .startRecord();
-//                            .observeOn(AndroidSchedulers.mainThread())
-//                            .subscribeOn(AndroidSchedulers.mainThread())
-//                            .subscribe(new Action1<Void>() {
-//                                @Override
-//                                public void call(Void aVoid) {
-//                                    Logger.i("11111111111");
-//                                }
-//                            }, new Action1<Throwable>() {
-//                                @Override
-//                                public void call(Throwable throwable) {
-//                                    Logger.e("11111111111---%s", throwable.toString());
-//                                }
-//                            });
+                    RecorderHelper.getInstance().startRecord();
                 } else {
 //                    RecorderHelper.getInstance().cancel();
                     mAnimatedRecordingView.stop();
                     recordText.setText("开始");
                     gotoVoiceSaveFragment();
-                    AudioRecordHelper.getInstance()
-                            .stopRecord();
 
                 }
             }
@@ -238,7 +223,8 @@ public class VoiceRecordFragment extends BaseFragment {
             mVoiceSaveFragment = VoiceSaveFragment.create();
         }
         Bundle bundle = new Bundle();
-        bundle.putString("fileName", mFileName);
+        bundle.putInt("type", mRecordType);
+        bundle.putString("fileName", mFileName.substring(0, mFileName.indexOf(".")));
         mVoiceSaveFragment.setArguments(bundle);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.hide(this);
