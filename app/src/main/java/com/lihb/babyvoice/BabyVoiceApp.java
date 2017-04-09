@@ -1,8 +1,6 @@
 package com.lihb.babyvoice;
 
 import android.app.Application;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Environment;
 
 import com.bumptech.glide.Glide;
@@ -21,8 +19,7 @@ import java.io.InputStream;
 
 public class BabyVoiceApp extends Application {
 
-    private final static String SHARED_PREF_NAME = "SHARE_PREF_FOR_100_ASK";
-    private final static String ISFIRST_LAUNCH_KEY = "isfirst_launch_pref_key";
+
     public static final String DATA_DIRECTORY = Environment
             .getExternalStorageDirectory() + "/babyVoiceRecord/";
 
@@ -31,7 +28,6 @@ public class BabyVoiceApp extends Application {
     private boolean mScreenOn = false;
 
     private BroadcastWatcher mBroadcastWatcher;
-    private SharedPreferences mSharedPref;
 
     private boolean mIsLogin = false;
 
@@ -59,7 +55,6 @@ public class BabyVoiceApp extends Application {
         mBroadcastWatcher = new BroadcastWatcher(this);
         mBroadcastWatcher.startWatch();
 
-        mSharedPref = getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
     }
 
     public static BabyVoiceApp getInstance() {
@@ -116,11 +111,5 @@ public class BabyVoiceApp extends Application {
         this.mScreenOn = mScreenOn;
     }
 
-    public boolean isFirstLaunch() {
-        return mSharedPref.getBoolean(ISFIRST_LAUNCH_KEY, true);
-    }
 
-    public void setFirstLaunch(boolean firstLaunch) {
-        mSharedPref.edit().putBoolean(ISFIRST_LAUNCH_KEY, firstLaunch).apply();
-    }
 }

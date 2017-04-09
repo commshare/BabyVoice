@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.lihb.babyvoice.BabyVoiceApp;
 import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.command.BaseAndroidCommand;
 import com.lihb.babyvoice.command.NetStateChangedCommand;
@@ -20,6 +19,7 @@ import com.lihb.babyvoice.utils.FileUtils;
 import com.lihb.babyvoice.utils.NetworkHelper;
 import com.lihb.babyvoice.utils.RecorderHelper;
 import com.lihb.babyvoice.utils.RxBus;
+import com.lihb.babyvoice.utils.SharedPreferencesUtil;
 import com.orhanobut.logger.Logger;
 
 import cn.sharesdk.framework.ShareSDK;
@@ -59,11 +59,11 @@ public class NewMainActivity extends BaseFragmentActivity {
         initViews();
         checkNetStatus();
 //        addStatusBarView();
-        if (BabyVoiceApp.getInstance().isFirstLaunch()) {
+        if (SharedPreferencesUtil.isFirstLaunch(this)) {
             FileUtils.insertPregnantData(FileUtils.getPregnantData(this));
             FileUtils.insertVaccineData(FileUtils.getVaccineData(this));
         }
-        BabyVoiceApp.getInstance().setFirstLaunch(false);
+        SharedPreferencesUtil.setFirstLaunch(this, false);
 //        queryData();
 
     }

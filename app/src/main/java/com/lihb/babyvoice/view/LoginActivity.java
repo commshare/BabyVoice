@@ -26,11 +26,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.lihb.babyvoice.BabyVoiceApp;
 import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragmentActivity;
 import com.lihb.babyvoice.utils.CommonToast;
+import com.lihb.babyvoice.utils.SharedPreferencesUtil;
 import com.orhanobut.logger.Logger;
 
 /**
@@ -217,7 +217,7 @@ public class LoginActivity extends BaseFragmentActivity {
 
     private void handleLoginSuccess() {
         Logger.i("handleLoginSuccess");
-        BabyVoiceApp.getInstance().setFirstLaunch(false);
+        SharedPreferencesUtil.setFirstLaunch(this, false);
         // 账号的保存，用于自动登录
 //		BabyVoiceApp.getInstance().getUserInfo().getAccountManager()
 //				.saveLoginAccount(mLoginAccount);

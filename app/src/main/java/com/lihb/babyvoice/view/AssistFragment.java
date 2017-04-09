@@ -12,6 +12,7 @@ import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.customview.CommonItem;
 import com.lihb.babyvoice.customview.base.BaseFragment;
 import com.lihb.babyvoice.utils.CommonToast;
+import com.lihb.babyvoice.utils.SharedPreferencesUtil;
 
 /**
  * Created by lhb on 2017/2/8.
@@ -35,6 +36,8 @@ public class AssistFragment extends BaseFragment {
     public static final int ITEM_GROWUP  = 5;
     public static final int ITEM_CARE_MALL  = 6;
     public static final int ITEM_EXPERT_ONLINE  = 7;
+
+    private BaseFragment mFragment;
 
     public static AssistFragment create() {
         return new AssistFragment();
@@ -83,8 +86,13 @@ public class AssistFragment extends BaseFragment {
         itemCheckAssist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonToast.showShortToast("itemCheckAssist");
-                gotoDateSelectFragment(ITEM_EXAMINE);
+//                CommonToast.showShortToast("itemCheckAssist");
+                if (SharedPreferencesUtil.isFirstSetPregnantDate(getContext())) {
+                    gotoDateSelectFragment(ITEM_EXAMINE);
+                }else {
+                    mFragment = PregnantExamineFragment.create();
+                    gotoNextFragment(mFragment);
+                }
 
             }
         });
@@ -93,8 +101,13 @@ public class AssistFragment extends BaseFragment {
         itemVaccineAssist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonToast.showShortToast("itemVaccineAssist");
-                gotoDateSelectFragment(ITEM_VACCINE);
+//                CommonToast.showShortToast("itemVaccineAssist");
+                if (SharedPreferencesUtil.isFirstSetBabyBirthday(getContext())) {
+                    gotoDateSelectFragment(ITEM_VACCINE);
+                }else {
+                    mFragment = VaccineFragment.create();
+                    gotoNextFragment(mFragment);
+                }
             }
         });
 
@@ -102,8 +115,11 @@ public class AssistFragment extends BaseFragment {
         itemHealthProtectAssist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonToast.showShortToast("itemHealthProtectAssist");
-                gotoDateSelectFragment(ITEM_HEALTH_PROTECT);
+//                CommonToast.showShortToast("itemHealthProtectAssist");
+//                gotoDateSelectFragment(ITEM_HEALTH_PROTECT);
+                mFragment = HealthProtectFragment.create();
+                gotoNextFragment(mFragment);
+
             }
         });
 
@@ -111,8 +127,14 @@ public class AssistFragment extends BaseFragment {
         itemGrowUpRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonToast.showShortToast("itemGrowUpRecord");
-                gotoDateSelectFragment(ITEM_GROWUP);
+//                CommonToast.showShortToast("itemGrowUpRecord");
+//                gotoDateSelectFragment(ITEM_GROWUP);
+                if (SharedPreferencesUtil.isFirstSetBabyBirthday(getContext())) {
+                    gotoDateSelectFragment(ITEM_GROWUP);
+                }else {
+                    mFragment = GrowUpFragment.create();
+                    gotoNextFragment(mFragment);
+                }
             }
         });
 
@@ -148,6 +170,27 @@ public class AssistFragment extends BaseFragment {
                 .addToBackStack(null)
                 .commit();
 
+    }
+
+    private void gotoNextFragment(BaseFragment fragment) {
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.hide(this);
+        String tag="PregnantExamineFragment";
+        if (fragment instanceof PregnantExamineFragment) {
+            tag = "PregnantExamineFragment";
+        } else if (fragment instanceof VaccineFragment) {
+            tag = "VaccineFragment";
+        }
+        else if (fragment instanceof HealthProtectFragment) {
+            tag = "HealthProtectFragment";
+        }
+        else if (fragment instanceof GrowUpFragment) {
+            tag = "GrowUpFragment";
+        }
+        transaction.add(R.id.main_layout, fragment, tag)
+                .show(fragment)
+                .addToBackStack(null)
+                .commit();
     }
 
 }

@@ -2,6 +2,7 @@ package com.lihb.babyvoice.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +19,16 @@ import com.lihb.babyvoice.utils.CommonToast;
 
 public class MeFragment extends BaseFragment {
 
+    public static final int ITEM_SET_PREGNANT_DATE  = 100;
+    public static final int ITEM_SET_BABY_BIRTHDAY  = 200;
+
     private CommonItem itemMeCenter;
     private CommonItem itemPregnantDate;
     private CommonItem itemBabyInfo;
 //    private CommonItem itemRemoteVideoAddress;
     private CommonItem itemLanguageSelect;
     private CommonItem itemAboutApp;
+    private DateSelectFragment mDateSelectFragment;
 
     public static MeFragment create() {
         return new MeFragment();
@@ -73,6 +78,7 @@ public class MeFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 CommonToast.showShortToast("itemPregnantDate");
+                gotoDateSelectFragment(ITEM_SET_PREGNANT_DATE);
             }
         });
 
@@ -81,6 +87,7 @@ public class MeFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 CommonToast.showShortToast("itemBabyInfo");
+                gotoDateSelectFragment(ITEM_SET_BABY_BIRTHDAY);
             }
         });
 
@@ -108,6 +115,22 @@ public class MeFragment extends BaseFragment {
             }
         });
 
+
+    }
+
+    private void gotoDateSelectFragment(int type) {
+        if (null == mDateSelectFragment) {
+            mDateSelectFragment = DateSelectFragment.create();
+        }
+        Bundle bundle = new Bundle();
+        bundle.putInt("itemType", type);
+        mDateSelectFragment.setArguments(bundle);
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.hide(this);
+        transaction.add(R.id.main_layout, mDateSelectFragment, "DateSelectFragment")
+                .show(mDateSelectFragment)
+                .addToBackStack(null)
+                .commit();
 
     }
 

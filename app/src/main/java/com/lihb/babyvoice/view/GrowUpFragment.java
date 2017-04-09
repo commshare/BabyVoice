@@ -21,6 +21,7 @@ import com.lihb.babyvoice.customview.base.BaseRecyclerView;
 import com.lihb.babyvoice.db.impl.GrowUpImpl;
 import com.lihb.babyvoice.model.GrowUpRecord;
 import com.lihb.babyvoice.utils.CommonToast;
+import com.lihb.babyvoice.utils.SharedPreferencesUtil;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
@@ -46,8 +47,9 @@ public class GrowUpFragment extends BaseFragment {
 
     private static final int COUNT = 10;
 
+    private int mSelYear, mSelMonth, mSelDay;
+
     private TitleBar mTitleBar;
-    private EditGrowUpRecordActivity mEditGrowUpRecordFragment;
 
     public static GrowUpFragment create() {
         return new GrowUpFragment();
@@ -57,8 +59,18 @@ public class GrowUpFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Bundle bundle = getArguments();
         if (bundle != null) {
-//            mFileName = bundle.getString("fileName");
+            mSelYear = bundle.getInt("selYear");
+            mSelMonth = bundle.getInt("selMonth");
+            mSelDay = bundle.getInt("selDay");
         }
+        if(mSelYear == 0 || mSelMonth == 0 || mSelDay == 0) {
+            String pregnantDateInfo = SharedPreferencesUtil.getBabyBirthDayInfo(getContext());
+            String[] array = pregnantDateInfo.split("/");
+            mSelYear  = Integer.valueOf(array[0]);
+            mSelMonth = Integer.valueOf(array[1]);
+            mSelDay   = Integer.valueOf(array[2]);
+        }
+        CommonToast.showShortToast(mSelYear + "/" + mSelMonth + "/" + mSelDay);
         return inflater.inflate(R.layout.fragment_grow_up, container, false);
     }
 

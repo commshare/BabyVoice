@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.lihb.babyvoice.R;
@@ -29,6 +31,11 @@ public class ImageBrowseActivity extends Activity implements ViewPager.OnPageCha
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //设置无标题
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //设置全屏
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         this.setContentView(R.layout.activity_image_browse);
         vp = (ViewPager) this.findViewById(R.id.viewPager);
         hint = (TextView) this.findViewById(R.id.hint);

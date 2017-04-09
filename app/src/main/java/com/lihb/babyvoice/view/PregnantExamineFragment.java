@@ -18,6 +18,7 @@ import com.lihb.babyvoice.customview.base.BaseFragment;
 import com.lihb.babyvoice.db.impl.PregnantDataImpl;
 import com.lihb.babyvoice.model.ProductionInspection;
 import com.lihb.babyvoice.utils.CommonToast;
+import com.lihb.babyvoice.utils.SharedPreferencesUtil;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
@@ -57,8 +58,16 @@ public class PregnantExamineFragment extends BaseFragment {
             mSelYear = bundle.getInt("selYear");
             mSelMonth = bundle.getInt("selMonth");
             mSelDay = bundle.getInt("selDay");
-            CommonToast.showShortToast(mSelYear + "-" + mSelMonth + "-" + mSelDay);
         }
+
+        if(mSelYear == 0 || mSelMonth == 0 || mSelDay == 0) {
+            String pregnantDateInfo = SharedPreferencesUtil.getPregnantDateInfo(getContext());
+            String[] array = pregnantDateInfo.split("/");
+            mSelYear  = Integer.valueOf(array[0]);
+            mSelMonth = Integer.valueOf(array[1]);
+            mSelDay   = Integer.valueOf(array[2]);
+        }
+        CommonToast.showShortToast(mSelYear + "/" + mSelMonth + "/" + mSelDay);
         return inflater.inflate(R.layout.fragment_pregnant_examine, container, false);
     }
 
