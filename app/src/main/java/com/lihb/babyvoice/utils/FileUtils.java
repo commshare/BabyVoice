@@ -4,7 +4,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
 import android.os.Environment;
+import android.text.TextUtils;
 
 import com.lihb.babyvoice.db.impl.PregnantDataImpl;
 import com.lihb.babyvoice.db.impl.VaccineDataImpl;
@@ -516,6 +518,18 @@ public class FileUtils {
                         Logger.e("insert vaccineData failed. " + throwable.getMessage());
                     }
                 });
+    }
+
+    public static String getVoiceDuration(String path) {
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        retriever.setDataSource(path); //在获取前，设置文件路径（应该只能是本地路径）
+        String duration =  retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+        retriever.release(); //释放
+        if(!TextUtils.isEmpty(duration)){
+            long dur = Long.parseLong(duration) / 1000;
+            return dur+"";
+        }
+        return -1+"";
     }
 
 }

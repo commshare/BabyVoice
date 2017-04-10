@@ -151,8 +151,8 @@ public class VoiceSaveFragment extends BaseFragment {
         babyVoice.name = mEditText.getText().toString().trim() + SUFFIX;
         babyVoice.date = sdf.format(new Date());
         babyVoice.category = items[mRecordType];
-        babyVoice.duration = "100"; // FIXME: 2017/4/9
         babyVoice.url = FileUtils.getVoiceFilePath(mEditText.getText().toString().trim() + SUFFIX);
+        babyVoice.duration = FileUtils.getVoiceDuration(babyVoice.url); // FIXME: 2017/4/9
         BabyVoiceDataImpl.getInstance().insertData(babyVoice)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
