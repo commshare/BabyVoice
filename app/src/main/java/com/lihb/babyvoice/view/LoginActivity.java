@@ -17,6 +17,7 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,11 +28,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lihb.babyvoice.R;
+import com.lihb.babyvoice.action.ApiManager;
+import com.lihb.babyvoice.action.ServiceGenerator;
 import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragmentActivity;
+import com.lihb.babyvoice.model.HttpResponse;
 import com.lihb.babyvoice.utils.CommonToast;
 import com.lihb.babyvoice.utils.SharedPreferencesUtil;
 import com.orhanobut.logger.Logger;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by lhb on 2017/4/1.
@@ -45,7 +53,6 @@ public class LoginActivity extends BaseFragmentActivity {
 
     private Button mLoginBtn;
 
-    private String mUserAccount;
 
     private String mPassword;
 
@@ -280,14 +287,29 @@ public class LoginActivity extends BaseFragmentActivity {
             showDialog("帐号不能为空！");
             return;
         }
-        if (TextUtils.equals(mLoginAccount, "admin") && TextUtils.equals(mPassword, "123456")) {
-            CommonToast.showShortToast("登录成功");
-            Intent intent = new Intent(LoginActivity.this, NewMainActivity.class);
-            startActivity(intent);
-            finish();
-        }else {
-            CommonToast.showShortToast("登录失败，账户：admin，密码：123456,请重新登录");
-        }
+
+        ServiceGenerator.createService(ApiManager.class)
+                .loginByPassword(userAccount, password)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Action1<HttpResponse<Void>>() {
+                    @Override
+                    public void call(HttpResponse<Void> httpResponse) {
+                        Log.i("lihb", httpResponse.toString());
+                        if (httpResponse.code == 0) {
+                            // 成功
+                            CommonToast.showShortToast("登录成功");
+                            Intent intent = new Intent(LoginActivity.this, NewMainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        CommonToast.showShortToast("登录失败，请重新登录!");
+                    }
+                });
 
     }
 

@@ -8,6 +8,7 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -17,9 +18,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lihb.babyvoice.R;
+import com.lihb.babyvoice.action.ApiManager;
+import com.lihb.babyvoice.action.ServiceGenerator;
 import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragmentActivity;
+import com.lihb.babyvoice.model.BabyVoice;
+import com.lihb.babyvoice.model.HttpResList;
+import com.lihb.babyvoice.model.HttpResponse;
 import com.lihb.babyvoice.utils.CommonToast;
+import com.orhanobut.logger.Logger;
+
+import java.util.List;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by lhb on 2017/4/1.
@@ -220,11 +233,31 @@ public class RegisterActivity extends BaseFragmentActivity {
             showDialog("帐号和密码不能为空！");
             return;
         }
-//        showProgressDialog("正在注册...");
-        CommonToast.showShortToast("注册成功");
-        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-        startActivity(intent);
-        finish();
+        showProgressDialog("正在注册...");
+
+        ServiceGenerator.createService(ApiManager.class)
+            .register(userAccount, password,userAccount)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<HttpResponse<Void>>() {
+                    @Override
+                    public void call(HttpResponse<Void> voidHttpResponse) {
+                        if (voidHttpResponse.code == 200) {
+                            dismissLoginDialog();
+                            CommonToast.showShortToast("注册成功");
+                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        dismissLoginDialog();
+                        CommonToast.showShortToast("注册失败");
+                        Log.e("error:", throwable.toString());
+                    }
+                });
 
     }
 

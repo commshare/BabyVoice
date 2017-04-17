@@ -78,11 +78,83 @@ public interface ApiManager {
             @Query("start") int start,
             @Query("end") int end);
 
+    /*-----------------------------------------------成长记录---------------------------------*/
+
+    /**
+     * 获取成长记录数据
+     */
+    @GET("mobile/growup/itemList.do")
+    Observable<HttpResponse<GrowUpRecord>> getGrowupRecord(
+            @Query("page") int page,
+            @Query("rows") int rows);
+
     /**
      * 上传成长记录数据
      */
-    @POST("/growup/create")
-    Observable<HttpResponse<GrowUpRecord>> createGrowupRecord(@Body GrowUpRecord record);
+    @GET("mobile/growup/addInfo.do")
+    Observable<HttpResponse<GrowUpRecord>> createGrowupRecord(
+            @Query("createdate") String createDate,
+            @Query("content") String content,
+            @Query("username") String userName,
+            @Query("pic1") String pic1,
+            @Query("pic2") String pic2);
+
+
+    /**
+     * 删除成长记录数据
+     */
+    @GET("mobile/growup/deleteInfo.do")
+    Observable<HttpResponse<GrowUpRecord>> delGrowupRecord(
+            @Query("id") int id);
+
+/*-----------------------------------------------注册登录---------------------------------------*/
+    /**
+     * 获取手机验证码
+     * @param mobileNumber
+     * @return
+     */
+    @GET("web/getMobileCode.do")
+    Observable<HttpResponse<Void>> getSmsCode(
+            @Query("mobilenumber") String mobileNumber);
+
+
+
+    /**
+     * 手机验证码登录
+     * @param mobileNumber
+     * @param smsCode
+     * @return
+     */
+    @GET("web/applogin.do")
+    Observable<HttpResponse<Void>> loginBySmsCode(
+            @Query("mobilenumber") String mobileNumber,
+            @Query("smscode")String smsCode);
+
+
+    /**
+     * 用户密码登录
+     * @param userName
+     * @param passWord
+     * @return
+     */
+    @GET("mobile/login.do")
+    Observable<HttpResponse<Void>> loginByPassword(
+            @Query("username") String userName,
+            @Query("password") String passWord);
+
+
+    /**
+     * 用户注册
+     * @param userName
+     * @param passWord
+     * @param realName
+     * @return
+     */
+    @GET("mobile/user/registerUser.do")
+    Observable<HttpResponse<Void>> register(
+            @Query("username") String userName,
+            @Query("password") String passWord,
+            @Query("realname") String realName);
 }
 
 

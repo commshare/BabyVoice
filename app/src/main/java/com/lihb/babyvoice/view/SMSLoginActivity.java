@@ -8,6 +8,7 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -15,10 +16,23 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.lihb.babyvoice.BabyVoiceApp;
 import com.lihb.babyvoice.R;
+import com.lihb.babyvoice.action.ApiManager;
+import com.lihb.babyvoice.action.ServiceGenerator;
 import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragmentActivity;
+import com.lihb.babyvoice.model.BabyVoice;
+import com.lihb.babyvoice.model.GrowUpRecord;
+import com.lihb.babyvoice.model.HttpResponse;
 import com.lihb.babyvoice.utils.CommonToast;
+import com.orhanobut.logger.Logger;
+
+import javax.security.auth.login.LoginException;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Administrator on 2017/4/3.
@@ -82,15 +96,7 @@ public class SMSLoginActivity  extends BaseFragmentActivity {
                     CommonToast.showShortToast("请勾选同意协议");
                     return;
                 }
-//                login(mLoginAccount, mPassword);
-                if (TextUtils.equals(mLoginAccount, "admin") && TextUtils.equals(mPassword, "123456")) {
-                    CommonToast.showShortToast("登录成功");
-                    Intent intent = new Intent(SMSLoginActivity.this, NewMainActivity.class);
-                    startActivity(intent);
-                    finish();
-                }else {
-                    CommonToast.showShortToast("登录失败，账户：admin，密码：123456,请重新登录");
-                }
+                login(mLoginAccount, mPassword);
             }
         });
         mTitleBar = (TitleBar) findViewById(R.id.title_bar);
@@ -148,7 +154,7 @@ public class SMSLoginActivity  extends BaseFragmentActivity {
                 } else {
                     mPwdClearInputImg.setVisibility(View.GONE);
                 }
-                if (s.length() > 5) {
+                if (s.length() > 3) {
                     mLoginBtn.setBackgroundResource(R.drawable.register_login_pressed_shape);
                 } else {
                     mLoginBtn.setBackgroundResource(R.drawable.register_login_normal_shape);
@@ -189,7 +195,7 @@ public class SMSLoginActivity  extends BaseFragmentActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 // TODO Auto-generated method stub
-                if (s.length() > 0) {
+                if (s.length() > 10) {
                     mAccountClearInputImg.setVisibility(View.VISIBLE);
                     mSendCodeBtn.setEnabled(true);
                     mSendCodeBtn.setBackgroundResource(R.drawable.register_login_pressed_shape);
@@ -233,16 +239,62 @@ public class SMSLoginActivity  extends BaseFragmentActivity {
             @Override
             public void onClick(View v) {
                 CommonToast.showLongToast("验证码正火速发往您的手机中，请及时查收！");
-                // FIXME: 2017/4/3 发送短信
-
-//                修改ui,倒计时1分钟
+                // 成功,修改ui,倒计时1分钟
                 if (null != mCountDownTimer) {
                     mCountDownTimer.start();
                 }
+                mLoginAccount = mUserAccountEditText.getText().toString();
+                Log.e("lihb", "onClick: account = " + mLoginAccount);
+                ServiceGenerator.createService(ApiManager.class)
+                        .getSmsCode(mLoginAccount)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeOn(Schedulers.io())
+                        .subscribe(new Action1<HttpResponse<Void>>() {
+                            @Override
+                            public void call(HttpResponse<Void> httpResponse) {
+                                Log.i("lihb", httpResponse.toString());
+                                if (httpResponse.code == 0) {
+
+                                }
+                            }
+                        }, new Action1<Throwable>() {
+                            @Override
+                            public void call(Throwable throwable) {
+                                Logger.e("error-->" + throwable.toString());
+                                CommonToast.showShortToast("发送失败。");
+                            }
+                        });
 
             }
         });
 
+    }
+
+    private void login(final String loginAccount, String password) {
+        ServiceGenerator.createService(ApiManager.class)
+                .loginBySmsCode(loginAccount, password)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Action1<HttpResponse<Void>>() {
+                    @Override
+                    public void call(HttpResponse<Void> httpResponse) {
+                        Log.i("lihb", httpResponse.toString());
+                        if (httpResponse.code == 0) {
+                            // 成功
+                            CommonToast.showShortToast("登录成功");
+                            BabyVoiceApp.getInstance().setLogin(true);
+                            BabyVoiceApp.currUserName = loginAccount;
+                            Intent intent = new Intent(SMSLoginActivity.this, NewMainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        CommonToast.showShortToast("登录失败，请重新登录!");
+                    }
+                });
     }
 
     @Override

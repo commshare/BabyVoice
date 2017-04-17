@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.lihb.babyvoice.BabyVoiceApp;
 import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.action.ApiManager;
 import com.lihb.babyvoice.action.ServiceGenerator;
@@ -111,7 +112,7 @@ public class EditGrowUpRecordActivity extends BaseFragmentActivity {
      */
     private void uploadToServer(final GrowUpRecord growUpRecord) {
         ServiceGenerator.createService(ApiManager.class)
-                .createGrowupRecord(growUpRecord)
+                .createGrowupRecord(growUpRecord.date, growUpRecord.content, BabyVoiceApp.currUserName , growUpRecord.picList.get(0), growUpRecord.picList.get(1))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Action1<HttpResponse<GrowUpRecord>>() {

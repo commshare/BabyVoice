@@ -23,6 +23,8 @@ public class BabyVoiceApp extends Application {
     public static final String DATA_DIRECTORY = Environment
             .getExternalStorageDirectory() + "/babyVoiceRecord/";
 
+    public static  String currUserName;
+
     private static BabyVoiceApp instance = null;
 
     private boolean mScreenOn = false;
