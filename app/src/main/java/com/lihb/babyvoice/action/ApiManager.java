@@ -49,7 +49,7 @@ public interface ApiManager {
      * @param count 获取数量
      * @return
      */
-    @GET("getVoiceRecords")
+    @GET("getVoiceRecords.do")
     Observable<HttpResponse<HttpResList<BabyVoice>>> getBabyVoiceRecord(
             @Query("start") int start,
             @Query("count") int count);

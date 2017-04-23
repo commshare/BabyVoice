@@ -1,12 +1,12 @@
 package com.lihb.babyvoice.view;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -22,13 +22,10 @@ import com.lihb.babyvoice.action.ApiManager;
 import com.lihb.babyvoice.action.ServiceGenerator;
 import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragmentActivity;
-import com.lihb.babyvoice.model.BabyVoice;
-import com.lihb.babyvoice.model.GrowUpRecord;
 import com.lihb.babyvoice.model.HttpResponse;
 import com.lihb.babyvoice.utils.CommonToast;
+import com.lihb.babyvoice.utils.SharedPreferencesUtil;
 import com.orhanobut.logger.Logger;
-
-import javax.security.auth.login.LoginException;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -119,7 +116,6 @@ public class SMSLoginActivity  extends BaseFragmentActivity {
                     mIsPwdVisiable = true;
                 } else {
                     mUserPasswordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    ;
                     mPwdShowImg.setImageResource(R.mipmap.by);
                     mIsPwdVisiable = false;
                 }
@@ -270,7 +266,7 @@ public class SMSLoginActivity  extends BaseFragmentActivity {
 
     }
 
-    private void login(final String loginAccount, String password) {
+    private void login(final String loginAccount, final String password) {
         ServiceGenerator.createService(ApiManager.class)
                 .loginBySmsCode(loginAccount, password)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -282,6 +278,8 @@ public class SMSLoginActivity  extends BaseFragmentActivity {
                         if (httpResponse.code == 0) {
                             // 成功
                             CommonToast.showShortToast("登录成功");
+                            saveToPreferences(loginAccount, password);
+                            SharedPreferencesUtil.setFirstLaunch(SMSLoginActivity.this, false);
                             BabyVoiceApp.getInstance().setLogin(true);
                             BabyVoiceApp.currUserName = loginAccount;
                             Intent intent = new Intent(SMSLoginActivity.this, NewMainActivity.class);
@@ -295,6 +293,26 @@ public class SMSLoginActivity  extends BaseFragmentActivity {
                         CommonToast.showShortToast("登录失败，请重新登录!");
                     }
                 });
+    }
+
+    /**
+     * 简单保存到SharedPreferences中
+     * @param username
+     * @param password
+     */
+    private void saveToPreferences(String username, String password) {
+        //创建sharedPreference对象，info表示文件名，MODE_PRIVATE表示访问权限为私有的
+        SharedPreferences sp = getSharedPreferences("userinfo", MODE_PRIVATE);
+
+        //获得sp的编辑器
+        SharedPreferences.Editor ed = sp.edit();
+
+        //以键值对的显示将用户名和密码保存到sp中
+        ed.putString("username", username);
+        ed.putString("password", password);
+
+        //提交用户名和密码
+        ed.apply();
     }
 
     @Override

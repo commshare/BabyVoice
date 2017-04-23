@@ -136,6 +136,7 @@
             android:layout_height="25dp"
             android:background="@drawable/login_checkbox_selector"
             android:button="@null"
+            android:checked="true"
             />
         <TextView
             android:layout_width="0dp"

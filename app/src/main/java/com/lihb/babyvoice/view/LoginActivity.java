@@ -11,6 +11,7 @@ package com.lihb.babyvoice.view;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -27,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lihb.babyvoice.BabyVoiceApp;
 import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.action.ApiManager;
 import com.lihb.babyvoice.action.ServiceGenerator;
@@ -35,7 +37,6 @@ import com.lihb.babyvoice.customview.base.BaseFragmentActivity;
 import com.lihb.babyvoice.model.HttpResponse;
 import com.lihb.babyvoice.utils.CommonToast;
 import com.lihb.babyvoice.utils.SharedPreferencesUtil;
-import com.orhanobut.logger.Logger;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -80,21 +81,54 @@ public class LoginActivity extends BaseFragmentActivity {
     }
 
     private void initViews() {
+        mTitleBar = (TitleBar) findViewById(R.id.title_bar);
         mAccountClearInputImg = (ImageView) findViewById(R.id.account_clear_input);
+        mUserAccountEditText = (EditText) findViewById(R.id.account);
+        mUserPasswordEditText = (EditText) findViewById(R.id.password);
+        mSmsLoginTxt = (TextView) findViewById(R.id.sms_login_txt);
+        mLoginBtn = (Button) findViewById(R.id.login_btn);
+        mPwdClearInputImg = (ImageView) findViewById(R.id.pwd_clear_input);
+        mPwdShowImg = (ImageView) findViewById(R.id.pwd_show);
+
         mAccountClearInputImg.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 mUserAccountEditText.setText("");
             }
         });
-        mPwdClearInputImg = (ImageView) findViewById(R.id.pwd_clear_input);
         mPwdClearInputImg.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 mUserPasswordEditText.setText("");
             }
         });
-        mLoginBtn = (Button) findViewById(R.id.login_btn);
+
+
+        SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
+
+        mLoginAccount = sharedPreferences.getString("username", "");
+        mPassword = sharedPreferences.getString("password", "");
+        if (mLoginAccount.length() > 0) {
+            mAccountClearInputImg.setVisibility(View.VISIBLE);
+        } else {
+            mAccountClearInputImg.setVisibility(View.GONE);
+        }
+        if (mPassword.length() > 0) {
+            mPwdClearInputImg.setVisibility(View.VISIBLE);
+        } else {
+            mPwdClearInputImg.setVisibility(View.GONE);
+        }
+
+        if (mPassword.length() > 3) {
+            mLoginBtn.setBackgroundResource(R.drawable.register_login_pressed_shape);
+        } else {
+            mLoginBtn.setBackgroundResource(R.drawable.register_login_normal_shape);
+        }
+
+        mUserAccountEditText.setText(mLoginAccount);
+        mUserPasswordEditText.setText(mPassword);
+
+
         mLoginBtn.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -106,7 +140,7 @@ public class LoginActivity extends BaseFragmentActivity {
 //				loginWithPassword(mLoginAccount, mPassword);
             }
         });
-        mTitleBar = (TitleBar) findViewById(R.id.title_bar);
+
         mTitleBar.setLeftOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,7 +150,7 @@ public class LoginActivity extends BaseFragmentActivity {
             }
         });
 
-        mPwdShowImg = (ImageView) findViewById(R.id.pwd_show);
+
         mPwdShowImg.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,7 +169,7 @@ public class LoginActivity extends BaseFragmentActivity {
         });
 
 
-        mUserPasswordEditText = (EditText) findViewById(R.id.password);
+
         mUserPasswordEditText.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -161,7 +195,7 @@ public class LoginActivity extends BaseFragmentActivity {
                     mPwdClearInputImg.setVisibility(View.GONE);
                 }
 
-                if (s.length() > 5) {
+                if (s.length() > 3) {
                     mLoginBtn.setBackgroundResource(R.drawable.register_login_pressed_shape);
                 } else {
                     mLoginBtn.setBackgroundResource(R.drawable.register_login_normal_shape);
@@ -177,7 +211,7 @@ public class LoginActivity extends BaseFragmentActivity {
             }
         });
 
-        mUserAccountEditText = (EditText) findViewById(R.id.account);
+
         InputFilter[] filters = {new InputFilter.LengthFilter(255)};
         mUserAccountEditText.setFilters(filters);
         mUserAccountEditText.addTextChangedListener(new TextWatcher() {
@@ -210,7 +244,7 @@ public class LoginActivity extends BaseFragmentActivity {
             }
         });
 
-        mSmsLoginTxt = (TextView) findViewById(R.id.sms_login_txt);
+
         mSmsLoginTxt.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -220,22 +254,6 @@ public class LoginActivity extends BaseFragmentActivity {
             }
         });
 
-    }
-
-    private void handleLoginSuccess() {
-        Logger.i("handleLoginSuccess");
-        SharedPreferencesUtil.setFirstLaunch(this, false);
-        // 账号的保存，用于自动登录
-//		BabyVoiceApp.getInstance().getUserInfo().getAccountManager()
-//				.saveLoginAccount(mLoginAccount);
-//		BabyVoiceApp.getInstance().getUserInfo().getAccountManager()
-//				.saveAccount(mLoginAccount);
-//		BabyVoiceApp.getInstance().getUserInfo().getAccountManager()
-//				.savePassword(mPassword);
-        // 跳转到主界面
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(intent);
-        finish();
     }
 
     @Override
@@ -299,6 +317,10 @@ public class LoginActivity extends BaseFragmentActivity {
                         if (httpResponse.code == 0) {
                             // 成功
                             CommonToast.showShortToast("登录成功");
+                            SharedPreferencesUtil.setFirstLaunch(LoginActivity.this, false);
+                            saveToPreferences(userAccount, password);
+                            BabyVoiceApp.getInstance().setLogin(true);
+                            BabyVoiceApp.currUserName = userAccount;
                             Intent intent = new Intent(LoginActivity.this, NewMainActivity.class);
                             startActivity(intent);
                             finish();
@@ -308,10 +330,33 @@ public class LoginActivity extends BaseFragmentActivity {
                     @Override
                     public void call(Throwable throwable) {
                         CommonToast.showShortToast("登录失败，请重新登录!");
+                        Log.e("lihb", throwable.toString());
                     }
                 });
 
     }
+
+
+    /**
+     * 简单保存到SharedPreferences中
+     * @param username
+     * @param password
+     */
+    private void saveToPreferences(String username, String password) {
+        //创建sharedPreference对象，info表示文件名，MODE_PRIVATE表示访问权限为私有的
+        SharedPreferences sp = getSharedPreferences("userinfo", MODE_PRIVATE);
+
+        //获得sp的编辑器
+        SharedPreferences.Editor ed = sp.edit();
+
+        //以键值对的显示将用户名和密码保存到sp中
+        ed.putString("username", username);
+        ed.putString("password", password);
+
+        //提交用户名和密码
+        ed.apply();
+    }
+
 
 
 }

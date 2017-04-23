@@ -10,6 +10,7 @@ import android.net.wifi.WifiManager;
 import android.support.annotation.NonNull;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.lihb.babyvoice.BabyVoiceApp;
 import com.lihb.babyvoice.Constant;
@@ -17,7 +18,6 @@ import com.lihb.babyvoice.command.HomeKeyPressedCommand;
 import com.lihb.babyvoice.command.IncomingPhoneCallCommand;
 import com.lihb.babyvoice.command.NetStateChangedCommand;
 import com.lihb.babyvoice.command.ScreenCommand;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +53,7 @@ public class BroadcastWatcher {
             mReceiver.addEventHandler(new BroadcastEventHandler(Intent.ACTION_ANSWER) {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    Logger.d("exception get: onHomePressed");
+                    Log.d(TAG,"exception get: onHomePressed");
                     RxBus.getDefault().post(new IncomingPhoneCallCommand());
                 }
             });
@@ -61,7 +61,7 @@ public class BroadcastWatcher {
             mReceiver.addEventHandler(new BroadcastEventHandler(Intent.ACTION_SCREEN_ON) {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    Logger.d("onScreenOn");
+                    Log.d(TAG,"onScreenOn");
                     mApp.setScreenOn(true);
                     RxBus.getDefault().post(new ScreenCommand(ScreenCommand.On));
                 }
@@ -70,14 +70,14 @@ public class BroadcastWatcher {
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     mApp.setScreenOn(false);
-                    Logger.d("onScreenOff");
+                    Log.d(TAG,"onScreenOff");
                     RxBus.getDefault().post(new ScreenCommand(ScreenCommand.Off));
                 }
             });
             mReceiver.addEventHandler(new BroadcastEventHandler(Intent.ACTION_USER_PRESENT) {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    Logger.d("onUserPresent");
+                    Log.d(TAG,"onUserPresent");
                     RxBus.getDefault().post(new ScreenCommand(ScreenCommand.Present));
                 }
             });
@@ -89,16 +89,16 @@ public class BroadcastWatcher {
             mReceiver.addEventHandler(new BroadcastEventHandler(Intent.ACTION_HEADSET_PLUG) {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    Logger.d("headset plug in?");
+                    Log.d(TAG,"headset plug in?");
                     if (intent.hasExtra("state")){
                         if (intent.getIntExtra("state", 0) == 0){
 //                            Toast.makeText(context, "headset not connected", Toast.LENGTH_LONG).show();
-                            Logger.i("headset not connected");
+                            Log.i(TAG,"headset not connected");
                             BabyVoiceApp.getInstance().setPlugIn(false);
                         }
                         else if (intent.getIntExtra("state", 0) == 1){
 //                            Toast.makeText(context, "headset connected", Toast.LENGTH_LONG).show();
-                            Logger.i("headset connected");
+                            Log.i(TAG,"headset connected");
                             BabyVoiceApp.getInstance().setPlugIn(true);
                         }
                     }
@@ -117,18 +117,18 @@ public class BroadcastWatcher {
             @Override
             public void onReceive(Context context, Intent intent) {
 
-                Logger.d("Network Rssi changed = " + intent);
+                Log.d(TAG,"Network Rssi changed = " + intent);
 
                 final long now = System.currentTimeMillis();
                 final WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
                 if (wifiManager == null) {
-                    Logger.e("Network get WIFI_SERVICE failed.");
+                    Log.e(TAG,"Network get WIFI_SERVICE failed.");
                     return;
                 }
 
                 final WifiInfo wifiInfo = wifiManager.getConnectionInfo();
                 if (wifiInfo == null) {
-                    Logger.e("Network get WifiInfo failed.");
+                    Log.e(TAG,"Network get WifiInfo failed.");
                     return;
                 }
 
@@ -159,7 +159,7 @@ public class BroadcastWatcher {
                 if (mCurrentNetworkType == networkType) {
                     return;
                 }
-                Logger.i("Network Type is %d", networkType);
+                Log.i(TAG,"Network Type is %d"+networkType);
 
                 mCurrentNetworkType = networkType;
                 NetStateChangedCommand cmd = new NetStateChangedCommand(NetStateChangedCommand.NetState.NET_STATE_NO_NETWORK);
@@ -185,11 +185,11 @@ public class BroadcastWatcher {
                 if (reason != null) {
                     if (reason.equals(SYSTEM_DIALOG_REASON_HOME_KEY)) {
                         // 短按home键
-                        Logger.d("exception get: on Home Pressed");
+                        Log.d(TAG,"exception get: on Home Pressed");
                         RxBus.getDefault().post(new HomeKeyPressedCommand());
                     } else if (reason.equals(SYSTEM_DIALOG_REASON_RECENT_APPS)) {
                         // 长按home键
-                        Logger.d("exception get: on Home Long Pressed");
+                        Log.d(TAG,"exception get: on Home Long Pressed");
                     }
                 }
             }
@@ -250,7 +250,7 @@ public class BroadcastWatcher {
                     }
                 }
             } catch (Throwable t) {
-                Logger.e("handle received action failed, action: %s,%s", action, t);
+                Log.e(TAG,"handle received action failed, action:"+ action);
             }
         }
     }

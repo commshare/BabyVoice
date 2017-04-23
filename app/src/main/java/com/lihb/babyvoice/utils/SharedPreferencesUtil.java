@@ -13,6 +13,7 @@ public class SharedPreferencesUtil {
     private final static String ISFIRST_LAUNCH_KEY = "isfirst_launch_pref_key";
     private final static String ISFIRST_SET_PREGNANT_DATE_KEY = "ISFIRST_SET_PREGNANT_DATE_KEY";
     private final static String ISFIRST_SET_BABY_BIRTHDAY_KEY = "ISFIRST_SET_BABY_BIRTHDAY_KEY";
+    private final static String SET_COOKIE_KEY = "SET_COOKIE_KEY";
 
     public static boolean isFirstLaunch(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -62,6 +63,16 @@ public class SharedPreferencesUtil {
     public static void setBabyBirthDayInfo(Context context, String BabyBirthDay) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         preferences.edit().putString("baby_birthday_date_info", BabyBirthDay).apply();
+    }
+
+    public static String getCookie(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(SET_COOKIE_KEY, "");
+    }
+
+    public static void setCookie(Context context, String cookieValue) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        preferences.edit().putString(SET_COOKIE_KEY, cookieValue).apply();
     }
 
 }

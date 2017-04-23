@@ -22,13 +22,8 @@ import com.lihb.babyvoice.action.ApiManager;
 import com.lihb.babyvoice.action.ServiceGenerator;
 import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragmentActivity;
-import com.lihb.babyvoice.model.BabyVoice;
-import com.lihb.babyvoice.model.HttpResList;
 import com.lihb.babyvoice.model.HttpResponse;
 import com.lihb.babyvoice.utils.CommonToast;
-import com.orhanobut.logger.Logger;
-
-import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -242,7 +237,7 @@ public class RegisterActivity extends BaseFragmentActivity {
                 .subscribe(new Action1<HttpResponse<Void>>() {
                     @Override
                     public void call(HttpResponse<Void> voidHttpResponse) {
-                        if (voidHttpResponse.code == 200) {
+                        if (voidHttpResponse.code == 0) {
                             dismissLoginDialog();
                             CommonToast.showShortToast("注册成功");
                             Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
