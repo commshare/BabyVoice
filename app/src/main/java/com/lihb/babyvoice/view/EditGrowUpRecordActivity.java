@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.lihb.babyvoice.BabyVoiceApp;
 import com.lihb.babyvoice.R;
@@ -18,10 +17,12 @@ import com.lihb.babyvoice.action.ServiceGenerator;
 import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragmentActivity;
 import com.lihb.babyvoice.db.impl.GrowUpImpl;
+import com.lihb.babyvoice.model.Article;
 import com.lihb.babyvoice.model.GrowUpRecord;
 import com.lihb.babyvoice.model.HttpResponse;
 import com.lihb.babyvoice.utils.CommonToast;
 import com.lihb.babyvoice.utils.NotificationCenter;
+import com.lihb.babyvoice.utils.StringUtils;
 import com.lihb.babyvoice.utils.UserProfileChangedNotification;
 import com.lihb.babyvoice.utils.camera.PhotoHelper;
 import com.orhanobut.logger.Logger;
@@ -30,7 +31,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -45,11 +50,16 @@ public class EditGrowUpRecordActivity extends BaseFragmentActivity {
     private static final int AVATAR_WIDTH_HEIGHT = 480;
     private TitleBar mTitleBar;
     private EditText mEditRecordTxt;
-    private TextView mEditDateTxt;
+    private EditText mEditDateTxt;
     private ImageView mAddPicImg1, mAddPicImg2, mDelImg1, mDelImg2;
-    private RelativeLayout mAddPicLayout1,mAddPicLayout2;
-    private String mPic1,mPic2;
+    private RelativeLayout mAddPicLayout1, mAddPicLayout2;
+    private String mPic1, mPic2;
 
+    public enum From {
+        PREGNANT_ZONE_FRAGMENT, GROWUP_FRAGMENT
+    }
+
+    From from;
 
 
     @Override
@@ -57,6 +67,7 @@ public class EditGrowUpRecordActivity extends BaseFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_grow_up_record);
         initView();
+        from = (From) getIntent().getSerializableExtra("from");
     }
 
 
@@ -73,22 +84,50 @@ public class EditGrowUpRecordActivity extends BaseFragmentActivity {
             @Override
             public void onClick(View v) {
                 CommonToast.showShortToast("save button was clicked.");
-                GrowUpRecord growUpRecord = new GrowUpRecord();
-                growUpRecord.date = mEditDateTxt.getText().toString();
-                growUpRecord.content = mEditRecordTxt.getText().toString();
-                growUpRecord.picList = new ArrayList<String>();
-                growUpRecord.picList.add(mPic1);
-                growUpRecord.picList.add(mPic2);
-                // 保存到数据库
-                insertItem(growUpRecord);
-                // 保存到服务器
-                uploadToServer(growUpRecord);
-                finish();
+                if (from == From.GROWUP_FRAGMENT) {
+                    GrowUpRecord growUpRecord = new GrowUpRecord();
+                    growUpRecord.date = mEditDateTxt.getText().toString();
+                    growUpRecord.content = mEditRecordTxt.getText().toString();
+                    growUpRecord.picList = new ArrayList<String>();
+                    growUpRecord.picList.add(mPic1);
+                    growUpRecord.picList.add(mPic2);
+                    // 保存到数据库
+                    insertGrowupRecordItem(growUpRecord);
+                    // 保存到服务器
+                    uploadGrowUpRecordToServer(growUpRecord);
+                    finish();
+                } else if (from == From.PREGNANT_ZONE_FRAGMENT) {
+                    Article article = new Article();
+                    article.realName = BabyVoiceApp.currUserName;
+                    article.type = 10000;
+                    article.time = System.currentTimeMillis();
+                    article.title = mEditDateTxt.getText().toString();
+                    article.content = mEditRecordTxt.getText().toString();
+                    if (!StringUtils.isEmpty(mPic1)) {
+                        String fileName1 = mPic1.substring(mPic1.lastIndexOf("/") + 1);
+                        article.attachment = fileName1 +",";
+                        if (!StringUtils.isEmpty(mPic2)) {
+                            String fileName2 = mPic2.substring(mPic2.lastIndexOf("/") + 1);
+                            article.attachment += fileName2;
+                        }
+                    }
+                    // 保存文章到服务器
+                    uploadArticleToServer(article);
+                    // 保存图片到服务器
+                    uploadPicToServer();
+                    finish();
+                }
             }
         });
 
+        if (from == From.GROWUP_FRAGMENT) {
+            mTitleBar.setLeftText(getString(R.string.txt_growup_record));
+        }else if (from == From.PREGNANT_ZONE_FRAGMENT) {
+            mTitleBar.setLeftText(getString(R.string.txt_pregnant_zone));
+        }
+
         mEditRecordTxt = (EditText) findViewById(R.id.edit_grow_up_content_txt);
-        mEditDateTxt = (TextView) findViewById(R.id.edit_grow_up_title_txt);
+        mEditDateTxt = (EditText) findViewById(R.id.edit_grow_up_title_txt);
 
         mAddPicImg1 = (ImageView) findViewById(R.id.edit_grow_up_content_img1);
         mAddPicImg2 = (ImageView) findViewById(R.id.edit_grow_up_content_img2);
@@ -106,22 +145,21 @@ public class EditGrowUpRecordActivity extends BaseFragmentActivity {
     }
 
     /**
-     * 保存到服务器
+     * 保存成长记录数据到服务器
      *
      * @param growUpRecord
      */
-    private void uploadToServer(final GrowUpRecord growUpRecord) {
+    private void uploadGrowUpRecordToServer(final GrowUpRecord growUpRecord) {
         ServiceGenerator.createService(ApiManager.class)
-                .createGrowupRecord(growUpRecord.date, growUpRecord.content, BabyVoiceApp.currUserName , growUpRecord.picList.get(0), growUpRecord.picList.get(1))
+                .createGrowupRecord(growUpRecord.date, growUpRecord.content, BabyVoiceApp.currUserName, growUpRecord.picList.get(0), growUpRecord.picList.get(1))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Action1<HttpResponse<GrowUpRecord>>() {
                     @Override
                     public void call(HttpResponse<GrowUpRecord> growUpRecordHttpResponse) {
                         Logger.i(growUpRecordHttpResponse.toString());
-                        if (growUpRecordHttpResponse.code == 200) {
-//                            GrowUpRecord record = growUpRecordHttpResponse.data;
-                            Logger.i("success");
+                        if (growUpRecordHttpResponse.code == 0) {
+                            Logger.i("add GrowUpRecord success");
                         }
                     }
                 }, new Action1<Throwable>() {
@@ -132,7 +170,33 @@ public class EditGrowUpRecordActivity extends BaseFragmentActivity {
                 });
     }
 
-    private int index=1;
+    /**
+     * 保存孕婴圈文章数据到服务器
+     *
+     * @param article
+     */
+    private void uploadArticleToServer(final Article article) {
+        ServiceGenerator.createService(ApiManager.class)
+                .addPregnantArticle(article.title, article.content, article.realName, article.type, article.attachment)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Action1<HttpResponse<Void>>() {
+                    @Override
+                    public void call(HttpResponse<Void> voidHttpResponse) {
+                        Logger.i(voidHttpResponse.toString());
+                        if (voidHttpResponse.code == 0) {
+                            Logger.i("add article success");
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Logger.e("error-->" + throwable.toString());
+                    }
+                });
+    }
+
+    private int index = 1;
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -168,7 +232,7 @@ public class EditGrowUpRecordActivity extends BaseFragmentActivity {
     }
 
     private void updatePhoto(String picturePath) {
-        Logger.e("图片地址是：%s",picturePath);
+        Logger.e("图片地址是：%s", picturePath);
         File file = new File(picturePath);
         if (file.exists()) {
             NotificationCenter.INSTANCE
@@ -180,18 +244,18 @@ public class EditGrowUpRecordActivity extends BaseFragmentActivity {
                 e.printStackTrace();
             }
 
-            Bitmap bitmap  = BitmapFactory.decodeStream(fis);
+            Bitmap bitmap = BitmapFactory.decodeStream(fis);
             if (index == 1) {
                 mAddPicImg1.setImageBitmap(bitmap);
                 mPic1 = picturePath;
-            }else {
+            } else {
                 mAddPicImg2.setImageBitmap(bitmap);
                 mPic2 = picturePath;
             }
         }
     }
 
-    private void insertItem(final GrowUpRecord growUpRecord) {
+    private void insertGrowupRecordItem(final GrowUpRecord growUpRecord) {
         GrowUpImpl.getInstance()
                 .insertData(growUpRecord)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -200,9 +264,9 @@ public class EditGrowUpRecordActivity extends BaseFragmentActivity {
                     @Override
                     public void call(Boolean aBoolean) {
                         if (aBoolean) {
-                            com.orhanobut.logger.Logger.i("insert growuprecord success,"+ growUpRecord.toString());
-                        }else {
-                            com.orhanobut.logger.Logger.i("insert growuprecord failed,"+ growUpRecord.toString());
+                            com.orhanobut.logger.Logger.i("insert growuprecord success," + growUpRecord.toString());
+                        } else {
+                            com.orhanobut.logger.Logger.i("insert growuprecord failed," + growUpRecord.toString());
                         }
                     }
                 }, new Action1<Throwable>() {
@@ -211,6 +275,59 @@ public class EditGrowUpRecordActivity extends BaseFragmentActivity {
                         com.orhanobut.logger.Logger.e(throwable.getMessage());
                     }
                 });
+    }
+
+    /**
+     * 上传图片到服务器
+     */
+    private void uploadPicToServer() {
+        List<File> files = new ArrayList<>();
+        if (!StringUtils.isBlank(mPic1)) {
+            File file1 = new File(mPic1);
+            files.add(file1);
+        }
+        if (!StringUtils.isBlank(mPic2)) {
+            File file2 = new File(mPic2);
+            files.add(file2);
+        }
+        if (files.isEmpty()) {
+            Logger.i("no pic to upload!!");
+            return;
+        }
+        MultipartBody body = filesToMultipartBody(files);
+        ServiceGenerator.createService(ApiManager.class)
+                .uploadPicFiles(BabyVoiceApp.currUserName, body)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<HttpResponse<Void>>() {
+                    @Override
+                    public void call(HttpResponse<Void> stringBaseResponse) {
+                        Logger.i(stringBaseResponse.msg);
+                        if (stringBaseResponse.code == 0) {
+                            CommonToast.showShortToast("上传图片成功！！");
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Logger.e(throwable.getMessage());
+                        CommonToast.showShortToast("error : " + throwable.getMessage());
+                    }
+                });
+    }
+
+
+    public static MultipartBody filesToMultipartBody(List<File> files) {
+        MultipartBody.Builder builder = new MultipartBody.Builder();
+
+        for (File file : files) {
+            RequestBody requestBody = RequestBody.create(MediaType.parse(""), file);
+            builder.addFormDataPart("picfile", file.getName(), requestBody);
+//            builder.addFormDataPart("fileName", file.getName());
+        }
+        builder.setType(MultipartBody.FORM);
+        MultipartBody multipartBody = builder.build();
+        return multipartBody;
     }
 
 

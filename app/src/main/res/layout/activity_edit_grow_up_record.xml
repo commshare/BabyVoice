@@ -18,7 +18,7 @@
         app:leftText="@string/txt_growup_record"
         />
 
-    <TextView
+    <EditText
         android:id="@+id/edit_grow_up_title_txt"
         android:layout_width="wrap_content"
         android:layout_height="40dp"

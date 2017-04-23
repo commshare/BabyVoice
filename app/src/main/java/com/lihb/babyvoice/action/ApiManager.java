@@ -1,10 +1,12 @@
 package com.lihb.babyvoice.action;
 
+import com.lihb.babyvoice.model.Article;
 import com.lihb.babyvoice.model.BabyVoice;
 import com.lihb.babyvoice.model.Contributor;
 import com.lihb.babyvoice.model.GrowUpRecord;
 import com.lihb.babyvoice.model.HttpResList;
 import com.lihb.babyvoice.model.HttpResponse;
+import com.lihb.babyvoice.model.ITingBeiResponse;
 import com.lihb.babyvoice.model.ProductionInspection;
 import com.lihb.babyvoice.model.VaccineInfo;
 
@@ -40,7 +42,9 @@ public interface ApiManager {
      * @return
      */
     @POST("uploadfiles")
-    Observable<HttpResponse<String>> uploadFiles(@Body MultipartBody files);
+    Observable<HttpResponse<String>> uploadFiles(
+            @Query("username") String userName,
+            @Body MultipartBody files);
 
     /**
      * 获取录音的文件
@@ -155,6 +159,71 @@ public interface ApiManager {
             @Query("username") String userName,
             @Query("password") String passWord,
             @Query("realname") String realName);
+    /*-----------------------------------------------孕婴圈---------------------------------------*/
+
+    /**
+     * 孕婴圈文章发布
+     * @param title 文章标题
+     * @param content 文章内容
+     * @param realName 名字，一般为手机号
+     * @param type 文章类别
+     * @param attachment 附件
+     * @return
+     */
+    @GET("mobile/article/addInfo.do")
+    Observable<HttpResponse<Void>> addPregnantArticle(
+            @Query("title") String title,
+            @Query("content") String content,
+            @Query("realname") String realName,
+            @Query("type") int type,
+            @Query("attachment") String attachment);
+
+    /**
+     * 获取孕婴圈文章
+     * @param page 页码
+     * @param rows 每页提取的记录数，默认值10
+     * @param type 文章类别，默认值10000，表示是用户发布的文章，90000表示是系统文章，由管理员发布的文章
+     * @return
+     */
+    @GET("mobile/article/itemList.do")
+    Observable<ITingBeiResponse<Article>> getPregnantArticleList(
+            @Query("page") int page,
+            @Query("rows") int rows,
+            @Query("type") int type);
+
+
+    /**
+     * 孕婴圈文章删除
+     * @param id 文章id
+     * @return
+     */
+    @GET("mobile/article/deleteInfo.do")
+    Observable<HttpResponse<Void>> delPregnantArticle(
+            @Query("id") int id);
+
+    /**
+     * 孕婴圈文章查看详情
+     * @param id 文章id
+     * @return
+     */
+    @GET("mobile/article/detailInfo.do")
+    Observable<HttpResponse<Void>> getPregnantArticleById(
+            @Query("id") int id);
+    /*-----------------------------------------------孕婴圈---------------------------------------*/
+
+    /**
+     * 上传图片到服务器
+     *
+     * @param files
+     * @return
+     */
+    @POST("web/picture/doUploadPiture.do")
+    Observable<HttpResponse<Void>> uploadPicFiles(
+            @Query("username") String userName,
+            @Body MultipartBody files);
+
+
+
 }
 
 

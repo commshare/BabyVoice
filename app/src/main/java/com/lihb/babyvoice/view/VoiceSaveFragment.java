@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.lihb.babyvoice.BabyVoiceApp;
 import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.action.ApiManager;
 import com.lihb.babyvoice.action.ServiceGenerator;
@@ -179,14 +180,14 @@ public class VoiceSaveFragment extends BaseFragment {
         files.add(file);
         MultipartBody body = filesToMultipartBody(files);
         ServiceGenerator.createService(ApiManager.class)
-                .uploadFiles(body)
+                .uploadFiles(BabyVoiceApp.currUserName,body)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<HttpResponse<String>>() {
                     @Override
                     public void call(HttpResponse<String> stringBaseResponse) {
                         Logger.i(stringBaseResponse.msg);
-                        if (stringBaseResponse.code == 200) {
+                        if (stringBaseResponse.code == 0) {
                             CommonToast.showShortToast("上传成功！！");
                         }
 //                                FileUtils.deleteFile(FileUtils.getVoiceFilePath(mEditText.getText().toString().trim() + SUFFIX));

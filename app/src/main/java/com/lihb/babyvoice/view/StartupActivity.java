@@ -1,12 +1,15 @@
 package com.lihb.babyvoice.view;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.lihb.babyvoice.BabyVoiceApp;
 import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.customview.base.BaseFragmentActivity;
+import com.lihb.babyvoice.utils.SharedPreferencesUtil;
 
 /**
  * Created by lhb on 2017/4/1.
@@ -55,6 +58,14 @@ public class StartupActivity extends BaseFragmentActivity {
                 finish();
             }
         });
+        if (!SharedPreferencesUtil.isFirstLaunch(StartupActivity.this)) {
+            SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
+
+            BabyVoiceApp.currUserName = sharedPreferences.getString("username", "");
+            Intent intent = new Intent(StartupActivity.this, NewMainActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
 //        mCopyRight.setOnClickListener(new View.OnClickListener() {
 //            @Override

@@ -155,7 +155,7 @@ public class PregnantExamineFragment extends BaseFragment {
 //                .subscribe(new Action1<HttpResponse<HttpResList<ProductionInspection>>>() {
 //                    @Override
 //                    public void call(HttpResponse<HttpResList<ProductionInspection>> httpResListHttpResponse) {
-//                        if (httpResListHttpResponse.code == 200) {
+//                        if (httpResListHttpResponse.code == 0) {
 //                            HttpResList<ProductionInspection> httpResList = httpResListHttpResponse.data;
 //                            if (refresh) {
 //                                mData.clear();

@@ -211,7 +211,7 @@ public class GrowUpFragment extends BaseFragment {
 
     private void gotoEditGrowUpRecordActivity() {
         Intent intent = new Intent(getActivity(), EditGrowUpRecordActivity.class);
-
+        intent.putExtra("from", EditGrowUpRecordActivity.From.GROWUP_FRAGMENT);
         startActivity(intent);
     }
 }
