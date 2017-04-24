@@ -6,7 +6,6 @@ import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -22,13 +21,9 @@ import com.lihb.babyvoice.action.ApiManager;
 import com.lihb.babyvoice.action.ServiceGenerator;
 import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragmentActivity;
-import com.lihb.babyvoice.model.BabyVoice;
-import com.lihb.babyvoice.model.GrowUpRecord;
 import com.lihb.babyvoice.model.HttpResponse;
 import com.lihb.babyvoice.utils.CommonToast;
 import com.orhanobut.logger.Logger;
-
-import javax.security.auth.login.LoginException;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -224,7 +219,7 @@ public class SMSLoginActivity  extends BaseFragmentActivity {
             @Override
             public void onTick(long millisUntilFinished) {
                 mSendCodeBtn.setEnabled(false);
-                mSendCodeBtn.setText(millisUntilFinished /1000 + "秒后可重发");
+                mSendCodeBtn.setText(getString(R.string.resend_sms_code, millisUntilFinished /1000));
             }
 
             @Override
@@ -238,7 +233,7 @@ public class SMSLoginActivity  extends BaseFragmentActivity {
         mSendCodeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonToast.showLongToast("验证码正火速发往您的手机中，请及时查收！");
+                CommonToast.showLongToast(R.string.sms_to_your_phone);
                 // 成功,修改ui,倒计时1分钟
                 if (null != mCountDownTimer) {
                     mCountDownTimer.start();
