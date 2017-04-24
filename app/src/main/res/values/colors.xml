@@ -35,4 +35,9 @@
     <color name="black">#000000</color>
 
     <color name="custom_gray">#d2d2d2</color>
+
+    <color name="color_333333">#333333</color>
+    <color name="color_666666">#666666</color>
+    <color name="color_bbbbbb">#BBBBBB</color>
+    <color name="common_dialog_bg">#FFFFFF</color>
 </resources>

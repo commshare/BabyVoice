@@ -22,6 +22,7 @@
     <string name="voice_save_title">文件名称</string>
     <string name="cancel">取消</string>
     <string name="save">保存</string>
+    <string name="confirm">确认</string>
 
     <!-- 爱助手 -->
     <string name="txt_pregnant_zone">孕婴圈</string>
@@ -84,4 +85,5 @@
     <string name="plugin_headset_first">录制胎心音或肺音，您需先插入耳机！</string>
     <string name="sms_to_your_phone">验证码正火速发往您的手机中，请及时查收！</string>
     <string name="resend_sms_code">%d秒后可重发</string>
+    <string name="vaccine_injecte_date_dialog_title">请选择疫苗注射日期</string>
 </resources>
