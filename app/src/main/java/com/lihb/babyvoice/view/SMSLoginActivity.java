@@ -24,6 +24,7 @@ import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragmentActivity;
 import com.lihb.babyvoice.model.HttpResponse;
 import com.lihb.babyvoice.utils.CommonToast;
+import com.lihb.babyvoice.utils.FileUtils;
 import com.lihb.babyvoice.utils.SharedPreferencesUtil;
 import com.orhanobut.logger.Logger;
 
@@ -279,6 +280,12 @@ public class SMSLoginActivity  extends BaseFragmentActivity {
                             // 成功
                             CommonToast.showShortToast("登录成功");
                             saveToPreferences(loginAccount, password);
+                            // 插入产检、疫苗数据到数据库，只插入一次
+                            if (SharedPreferencesUtil.isFirstLaunch(SMSLoginActivity.this)) {
+                                FileUtils.insertPregnantData(FileUtils.getPregnantData(SMSLoginActivity.this));
+                                FileUtils.insertVaccineData(FileUtils.getVaccineData(SMSLoginActivity.this));
+                            }
+
                             SharedPreferencesUtil.setFirstLaunch(SMSLoginActivity.this, false);
                             BabyVoiceApp.getInstance().setLogin(true);
                             BabyVoiceApp.currUserName = loginAccount;

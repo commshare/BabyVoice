@@ -36,6 +36,7 @@ import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragmentActivity;
 import com.lihb.babyvoice.model.HttpResponse;
 import com.lihb.babyvoice.utils.CommonToast;
+import com.lihb.babyvoice.utils.FileUtils;
 import com.lihb.babyvoice.utils.SharedPreferencesUtil;
 
 import rx.android.schedulers.AndroidSchedulers;
@@ -317,6 +318,13 @@ public class LoginActivity extends BaseFragmentActivity {
                         if (httpResponse.code == 0) {
                             // 成功
                             CommonToast.showShortToast("登录成功");
+
+                            // 插入产检、疫苗数据到数据库，只插入一次
+                            if (SharedPreferencesUtil.isFirstLaunch(LoginActivity.this)) {
+                                FileUtils.insertPregnantData(FileUtils.getPregnantData(LoginActivity.this));
+                                FileUtils.insertVaccineData(FileUtils.getVaccineData(LoginActivity.this));
+                            }
+
                             SharedPreferencesUtil.setFirstLaunch(LoginActivity.this, false);
                             saveToPreferences(userAccount, password);
                             BabyVoiceApp.getInstance().setLogin(true);

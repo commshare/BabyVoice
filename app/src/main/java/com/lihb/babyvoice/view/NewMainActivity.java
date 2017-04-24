@@ -15,11 +15,9 @@ import com.lihb.babyvoice.command.BaseAndroidCommand;
 import com.lihb.babyvoice.command.NetStateChangedCommand;
 import com.lihb.babyvoice.command.PickedCategoryCommand;
 import com.lihb.babyvoice.customview.base.BaseFragmentActivity;
-import com.lihb.babyvoice.utils.FileUtils;
 import com.lihb.babyvoice.utils.NetworkHelper;
 import com.lihb.babyvoice.utils.RecorderHelper;
 import com.lihb.babyvoice.utils.RxBus;
-import com.lihb.babyvoice.utils.SharedPreferencesUtil;
 import com.orhanobut.logger.Logger;
 
 import cn.sharesdk.framework.ShareSDK;
@@ -58,13 +56,6 @@ public class NewMainActivity extends BaseFragmentActivity {
         ShareSDK.initSDK(this);
         initViews();
         checkNetStatus();
-//        addStatusBarView();
-        if (SharedPreferencesUtil.isFirstLaunch(this)) {
-            FileUtils.insertPregnantData(FileUtils.getPregnantData(this));
-            FileUtils.insertVaccineData(FileUtils.getVaccineData(this));
-        }
-        SharedPreferencesUtil.setFirstLaunch(this, false);
-//        queryData();
 
     }
 
