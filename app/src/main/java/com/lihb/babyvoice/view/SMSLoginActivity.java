@@ -220,7 +220,7 @@ public class SMSLoginActivity  extends BaseFragmentActivity {
             @Override
             public void onTick(long millisUntilFinished) {
                 mSendCodeBtn.setEnabled(false);
-                mSendCodeBtn.setText(millisUntilFinished /1000 + "秒后可重发");
+                mSendCodeBtn.setText(getString(R.string.resend_sms_code, millisUntilFinished /1000));
             }
 
             @Override
@@ -234,7 +234,7 @@ public class SMSLoginActivity  extends BaseFragmentActivity {
         mSendCodeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonToast.showLongToast("验证码正火速发往您的手机中，请及时查收！");
+                CommonToast.showLongToast(R.string.sms_to_your_phone);
                 // 成功,修改ui,倒计时1分钟
                 if (null != mCountDownTimer) {
                     mCountDownTimer.start();
