@@ -24,24 +24,21 @@
         android:textColor="@color/text_black"
         android:textSize="15dp" />
 
-    <CheckBox
-        android:id="@+id/vaccine_check_box"
-        android:layout_width="14dp"
-        android:layout_height="14dp"
-        android:background="@drawable/vaccine_checkbox_selector"
-        android:button="@null"
-        android:checked="true"
+    <ImageView
+        android:id="@+id/vaccine_inject_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginRight="8dp"
         android:layout_centerVertical="true"
-        />
+        android:src="@mipmap/normal" />
 
     <TextView
         android:id="@+id/vaccine_inject_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="15dp"
-        android:layout_toLeftOf="@id/vaccine_check_box"
+        android:layout_toLeftOf="@id/vaccine_inject_img"
         android:text="未注射"
         android:layout_centerVertical="true"
         android:textColor="@color/color_999999"

@@ -10,7 +10,6 @@
         android:background="@color/colorPrimary"
         android:paddingTop="@dimen/padding_top"
         app:leftDrawable="@mipmap/back"
-        app:rightDrawable="@mipmap/link"
         app:leftTextColor="@android:color/white"
         app:rightTextColor="@android:color/white"
         app:leftText="@string/txt_health_protect_assist"

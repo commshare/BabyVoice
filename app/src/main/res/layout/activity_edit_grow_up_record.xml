@@ -14,6 +14,7 @@
         app:leftDrawable="@mipmap/back"
         app:leftTextColor="@android:color/white"
         app:rightTextColor="@android:color/white"
+        app:titleTextColor="@color/white"
         app:rightText="@string/save"
         app:leftText="@string/txt_growup_record"
         />

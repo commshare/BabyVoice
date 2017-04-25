@@ -279,7 +279,6 @@ public class SMSLoginActivity  extends BaseFragmentActivity {
                         if (httpResponse.code == 0) {
                             // 成功
                             CommonToast.showShortToast("登录成功");
-                            saveToPreferences(loginAccount, password);
                             // 插入产检、疫苗数据到数据库，只插入一次
                             if (SharedPreferencesUtil.isFirstLaunch(SMSLoginActivity.this)) {
                                 FileUtils.insertPregnantData(FileUtils.getPregnantData(SMSLoginActivity.this));
@@ -287,6 +286,7 @@ public class SMSLoginActivity  extends BaseFragmentActivity {
                             }
 
                             SharedPreferencesUtil.setFirstLaunch(SMSLoginActivity.this, false);
+                            SharedPreferencesUtil.saveToPreferences(SMSLoginActivity.this, loginAccount, password);
                             BabyVoiceApp.getInstance().setLogin(true);
                             BabyVoiceApp.currUserName = loginAccount;
                             Intent intent = new Intent(SMSLoginActivity.this, NewMainActivity.class);

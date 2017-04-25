@@ -20,6 +20,7 @@ public class StartupActivity extends BaseFragmentActivity {
     private TextView mRegisterBtn = null;
 
     private TextView mLoginBtn = null;
+    private TextView mSmsLoginTxt;
 
 //    private TextView mCopyRight = null;
 //
@@ -58,6 +59,16 @@ public class StartupActivity extends BaseFragmentActivity {
                 finish();
             }
         });
+        mSmsLoginTxt = (TextView) findViewById(R.id.sms_login_txt);
+        mSmsLoginTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(StartupActivity.this, SMSLoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
         if (!SharedPreferencesUtil.isFirstLaunch(StartupActivity.this)) {
             SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
 

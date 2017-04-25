@@ -161,15 +161,15 @@ public class VoiceSaveFragment extends BaseFragment {
                     @Override
                     public void call(Boolean aBoolean) {
                         if (aBoolean) {
-                            com.orhanobut.logger.Logger.i("insert babyvoice record success,"+ babyVoice.toString());
+                            Logger.i("insert babyvoice record success,"+ babyVoice.toString());
                         }else {
-                            com.orhanobut.logger.Logger.i("insert babyvoice record failed,"+ babyVoice.toString());
+                            Logger.i("insert babyvoice record failed,"+ babyVoice.toString());
                         }
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        com.orhanobut.logger.Logger.e(throwable.getMessage());
+                      Logger.e(throwable.getMessage());
                     }
                 });
 
@@ -196,7 +196,7 @@ public class VoiceSaveFragment extends BaseFragment {
                     @Override
                     public void call(Throwable throwable) {
                         Logger.e(throwable.getMessage());
-                        CommonToast.showShortToast("error : " + throwable.getMessage());
+//                        CommonToast.showShortToast("error : " + throwable.getMessage());
 //                                FileUtils.deleteFile(FileUtils.getVoiceFilePath(mEditText.getText().toString().trim() + SUFFIX));
                     }
                 });

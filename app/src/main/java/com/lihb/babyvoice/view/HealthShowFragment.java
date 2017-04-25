@@ -2,6 +2,7 @@ package com.lihb.babyvoice.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
@@ -19,7 +20,6 @@ import com.lihb.babyvoice.customview.base.BaseFragment;
 import com.lihb.babyvoice.customview.base.BaseRecyclerView;
 import com.lihb.babyvoice.db.impl.HealthDataImpl;
 import com.lihb.babyvoice.model.HealthQuota;
-import com.lihb.babyvoice.utils.CommonToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +47,7 @@ public class HealthShowFragment extends BaseFragment {
     private static final int COUNT = 10;
 
     private TitleBar mTitleBar;
+    private HealthProtectFragment mHealthProtectFragment;
 
     public static HealthShowFragment create() {
         return new HealthShowFragment();
@@ -82,8 +83,7 @@ public class HealthShowFragment extends BaseFragment {
         mAdd_record_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonToast.showShortToast("mAdd_record_img was clicked!!");
-                getActivity().onBackPressed();
+                gotoHealthProtectFragment();
             }
         });
 
@@ -121,6 +121,19 @@ public class HealthShowFragment extends BaseFragment {
 
     }
 
+    private void gotoHealthProtectFragment() {
+        if (null == mHealthProtectFragment) {
+            mHealthProtectFragment = HealthProtectFragment.create();
+        }
+
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.hide(this);
+        transaction.add(R.id.main_layout, mHealthProtectFragment, "HealthProtectFragment")
+                .show(mHealthProtectFragment)
+                .addToBackStack(null)
+                .commit();
+
+    }
 
 
     @Override

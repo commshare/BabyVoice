@@ -326,7 +326,7 @@ public class LoginActivity extends BaseFragmentActivity {
                             }
 
                             SharedPreferencesUtil.setFirstLaunch(LoginActivity.this, false);
-                            saveToPreferences(userAccount, password);
+                            SharedPreferencesUtil.saveToPreferences(LoginActivity.this,userAccount, password);
                             BabyVoiceApp.getInstance().setLogin(true);
                             BabyVoiceApp.currUserName = userAccount;
                             Intent intent = new Intent(LoginActivity.this, NewMainActivity.class);
@@ -344,26 +344,6 @@ public class LoginActivity extends BaseFragmentActivity {
 
     }
 
-
-    /**
-     * 简单保存到SharedPreferences中
-     * @param username
-     * @param password
-     */
-    private void saveToPreferences(String username, String password) {
-        //创建sharedPreference对象，info表示文件名，MODE_PRIVATE表示访问权限为私有的
-        SharedPreferences sp = getSharedPreferences("userinfo", MODE_PRIVATE);
-
-        //获得sp的编辑器
-        SharedPreferences.Editor ed = sp.edit();
-
-        //以键值对的显示将用户名和密码保存到sp中
-        ed.putString("username", username);
-        ed.putString("password", password);
-
-        //提交用户名和密码
-        ed.apply();
-    }
 
 
 

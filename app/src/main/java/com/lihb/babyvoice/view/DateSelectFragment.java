@@ -99,7 +99,7 @@ public class DateSelectFragment  extends BaseFragment {
                         gotoNextFragment(GrowUpFragment.create());
                         break;
                     case AssistFragment.ITEM_HEALTH_PROTECT:
-                        gotoNextFragment(HealthProtectFragment.create());
+                        gotoNextFragment(HealthShowFragment.create());
                         break;
                     case MeFragment.ITEM_SET_BABY_BIRTHDAY:
                         getActivity().onBackPressed();
@@ -165,8 +165,8 @@ public class DateSelectFragment  extends BaseFragment {
         } else if (fragment instanceof VaccineFragment) {
             tag = "VaccineFragment";
         }
-        else if (fragment instanceof HealthProtectFragment) {
-            tag = "HealthProtectFragment";
+        else if (fragment instanceof HealthShowFragment) {
+            tag = "HealthShowFragment";
         }
         else if (fragment instanceof GrowUpFragment) {
             tag = "GrowUpFragment";

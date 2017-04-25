@@ -93,7 +93,7 @@ public class VoicePlayFragment extends BaseFragment {
 
         if (null != babyVoice) {
             mTitleBar.setLeftText(babyVoice.name);
-            setCategoryImg(babyVoice.category);
+            setBottomLayout(babyVoice.category);
         }
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -181,16 +181,20 @@ public class VoicePlayFragment extends BaseFragment {
         waveformView.recomputeHeights(mDensity);
     }
 
-    private void setCategoryImg(String category) {
+    private void setBottomLayout(String category) {
         String[] items = getResources().getStringArray(R.array.voice_type);
         if (StringUtils.areEqual(category, items[0])) {
             category_img.setImageResource(R.mipmap.heart);
+            play_bottom_layout.setVisibility(View.VISIBLE);
         } else if (StringUtils.areEqual(category, items[1])) {
             category_img.setImageResource(R.mipmap.lung);
+            play_bottom_layout.setVisibility(View.VISIBLE);
         } else if (StringUtils.areEqual(category, items[2])) {
             category_img.setImageResource(R.mipmap.voice);
+            play_bottom_layout.setVisibility(View.GONE);
         } else {
             category_img.setImageResource(R.mipmap.other);
+            play_bottom_layout.setVisibility(View.GONE);
         }
     }
 

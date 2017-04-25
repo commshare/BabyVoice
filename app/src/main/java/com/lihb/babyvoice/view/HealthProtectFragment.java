@@ -87,21 +87,53 @@ public class HealthProtectFragment extends BaseFragment {
         @Override
         public void onClick(View v) {
             if (v == compute_grow_up_txt) {
-                CommonToast.showShortToast("compute_grow_up_txt clicked.");
                 HealthQuota quota = new HealthQuota();
-                quota.headSize = Integer.valueOf(head_size_edit_txt.getText().toString().trim());
-                quota.height = Integer.valueOf(height_size_edit_txt.getText().toString().trim());
-                quota.weight = Integer.valueOf(weight_size_edit_txt.getText().toString().trim());
-                quota.temperature = Integer.valueOf(temperature_edit_txt.getText().toString().trim());
+                String headSize = head_size_edit_txt.getText().toString().trim();
+                String height = height_size_edit_txt.getText().toString().trim();
+                String weight = weight_size_edit_txt.getText().toString().trim();
+                String temperature = temperature_edit_txt.getText().toString().trim();
+                if (StringUtils.isBlank(headSize)) {
+                    headSize = "0";
+                }
+                if (StringUtils.isBlank(height)) {
+                    height = "0";
+                }
+                if (StringUtils.isBlank(headSize)) {
+                    headSize = "0";
+                }
+                if (StringUtils.isBlank(weight)) {
+                    weight = "0";
+                }
+                if (StringUtils.isBlank(temperature)) {
+                    temperature = "0";
+                }
+
+                quota.headSize = Integer.parseInt(headSize);
+                quota.weight = Integer.parseInt(weight);
+                quota.height = Integer.parseInt(height);
+                quota.temperature = Integer.valueOf(temperature);
+                if (quota.headSize <= 0 || quota.height <= 0 || quota.weight <= 0 || quota.temperature <= 0) {
+                    CommonToast.showShortToast(R.string.required_field);
+                    return;
+                }
+
                 if (null != more_item_view) {
                     if (StringUtils.areEqual(gender_edit_txt.getText().toString().trim(), "男")) {
                         quota.gender = 1;
                     }else {
                         quota.gender = 0;
                     }
-//                    quota.gender = Integer.valueOf(gender_edit_txt.getText().toString().trim());
-                    quota.fontanelSize = Integer.valueOf(fontanel_size_edit_txt.getText().toString().trim());
-                    quota.heartBeat = Integer.valueOf(heart_count_edit_txt.getText().toString().trim());
+                    String fontanelSize = fontanel_size_edit_txt.getText().toString().trim();
+                    String heartCount = heart_count_edit_txt.getText().toString().trim();
+
+                    if (StringUtils.isBlank(fontanelSize)) {
+                        fontanelSize = "0";
+                    }
+                    if (StringUtils.isBlank(heartCount)) {
+                        heartCount = "0";
+                    }
+                    quota.fontanelSize = Integer.parseInt(fontanelSize);
+                    quota.heartBeat = Integer.parseInt(heartCount);
                 }
                 insertHealthData(quota);
 //                gotoHealthShowFragment();

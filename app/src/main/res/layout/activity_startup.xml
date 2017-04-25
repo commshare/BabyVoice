@@ -83,4 +83,16 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/imageView" />
 
+    <TextView
+        android:id="@+id/sms_login_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="15dp"
+        android:gravity="center"
+        android:text="@string/txt_sms_login"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        />
+
 </RelativeLayout>

@@ -13,6 +13,7 @@ import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.db.impl.GrowUpImpl;
 import com.lihb.babyvoice.model.GrowUpRecord;
 import com.lihb.babyvoice.view.ImageBrowseActivity;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -144,15 +145,15 @@ public class GrowUpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     @Override
                     public void call(Boolean aBoolean) {
                         if (aBoolean) {
-                            com.orhanobut.logger.Logger.i("del growuprecord success, "+ growUpRecord.toString());
+                            Logger.i("del growuprecord success, "+ growUpRecord.toString());
                         }else {
-                            com.orhanobut.logger.Logger.i("del growuprecord failed, "+ growUpRecord.toString());
+                            Logger.i("del growuprecord failed, "+ growUpRecord.toString());
                         }
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        com.orhanobut.logger.Logger.e(throwable.getMessage());
+                        Logger.e(throwable.getMessage());
                     }
                 });
     }

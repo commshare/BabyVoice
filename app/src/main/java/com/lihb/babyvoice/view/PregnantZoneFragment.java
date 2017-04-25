@@ -79,7 +79,6 @@ public class PregnantZoneFragment extends BaseFragment {
         mAdd_growup_record_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonToast.showShortToast("mAdd_grow_up_record_img was clicked!!");
                 gotoEditGrowUpRecordActivity();
             }
         });

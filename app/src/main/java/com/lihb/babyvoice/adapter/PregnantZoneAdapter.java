@@ -15,8 +15,12 @@ import com.lihb.babyvoice.action.ApiManager;
 import com.lihb.babyvoice.action.ServiceGenerator;
 import com.lihb.babyvoice.model.Article;
 import com.lihb.babyvoice.model.HttpResponse;
+import com.lihb.babyvoice.utils.FileUtils;
 import com.lihb.babyvoice.utils.StringUtils;
+import com.lihb.babyvoice.view.ImageBrowseActivity;
+import com.orhanobut.logger.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
@@ -72,7 +76,7 @@ public class PregnantZoneAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public TextView grow_up_content_txt;
         public ImageView grow_up_content_img1;
         public ImageView grow_up_content_img2;
-        public String[] pics;
+        public ArrayList<String> pics;
         public Article mArticle;
 
 
@@ -98,39 +102,68 @@ public class PregnantZoneAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             grow_up_title_txt.setText(article.title);
             grow_up_content_txt.setText(article.content);
             String picUrls = article.attachment;
+            // 没有选择图片的情况
             if (StringUtils.isBlank(picUrls)) {
                 grow_up_content_img1.setVisibility(View.GONE);
                 grow_up_content_img2.setVisibility(View.GONE);
                 return;
             }
+            // 有选择了图片的情况
+            String[] picArray;
             if (!picUrls.contains(",")) {
-                pics= new String[]{picUrls};
+                picArray= new String[]{picUrls}; // 选了1张图片
             }else {
-                pics = picUrls.split(",");
+                picArray = picUrls.split(","); // 选了2张图片
             }
-            if (pics.length == 1) {
+            pics = new ArrayList<>();
+
+            arrayToPics(picArray, pics);
+
+            if (pics.size() == 1) {
                 Glide.with(mContext)
-                        .load(getPicUrl(pics[0]))
+                        .load(pics.get(0))
                         .into(grow_up_content_img1);
                 grow_up_content_img1.setVisibility(View.VISIBLE);
                 grow_up_content_img2.setVisibility(View.GONE);
-            }else if (pics.length == 2) {
+            }else if (pics.size() == 2) {
                 Glide.with(mContext)
-                        .load(getPicUrl(pics[0]))
+                        .load(pics.get(0))
                         .into(grow_up_content_img1);
                 Glide.with(mContext)
-                        .load(getPicUrl(pics[1]))
+                        .load(pics.get(1))
                         .into(grow_up_content_img2);
                 grow_up_content_img1.setVisibility(View.VISIBLE);
                 grow_up_content_img2.setVisibility(View.VISIBLE);
             }
 
+            // 本人只能删除自己发布的文章
+            if (StringUtils.areEqual(article.realname, BabyVoiceApp.currUserName)) {
+                grow_up_del_img.setVisibility(View.VISIBLE);
+            }else {
+                grow_up_del_img.setVisibility(View.GONE);
+            }
+
+        }
+
+        /**
+         * 由名称得到图片下载地址
+         * @param picArray 图片名称数组
+         * @param pics 图片的下载地址list
+         */
+        private void arrayToPics(String[] picArray, ArrayList<String> pics) {
+            for (String url: picArray) {
+                pics.add(FileUtils.getPicUrl(url));
+            }
         }
 
         private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               if (v == grow_up_del_img) {
+                if (v == grow_up_content_img1) {
+                    ImageBrowseActivity.startActivity(mContext, pics, 0);
+                } else if (v == grow_up_content_img2) {
+                    ImageBrowseActivity.startActivity(mContext, pics, 1);
+                } else if (v == grow_up_del_img) {
                     delItem(mArticle);
                     mData.remove(mArticle);
                     notifyItemRemoved(getLayoutPosition());
@@ -141,7 +174,6 @@ public class PregnantZoneAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     private void delItem(final Article article) {
-
         ServiceGenerator.createService(ApiManager.class)
                 .delPregnantArticle(article.id)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -150,30 +182,18 @@ public class PregnantZoneAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     @Override
                     public void call(HttpResponse<Void> voidHttpResponse) {
                         if (voidHttpResponse.code == 0) {
-                            com.orhanobut.logger.Logger.i("del pregnant zone record success, "+ article.toString());
+                            Logger.i("del pregnant zone record success, "+ article.toString());
                         }else {
-                            com.orhanobut.logger.Logger.i("del pregnantzone record failed, "+ article.toString());
+                            Logger.i("del pregnantzone record failed, "+ article.toString());
                         }
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        com.orhanobut.logger.Logger.e(throwable.getMessage());
+                        Logger.e(throwable.getMessage());
                     }
                 });
 
 
-    }
-
-    /**
-     * 拼接得到图片下载地址
-     * @param picName
-     * @return
-     */
-    private String getPicUrl(String picName) {
-        StringBuilder sb = new StringBuilder("http://123.207.46.152:8080/itingbaby/upload/uploadImages/");
-        sb.append(BabyVoiceApp.currUserName).append("/");
-        sb.append(picName);
-        return sb.toString();
     }
 }

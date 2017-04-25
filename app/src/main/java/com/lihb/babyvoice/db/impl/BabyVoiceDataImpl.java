@@ -127,8 +127,24 @@ public class BabyVoiceDataImpl implements IDBRxManager<BabyVoice> {
     }
 
     @Override
-    public Observable<Boolean> delData(BabyVoice babyVoice) {
-        return null;
+    public Observable<Boolean> delData(final BabyVoice babyVoice) {
+        return Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                int result = db.delete(DBHelper.BABY_VOICE_ENTRY.TABLE_NAME,
+                        DBHelper.BABY_VOICE_ENTRY.COLUMN_NAME + " = ? and "
+                                + DBHelper.BABY_VOICE_ENTRY.COLUMN_URL + " = ? and "
+                                + DBHelper.BABY_VOICE_ENTRY.COLUMN_DATE + " = ? ",
+                        new String[]{babyVoice.name, babyVoice.url, babyVoice.date});
+                if (result != 0) {
+                    subscriber.onNext(true);
+                } else {
+                    subscriber.onNext(false);
+                }
+                subscriber.onCompleted();
+            }
+        });
     }
 
     @Override

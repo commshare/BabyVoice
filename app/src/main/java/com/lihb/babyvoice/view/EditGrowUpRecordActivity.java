@@ -20,7 +20,6 @@ import com.lihb.babyvoice.db.impl.GrowUpImpl;
 import com.lihb.babyvoice.model.Article;
 import com.lihb.babyvoice.model.GrowUpRecord;
 import com.lihb.babyvoice.model.HttpResponse;
-import com.lihb.babyvoice.utils.CommonToast;
 import com.lihb.babyvoice.utils.NotificationCenter;
 import com.lihb.babyvoice.utils.StringUtils;
 import com.lihb.babyvoice.utils.UserProfileChangedNotification;
@@ -66,8 +65,8 @@ public class EditGrowUpRecordActivity extends BaseFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_grow_up_record);
-        initView();
         from = (From) getIntent().getSerializableExtra("from");
+        initView();
     }
 
 
@@ -83,7 +82,6 @@ public class EditGrowUpRecordActivity extends BaseFragmentActivity {
         mTitleBar.setRightOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonToast.showShortToast("save button was clicked.");
                 if (from == From.GROWUP_FRAGMENT) {
                     GrowUpRecord growUpRecord = new GrowUpRecord();
                     growUpRecord.date = mEditDateTxt.getText().toString();
@@ -98,7 +96,7 @@ public class EditGrowUpRecordActivity extends BaseFragmentActivity {
                     finish();
                 } else if (from == From.PREGNANT_ZONE_FRAGMENT) {
                     Article article = new Article();
-                    article.realName = BabyVoiceApp.currUserName;
+                    article.realname = BabyVoiceApp.currUserName;
                     article.type = 10000;
                     article.time = System.currentTimeMillis();
                     article.title = mEditDateTxt.getText().toString();
@@ -122,8 +120,10 @@ public class EditGrowUpRecordActivity extends BaseFragmentActivity {
 
         if (from == From.GROWUP_FRAGMENT) {
             mTitleBar.setLeftText(getString(R.string.txt_growup_record));
+            mTitleBar.setTitle("");
         }else if (from == From.PREGNANT_ZONE_FRAGMENT) {
-            mTitleBar.setLeftText(getString(R.string.txt_pregnant_zone));
+            mTitleBar.setLeftText("");
+            mTitleBar.setTitle(getString(R.string.i_want_share));
         }
 
         mEditRecordTxt = (EditText) findViewById(R.id.edit_grow_up_content_txt);
@@ -177,7 +177,7 @@ public class EditGrowUpRecordActivity extends BaseFragmentActivity {
      */
     private void uploadArticleToServer(final Article article) {
         ServiceGenerator.createService(ApiManager.class)
-                .addPregnantArticle(article.title, article.content, article.realName, article.type, article.attachment)
+                .addPregnantArticle(article.title, article.content, article.realname, article.type, article.attachment)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Action1<HttpResponse<Void>>() {
@@ -264,15 +264,15 @@ public class EditGrowUpRecordActivity extends BaseFragmentActivity {
                     @Override
                     public void call(Boolean aBoolean) {
                         if (aBoolean) {
-                            com.orhanobut.logger.Logger.i("insert growuprecord success," + growUpRecord.toString());
+                            Logger.i("insert growuprecord success," + growUpRecord.toString());
                         } else {
-                            com.orhanobut.logger.Logger.i("insert growuprecord failed," + growUpRecord.toString());
+                            Logger.i("insert growuprecord failed," + growUpRecord.toString());
                         }
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        com.orhanobut.logger.Logger.e(throwable.getMessage());
+                        Logger.e(throwable.getMessage());
                     }
                 });
     }
@@ -304,14 +304,13 @@ public class EditGrowUpRecordActivity extends BaseFragmentActivity {
                     public void call(HttpResponse<Void> stringBaseResponse) {
                         Logger.i(stringBaseResponse.msg);
                         if (stringBaseResponse.code == 0) {
-                            CommonToast.showShortToast("上传图片成功！！");
+                            Logger.i("upload pic success.");
                         }
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
                         Logger.e(throwable.getMessage());
-                        CommonToast.showShortToast("error : " + throwable.getMessage());
                     }
                 });
     }

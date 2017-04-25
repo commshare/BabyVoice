@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lihb.babyvoice.BabyVoiceApp;
 import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.action.ApiManager;
 import com.lihb.babyvoice.action.ServiceGenerator;
@@ -24,6 +25,8 @@ import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragmentActivity;
 import com.lihb.babyvoice.model.HttpResponse;
 import com.lihb.babyvoice.utils.CommonToast;
+import com.lihb.babyvoice.utils.FileUtils;
+import com.lihb.babyvoice.utils.SharedPreferencesUtil;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -240,7 +243,17 @@ public class RegisterActivity extends BaseFragmentActivity {
                         if (voidHttpResponse.code == 0) {
                             dismissLoginDialog();
                             CommonToast.showShortToast("注册成功");
-                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                            // 插入产检、疫苗数据到数据库，只插入一次
+                            if (SharedPreferencesUtil.isFirstLaunch(RegisterActivity.this)) {
+                                FileUtils.insertPregnantData(FileUtils.getPregnantData(RegisterActivity.this));
+                                FileUtils.insertVaccineData(FileUtils.getVaccineData(RegisterActivity.this));
+                            }
+
+                            SharedPreferencesUtil.setFirstLaunch(RegisterActivity.this, false);
+                            SharedPreferencesUtil.saveToPreferences(RegisterActivity.this, userAccount, password);
+                            BabyVoiceApp.getInstance().setLogin(true);
+                            BabyVoiceApp.currUserName = userAccount;
+                            Intent intent = new Intent(RegisterActivity.this, NewMainActivity.class);
                             startActivity(intent);
                             finish();
                         }

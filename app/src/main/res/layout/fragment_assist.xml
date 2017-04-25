@@ -66,7 +66,7 @@
                 app:commonRightIcon="@mipmap/next_icon" />
 
             <com.lihb.babyvoice.customview.CommonItem
-                android:id="@+id/item_health_protect_assist"
+                android:id="@+id/item_health_show_assist"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:commonDividerVisible="true"

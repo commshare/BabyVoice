@@ -10,12 +10,12 @@ public class Article {
     public int id;
     public String title;
     public String content;
-    public String realName;
+    public String realname;
     public int type;
     public String attachment;
     public String comments;
     public long time;
-    public int totalCounts;
+    public int totalcounts;
 
     @Override
     public String toString() {
@@ -23,12 +23,12 @@ public class Article {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
-                ", realName='" + realName + '\'' +
+                ", realname='" + realname + '\'' +
                 ", type=" + type +
                 ", attachment='" + attachment + '\'' +
                 ", comments='" + comments + '\'' +
                 ", time=" + time +
-                ", totalCounts=" + totalCounts +
+                ", totalcounts=" + totalcounts +
                 '}';
     }
 }

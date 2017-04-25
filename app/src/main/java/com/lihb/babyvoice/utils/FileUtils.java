@@ -8,6 +8,7 @@ import android.media.MediaMetadataRetriever;
 import android.os.Environment;
 import android.text.TextUtils;
 
+import com.lihb.babyvoice.BabyVoiceApp;
 import com.lihb.babyvoice.db.impl.PregnantDataImpl;
 import com.lihb.babyvoice.db.impl.VaccineDataImpl;
 import com.lihb.babyvoice.model.ProductionInspection;
@@ -530,6 +531,18 @@ public class FileUtils {
             return dur+"";
         }
         return -1+"";
+    }
+
+    /**
+     * 拼接得到图片下载地址
+     * @param picName
+     * @return
+     */
+    public static String getPicUrl(String picName) {
+        StringBuilder sb = new StringBuilder("http://123.207.46.152:8080/itingbaby/upload/uploadImages/");
+        sb.append(BabyVoiceApp.currUserName).append("/");
+        sb.append(picName);
+        return sb.toString();
     }
 
 }

@@ -23,7 +23,7 @@ public class AssistFragment extends BaseFragment {
 //    private CommonItem itemPregnantZone;
     private CommonItem itemCheckAssist;
     private CommonItem itemVaccineAssist;
-    private CommonItem itemHealthProtectAssist;
+    private CommonItem itemHealthShowAssist;
     private CommonItem itemGrowUpRecord;
     private CommonItem itemCareMall;
     private CommonItem itemExpertOnline;
@@ -111,13 +111,13 @@ public class AssistFragment extends BaseFragment {
             }
         });
 
-        itemHealthProtectAssist = (CommonItem) getView().findViewById(R.id.item_health_protect_assist);
-        itemHealthProtectAssist.setOnClickListener(new View.OnClickListener() {
+        itemHealthShowAssist = (CommonItem) getView().findViewById(R.id.item_health_show_assist);
+        itemHealthShowAssist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                CommonToast.showShortToast("itemHealthProtectAssist");
 //                gotoDateSelectFragment(ITEM_HEALTH_PROTECT);
-                mFragment = HealthProtectFragment.create();
+                mFragment = HealthShowFragment.create();
                 gotoNextFragment(mFragment);
 
             }
@@ -181,8 +181,8 @@ public class AssistFragment extends BaseFragment {
         } else if (fragment instanceof VaccineFragment) {
             tag = "VaccineFragment";
         }
-        else if (fragment instanceof HealthProtectFragment) {
-            tag = "HealthProtectFragment";
+        else if (fragment instanceof HealthShowFragment) {
+            tag = "HealthShowFragment";
         }
         else if (fragment instanceof GrowUpFragment) {
             tag = "GrowUpFragment";

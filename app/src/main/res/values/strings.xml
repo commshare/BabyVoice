@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">听贝贝</string>
+    <string name="app_name">爱听贝</string>
     <string name="check_followers">查看followers</string>
 
-    <string name="tab_baby_heart">爱听贝</string>
+    <string name="tab_baby_heart">听贝贝</string>
     <string name="tab_pregnant_zone">孕婴圈</string>
     <string name="tab_baby_assist">爱助手</string>
     <string name="tab_baby_me">我</string>
@@ -39,14 +39,14 @@
     <string name="txt_pregnant_date">怀孕日期设置</string>
     <string name="txt_baby_info">儿童信息设置</string>
     <string name="txt_remote_video_address">远程视频连接地址设置</string>
-    <string name="txt_language_select">选择语言</string>
+    <string name="txt_country_select">选择国家</string>
     <string name="txt_about_app">关于听贝贝</string>
 
 
     <string name="enter_your_pregnant_date">请选择您的怀孕日期</string>
     <string name="enter_baby_birthday">请选择宝宝的出生时间</string>
 
-    <string name="injected">已注射</string>
+    <string name="injected">%s已注射</string>
     <string name="not_injected">未注射</string>
     <string name="enter_baby_info">请填写宝宝信息</string>
 
@@ -86,4 +86,9 @@
     <string name="sms_to_your_phone">验证码正火速发往您的手机中，请及时查收！</string>
     <string name="resend_sms_code">%d秒后可重发</string>
     <string name="vaccine_injecte_date_dialog_title">请选择疫苗注射日期</string>
+    <string name="txt_compute_growup">计算发育指数</string>
+    <string name="required_field">头围、身高、体重、温度为必填项!</string>
+    <string name="txt_sms_login">使用短信验证码登录</string>
+    <string name="i_want_share">我要分享</string>
+    <string name="select_pass_date">请选择过去的日期</string>
 </resources>
