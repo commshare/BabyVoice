@@ -296,7 +296,7 @@ public class EditGrowUpRecordActivity extends BaseFragmentActivity {
         }
         MultipartBody body = filesToMultipartBody(files);
         ServiceGenerator.createService(ApiManager.class)
-                .uploadPicFiles(BabyVoiceApp.currUserName, body)
+                .uploadBatchPicFiles(BabyVoiceApp.currUserName,0,0,body)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<HttpResponse<Void>>() {
@@ -321,7 +321,7 @@ public class EditGrowUpRecordActivity extends BaseFragmentActivity {
 
         for (File file : files) {
             RequestBody requestBody = RequestBody.create(MediaType.parse(""), file);
-            builder.addFormDataPart("picfile", file.getName(), requestBody);
+            builder.addFormDataPart("files", file.getName(), requestBody);
 //            builder.addFormDataPart("fileName", file.getName());
         }
         builder.setType(MultipartBody.FORM);

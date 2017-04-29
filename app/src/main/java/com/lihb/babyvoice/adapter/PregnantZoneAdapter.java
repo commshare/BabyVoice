@@ -18,6 +18,7 @@ import com.lihb.babyvoice.model.HttpResponse;
 import com.lihb.babyvoice.utils.FileUtils;
 import com.lihb.babyvoice.utils.StringUtils;
 import com.lihb.babyvoice.view.ImageBrowseActivity;
+import com.lihb.babyvoice.view.WebViewActivity;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
@@ -92,6 +93,8 @@ public class PregnantZoneAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             grow_up_content_img1.setOnClickListener(mOnClickListener);
             grow_up_content_img2.setOnClickListener(mOnClickListener);
             grow_up_del_img.setOnClickListener(mOnClickListener);
+
+            itemView.setOnClickListener(mOnClickListener);
         }
 
         public void bindData(Article article) {
@@ -167,6 +170,10 @@ public class PregnantZoneAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     delItem(mArticle);
                     mData.remove(mArticle);
                     notifyItemRemoved(getLayoutPosition());
+                } else if (v.getId() == R.id.root) {
+                    // 跳转到网站activity
+                    String url = ServiceGenerator.API_BASE_URL + "mobile/article/detailInfo.do?id=" + mArticle.id + "&rows=10";
+                    WebViewActivity.navigate(mContext,url,null);
                 }
             }
         };

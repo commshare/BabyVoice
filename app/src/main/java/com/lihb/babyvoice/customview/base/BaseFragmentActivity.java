@@ -51,6 +51,7 @@ public abstract class BaseFragmentActivity extends RxFragmentActivity implements
                 }
             });
         }
+        // 设置状态栏透明度
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {//5.0及以上
             View decorView = getWindow().getDecorView();
             int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN

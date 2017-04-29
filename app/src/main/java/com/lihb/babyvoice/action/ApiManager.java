@@ -208,11 +208,12 @@ public interface ApiManager {
      */
     @GET("mobile/article/detailInfo.do")
     Observable<HttpResponse<Void>> getPregnantArticleById(
-            @Query("id") int id);
+            @Query("id") int id,
+            @Query("rows") int rows);
     /*-----------------------------------------------孕婴圈---------------------------------------*/
 
     /**
-     * 上传图片到服务器
+     * 上传一张图片到服务器
      *
      * @param files
      * @return
@@ -222,6 +223,18 @@ public interface ApiManager {
             @Query("username") String userName,
             @Body MultipartBody files);
 
+    /**
+     * 批量上传图片到服务器
+     *
+     * @param files
+     * @return
+     */
+    @POST("web/picture/doUploadPitureBat.do")
+    Observable<HttpResponse<Void>> uploadBatchPicFiles(
+            @Query("username") String userName,
+            @Query("longitude") long longitude,
+            @Query("latitude")  long latitude,
+            @Body MultipartBody files);
 
 
 }
