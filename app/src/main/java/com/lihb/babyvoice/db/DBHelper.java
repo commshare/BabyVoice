@@ -25,6 +25,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     PREGNANT_EXAM_ENTRY.COLUMN_EVENT_ID + INTEGER_TYPE + COMMA_SEP +
                     PREGNANT_EXAM_ENTRY.COLUMN_WEEK + TEXT_TYPE + COMMA_SEP +
                     PREGNANT_EXAM_ENTRY.COLUMN_EVENT_NAME + TEXT_TYPE + COMMA_SEP +
+                    PREGNANT_EXAM_ENTRY.COLUMN_EVENT_NAME_EN + TEXT_TYPE + COMMA_SEP +
                     PREGNANT_EXAM_ENTRY.COLUMN_EVENT_IS_DONE + INTEGER_TYPE + " )";
 
     private static final String SQL_DELETE_PREGNANT_EXAM_ENTRY =
@@ -37,6 +38,7 @@ public class DBHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + VACCINE_ENTRY.TABLE_NAME + " (" +
                     VACCINE_ENTRY._ID + " INTEGER PRIMARY KEY," +
                     VACCINE_ENTRY.COLUMN_NAME + TEXT_TYPE + COMMA_SEP +
+                    VACCINE_ENTRY.COLUMN_NAME_EN + TEXT_TYPE + COMMA_SEP +
                     VACCINE_ENTRY.COLUMN_FREE + INTEGER_TYPE + COMMA_SEP +
                     VACCINE_ENTRY.COLUMN_INJECTED + INTEGER_TYPE + COMMA_SEP +
                     VACCINE_ENTRY.COLUMN_AGETOINJECT + INTEGER_TYPE + COMMA_SEP +
@@ -128,6 +130,7 @@ public class DBHelper extends SQLiteOpenHelper {
         public static final String COLUMN_WEEK = "week";
         public static final String COLUMN_EVENT_ID = "event_id";
         public static final String COLUMN_EVENT_NAME = "event_name";
+        public static final String COLUMN_EVENT_NAME_EN = "event_name_en";
         public static final String COLUMN_EVENT_IS_DONE = "is_done";
     }
 
@@ -135,6 +138,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static class VACCINE_ENTRY implements BaseColumns {
         public static final String TABLE_NAME = "vaccine_info_table";
         public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_NAME_EN = "name_en";
         public static final String COLUMN_FREE = "isfree";
         public static final String COLUMN_INJECTED = "is_injected";
         public static final String COLUMN_AGETOINJECT = "age_to_inject";

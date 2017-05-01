@@ -104,14 +104,14 @@ public class VaccineFragment extends BaseFragment {
                     return getString(R.string.in_twenty_four_hours);
                 } else if (ageToInject >= 12) {
                     if (ageToInject % 12 == 0) {
-                        return ageToInject / 12 + getString(R.string.years);
+                        return String.format(getString(R.string.years), ageToInject / 12.0f);
                     }else {
                         float xx = ageToInject / 12.0f;
-                        return xx +  getString(R.string.years);
+                        return String.format(getString(R.string.years), xx);
                     }
 
                 }
-                return mData.get(position).ageToInject+getString(R.string.month);
+                return String.format(getString(R.string.month), mData.get(position).ageToInject);
             }
         });
         mRecyclerView.addItemDecoration(decoration);

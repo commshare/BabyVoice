@@ -52,7 +52,7 @@
         android:paddingLeft="120dp"
         android:paddingRight="120dp"
         android:paddingTop="8dp"
-        android:text="登录"
+        android:text="@string/login"
         android:textColor="@color/startup_txt_color_selector"
         android:textSize="20sp" />
 
@@ -70,7 +70,7 @@
         android:paddingLeft="120dp"
         android:paddingRight="120dp"
         android:paddingTop="8dp"
-        android:text="注册"
+        android:text="@string/register"
         android:textColor="@color/startup_txt_color_selector"
         android:textSize="20sp" />
 

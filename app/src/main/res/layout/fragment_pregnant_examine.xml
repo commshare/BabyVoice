@@ -14,7 +14,6 @@
         app:leftTextColor="@android:color/white"
         app:rightTextColor="@android:color/white"
         app:leftText="@string/txt_check_assist"
-        app:rightText="第二周"
         />
 
     <com.lihb.babyvoice.customview.RefreshLayout

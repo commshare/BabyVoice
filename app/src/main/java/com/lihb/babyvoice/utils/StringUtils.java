@@ -1,7 +1,10 @@
 
 package com.lihb.babyvoice.utils;
 
+import android.content.Context;
+
 import java.security.MessageDigest;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -297,5 +300,14 @@ public class StringUtils {
         String mm = (time % 3600) / 60 > 9 ? (time % 3600) / 60 + "" : "0" + (time % 3600) / 60;
         String ss = (time % 3600) % 60 > 9 ? (time % 3600) % 60 + "" : "0" + (time % 3600) % 60;
         return hh + ":" + mm + ":" + ss;
+    }
+
+    /**
+     * 获取系统语言
+     * @return
+     */
+    public static String getSystemLanguage(Context context) {
+        Locale locale = context.getResources().getConfiguration().locale;
+        return locale.getLanguage();
     }
 }

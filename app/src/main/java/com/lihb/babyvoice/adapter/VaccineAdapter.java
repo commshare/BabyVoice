@@ -17,6 +17,7 @@ import com.lihb.babyvoice.model.VaccineInfo;
 import com.lihb.babyvoice.utils.CommonDialog;
 import com.lihb.babyvoice.utils.CommonToast;
 import com.lihb.babyvoice.utils.SimpleDatePickerDialog;
+import com.lihb.babyvoice.utils.StringUtils;
 import com.orhanobut.logger.Logger;
 
 import java.text.SimpleDateFormat;
@@ -100,7 +101,11 @@ public class VaccineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             if (vaccineInfo == null) {
                 return;
             }
-            vaccine_name_txt.setText(vaccineInfo.vaccineName);
+            if (StringUtils.getSystemLanguage(mContext).endsWith("zh")) {
+                vaccine_name_txt.setText(vaccineInfo.vaccineName);
+            }else {
+                vaccine_name_txt.setText(vaccineInfo.vaccineNameEn);
+            }
             if (vaccineInfo.isInjected == 1) {
                 vaccine_inject_img.setImageResource(R.mipmap.selected);
                 vaccine_inject_txt.setText(String.format(mContext.getString(R.string.injected), vaccineInfo.injectDate));

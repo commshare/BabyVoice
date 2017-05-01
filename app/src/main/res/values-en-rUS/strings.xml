@@ -1,0 +1,105 @@
+<resources>
+    <string name="app_name">Itingbaby</string>
+    <string name="check_followers">查看followers</string>
+
+    <string name="tab_baby_heart">listenBaby</string>
+    <string name="tab_pregnant_zone">Mombaby</string>
+    <string name="tab_baby_assist">E-tools</string>
+    <string name="tab_baby_me">Me</string>
+
+    <string name="title_left">Back</string>
+    <string name="title_Title">Title</string>
+    <string name="title_right">Done</string>
+
+    <string name="back">Back</string>
+    <string name="done">Confirm</string>
+
+    <string name="net_error_notice">The network doesn\'t work,please check the website setting.</string>
+
+    <string name="no_voice_record">No baby heart beat sound record\n Touch the record button to start a new record!</string>
+    <string name="voice_recording">Recording</string>
+    <string name="voice_save">Save recording</string>
+    <string name="voice_save_title">File name</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="confirm">Confirm</string>
+
+    <!-- 爱助手 -->
+    <string name="txt_pregnant_zone">Mombaby</string>
+    <string name="txt_check_assist">Pregnant diagnosis tool</string>
+    <string name="txt_vaccine_assist">Vaccine tool</string>
+    <string name="txt_health_protect_assist">Baby growth tool</string>
+    <string name="txt_growup_record">Baby activity record</string>
+    <string name="txt_care_mall">Online shop</string>
+    <string name="txt_expert_online">Find a doctor</string>
+
+    <!-- 个人中心 -->
+    <string name="txt_me_center">Me</string>
+    <string name="txt_find_password">Forget your password</string>
+    <string name="txt_pregnant_date">Pregnant date setting</string>
+    <string name="txt_baby_info">Baby info setting</string>
+    <string name="txt_remote_video_address">set the remote video link</string>
+    <string name="txt_country_select">Language</string>
+    <string name="txt_about_app">About listen to baby</string>
+
+
+    <string name="enter_your_pregnant_date">Please set your pregnant date</string>
+    <string name="enter_baby_birthday">Please set your baby birthday</string>
+
+    <string name="injected">%sInjected</string>
+    <string name="not_injected">Non-injected</string>
+    <string name="enter_baby_info">Please input your baby info</string>
+
+    <string name="show_more_item">+ More</string>
+    <string name="hide_more_item">- More</string>
+    <string name="head_height_size">Head Perimeter: %1$sCm&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Height: %2$sCm</string>
+    <string name="weight_temperature_size">Weight: %1$sKg&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Temperature: %2$s℃</string>
+    <string name="think_in_this_monment">I am thinking...</string>
+
+    <!-- cameraSurface translations -->
+    <string name="image_file_invalid_err">Save unsuccessfully，camera is not activitied</string>
+    <string name="camera_not_found">No camera，camera is not activitied</string>
+    <string name="camera_start_preview_failed">Camera is not activitied，please try again</string>
+    <string name="access_permission_failed">Please set %s in the mobile SETTING, or you may not use the camera successfully.</string>
+    <string name="camera_permission">Camera Permission</string>
+    <string name="mic_permission">Microphone Permission</string>
+    <string name="picture_permission">Photo Permission</string>
+    <string name="from_camera">Photo</string>
+    <string name="from_gallery">Choose from pictures</string>
+    <string name="from_recommanded">Recommended headPortrait</string>
+    <string name="back_camera_not_found">No back camera,camera is not activitied</string>
+    <string name="fail_to_connect_to_camera_service">Can\'t find a camera</string>
+    <string name="please_keep_landscape">Please hold the mobile for a horizontal photo</string>
+    <string name="please_keep_portrait">Please hold the mobile for a vertical photo</string>
+    <string name="invalid_image">Invalid picture</string>
+    <string name="take_photo_failed">Photo unsuccessfully</string>
+    <string name="flash_unsupported">Camera not support flash</string>
+    <string name="photo_save_failed">Save picture unsuccessfully，please check the mobile momery</string>
+    <string name="no_gallery">Can\'t detected picture application</string>
+    <string name="voice_analysis">Sound Analyzing</string>
+    <string name="ack_protocal_str">I have read and agreed the application items and privacy policy.</string>
+    <string name="in_twenty_four_hours">In 24 hours</string>
+    <string name="years">%.1f years</string>
+    <string name="month">%d months</string>
+    <string name="play_failed">Can\'t play the file, please try later.</string>
+    <string name="plugin_headset_first">Record the baby heart beat sound or lung sound, please connect the Itingbaby firstly.</string>
+    <string name="sms_to_your_phone">Verification code is sent to your mobile， please check it as soon as possible.</string>
+    <string name="resend_sms_code">Resend after %d seconds</string>
+    <string name="vaccine_injecte_date_dialog_title">Please select inject date</string>
+    <string name="txt_compute_growup">Analyzing growth index</string>
+    <string name="required_field">Please fill the head perimeter、height、weight、temperature</string>
+    <string name="txt_sms_login">Login by sms code</string>
+    <string name="i_want_share">Share</string>
+    <string name="select_pass_date">Please select a passed date</string>
+    <string name="account_and_password">Set account and password</string>
+    <string name="please_input_account">Please input account</string>
+    <string name="please_input_pwd">Please input password</string>
+    <string name="account_registed">Account was registered</string>
+    <string name="login_by_sms_code">Login by sms code</string>
+    <string name="please_input_phone_num">Please input phone num</string>
+    <string name="please_input_verify_code">Please input verify code</string>
+    <string name="send_verify_code">Send verify code</string>
+    <string name="login">Login</string>
+    <string name="account_login">Account login</string>
+    <string name="register">Register</string>
+</resources>

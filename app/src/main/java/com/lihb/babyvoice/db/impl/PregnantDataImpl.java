@@ -44,6 +44,7 @@ public class PregnantDataImpl implements IDBRxManager<ProductionInspection> {
                 values.put(DBHelper.PREGNANT_EXAM_ENTRY.COLUMN_NO, productionInspection.no);
                 values.put(DBHelper.PREGNANT_EXAM_ENTRY.COLUMN_EVENT_ID, productionInspection.event_id);
                 values.put(DBHelper.PREGNANT_EXAM_ENTRY.COLUMN_EVENT_NAME, productionInspection.event_name);
+                values.put(DBHelper.PREGNANT_EXAM_ENTRY.COLUMN_EVENT_NAME_EN, productionInspection.event_name_en);
                 values.put(DBHelper.PREGNANT_EXAM_ENTRY.COLUMN_EVENT_IS_DONE, productionInspection.isDone);
                 values.put(DBHelper.PREGNANT_EXAM_ENTRY.COLUMN_WEEK, productionInspection.week);
                 SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -70,6 +71,7 @@ public class PregnantDataImpl implements IDBRxManager<ProductionInspection> {
                     values.put(DBHelper.PREGNANT_EXAM_ENTRY.COLUMN_NO, productionInspection.no);
                     values.put(DBHelper.PREGNANT_EXAM_ENTRY.COLUMN_EVENT_ID, productionInspection.event_id);
                     values.put(DBHelper.PREGNANT_EXAM_ENTRY.COLUMN_EVENT_NAME, productionInspection.event_name);
+                    values.put(DBHelper.PREGNANT_EXAM_ENTRY.COLUMN_EVENT_NAME_EN, productionInspection.event_name_en);
                     values.put(DBHelper.PREGNANT_EXAM_ENTRY.COLUMN_EVENT_IS_DONE, productionInspection.isDone);
                     values.put(DBHelper.PREGNANT_EXAM_ENTRY.COLUMN_WEEK, productionInspection.week);
                     if (db.insert(DBHelper.PREGNANT_EXAM_ENTRY.TABLE_NAME, null, values) == -1) {
@@ -99,6 +101,7 @@ public class PregnantDataImpl implements IDBRxManager<ProductionInspection> {
                         inspection.no = cursor.getInt(cursor.getColumnIndex(DBHelper.PREGNANT_EXAM_ENTRY.COLUMN_NO));
                         inspection.event_id = cursor.getInt(cursor.getColumnIndex(DBHelper.PREGNANT_EXAM_ENTRY.COLUMN_EVENT_ID));
                         inspection.event_name = cursor.getString(cursor.getColumnIndex(DBHelper.PREGNANT_EXAM_ENTRY.COLUMN_EVENT_NAME));
+                        inspection.event_name_en = cursor.getString(cursor.getColumnIndex(DBHelper.PREGNANT_EXAM_ENTRY.COLUMN_EVENT_NAME_EN));
                         inspection.isDone = cursor.getInt(cursor.getColumnIndex(DBHelper.PREGNANT_EXAM_ENTRY.COLUMN_EVENT_IS_DONE));
                         inspection.week = cursor.getString(cursor.getColumnIndex(DBHelper.PREGNANT_EXAM_ENTRY.COLUMN_WEEK));
                         result.add(inspection);
@@ -160,6 +163,7 @@ public class PregnantDataImpl implements IDBRxManager<ProductionInspection> {
                 values.put(DBHelper.PREGNANT_EXAM_ENTRY.COLUMN_NO, productionInspection.no);
                 values.put(DBHelper.PREGNANT_EXAM_ENTRY.COLUMN_EVENT_ID, productionInspection.event_id);
                 values.put(DBHelper.PREGNANT_EXAM_ENTRY.COLUMN_EVENT_NAME, productionInspection.event_name);
+                values.put(DBHelper.PREGNANT_EXAM_ENTRY.COLUMN_EVENT_NAME_EN, productionInspection.event_name_en);
                 values.put(DBHelper.PREGNANT_EXAM_ENTRY.COLUMN_EVENT_IS_DONE, productionInspection.isDone);
                 values.put(DBHelper.PREGNANT_EXAM_ENTRY.COLUMN_WEEK, productionInspection.week);
                 int res= db.update(DBHelper.PREGNANT_EXAM_ENTRY.TABLE_NAME, values,

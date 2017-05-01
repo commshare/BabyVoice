@@ -19,6 +19,11 @@ public class ProductionInspection {
      * 产检名称
      */
     public String event_name;
+
+    /**
+     * 产检名称
+     */
+    public String event_name_en;
     /**
      * 第几周
      */

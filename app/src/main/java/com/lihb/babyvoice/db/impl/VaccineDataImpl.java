@@ -48,6 +48,7 @@ public class VaccineDataImpl implements IDBRxManager<VaccineInfo> {
                                 if (!aBoolean) {
                                     ContentValues values = new ContentValues();
                                     values.put(DBHelper.VACCINE_ENTRY.COLUMN_NAME, vaccineInfo.vaccineName);
+                                    values.put(DBHelper.VACCINE_ENTRY.COLUMN_NAME_EN, vaccineInfo.vaccineNameEn);
                                     values.put(DBHelper.VACCINE_ENTRY.COLUMN_FREE, vaccineInfo.isFree);
                                     values.put(DBHelper.VACCINE_ENTRY.COLUMN_INJECTDATE, vaccineInfo.injectDate);
                                     values.put(DBHelper.VACCINE_ENTRY.COLUMN_INJECTED, vaccineInfo.isInjected);
@@ -83,6 +84,7 @@ public class VaccineDataImpl implements IDBRxManager<VaccineInfo> {
                                     if(!aBoolean){
                                         ContentValues values = new ContentValues();
                                         values.put(DBHelper.VACCINE_ENTRY.COLUMN_NAME, vaccineInfo.vaccineName);
+                                        values.put(DBHelper.VACCINE_ENTRY.COLUMN_NAME_EN, vaccineInfo.vaccineNameEn);
                                         values.put(DBHelper.VACCINE_ENTRY.COLUMN_FREE, vaccineInfo.isFree);
                                         values.put(DBHelper.VACCINE_ENTRY.COLUMN_INJECTDATE, vaccineInfo.injectDate);
                                         values.put(DBHelper.VACCINE_ENTRY.COLUMN_INJECTED, vaccineInfo.isInjected);
@@ -117,6 +119,7 @@ public class VaccineDataImpl implements IDBRxManager<VaccineInfo> {
                         cursor.moveToPosition(i);
                         VaccineInfo vaccineInfo = new VaccineInfo();
                         vaccineInfo.vaccineName = cursor.getString(cursor.getColumnIndex(DBHelper.VACCINE_ENTRY.COLUMN_NAME));
+                        vaccineInfo.vaccineNameEn = cursor.getString(cursor.getColumnIndex(DBHelper.VACCINE_ENTRY.COLUMN_NAME_EN));
                         vaccineInfo.ageToInject = cursor.getInt(cursor.getColumnIndex(DBHelper.VACCINE_ENTRY.COLUMN_AGETOINJECT));
                         vaccineInfo.isFree = cursor.getInt(cursor.getColumnIndex(DBHelper.VACCINE_ENTRY.COLUMN_FREE));
                         vaccineInfo.injectDate = cursor.getString(cursor.getColumnIndex(DBHelper.VACCINE_ENTRY.COLUMN_INJECTDATE));
@@ -163,6 +166,7 @@ public class VaccineDataImpl implements IDBRxManager<VaccineInfo> {
                 SQLiteDatabase db = dbHelper.getWritableDatabase();
                 ContentValues values = new ContentValues();
                 values.put(DBHelper.VACCINE_ENTRY.COLUMN_NAME, vaccineInfo.vaccineName);
+                values.put(DBHelper.VACCINE_ENTRY.COLUMN_NAME_EN, vaccineInfo.vaccineNameEn);
                 values.put(DBHelper.VACCINE_ENTRY.COLUMN_FREE, vaccineInfo.isFree);
                 values.put(DBHelper.VACCINE_ENTRY.COLUMN_INJECTDATE, vaccineInfo.injectDate);
                 values.put(DBHelper.VACCINE_ENTRY.COLUMN_INJECTED, vaccineInfo.isInjected);

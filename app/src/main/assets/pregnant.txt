@@ -1,34 +1,34 @@
-1	1	第12周	第1次正式产检：建档领取孕妇健康手册	1
-1	2	第12周	测量体重和血压：作为日后准妈妈孕期体重增加的参考依据。整个孕期中理想的体重增加值为10～12.5千克。	1
-1	3	第12周	听心跳：运用多普勒胎心仪来听宝宝的心跳	1
-1	4	第12周	验尿：主要是验准妈妈的尿糖及尿蛋白两项数值，以判断准妈妈本身是否可能血糖有问题、肾功能健全与否、是否有发生子痫的危险等。	1
-1	5	第12周	抽血：主要是验准妈妈的血型、血红蛋白、肝功能、肾功能及梅毒、乙肝、艾滋病等，好为未来做防范。	1
-1	6	第12周	检查子宫大小：对检测以后胎儿的成长是否正常作准备。	1
-2	1	第13-16周	量血压、体重、听胎心、查尿常规等常规项目	1
-2	2	第13-16周	唐氏综合征筛检	1
-3	1	第17-20周	量血压、体重、听胎心、查尿常规等常规项目	1
-3	2	第17-20周	超声波检查：主要看胎儿外观发育是否有较大问题，医师会仔细量胎儿的头围、腹围、大腿骨长度及检视脊柱是否有先天性异常。最令准妈妈期待的首次胎动，约在18-20周出现。	1
-4	1	第21-24周	量血压、体重、听胎心、查尿常规等常规项目	1
-4	2	第21-24周	妊娠糖尿病筛检：如果查出患有妊娠糖尿病，要采取饮食及注射胰岛素来控制，不可使用口服降糖药，以免影响胎儿。	1
-5	1	第25-28周 	量血压、体重、听胎心、查尿常规等常规项目	1
-5	2	第25-28周 	抽血检查：目的是要检视准妈妈本身是否携带乙型肝炎病毒	1
-5	3	第25-28周 	四维排畸检查：在这个时段胎儿的肢体及各主要脏器已经全部发育，羊水较适合做胎儿畸形筛查。	1
-6	1	第29-32周	量血压、体重、听胎心、查尿常规等常规项目	1
-6	2	第29-32周	子痫前症检查：检查是否有水肿现象，如果测量结果发现准妈妈的血压偏高，又出现蛋白尿、全身水肿等情况时，准妈妈须多加留意，以免有子痫前症的危险。	1
-6	3	第29-32周	指导准妈妈自数胎动	1
-7	1	第33-35周	量血压、体重、听胎心、查尿常规等常规项目	1
-7	2	第33-35周	超声波检查：评估胎儿当时的体重及发育状况，并预估胎儿至足月生产时的重量。一旦发现胎儿体重不足，准妈妈就应多补充一些营养素；若发现胎儿过重，准妈妈在饮食上就要稍加控制，以免日后需要剖宫生产，或在生产过程中出现胎儿难产情形。	1
-7	3	第33-35周	胎心监护：通过绑在准妈妈身上的两个探头进行的，一个绑在子宫顶端，是压力感受器，其主要作用是了解有无宫缩及宫缩的强度；另一个放置在胎儿的胸部或背部，进行胎心的测量。	1
-8	1	第36周	量血压、体重、听胎心、查尿常规等常规项目	1
-8	2	第36周	为生产做准备：此时产检以每周一次为原则，并持续监视胎儿状态。	1
-9	1	第37周	量血压、体重、听胎心、查尿常规等常规项目	1
-9	2	第37周	注意临产征兆：由于胎动愈来愈频繁，准妈妈宜随时注意胎儿及自身的情况，以免胎儿提前出生。	1
-9	3	第37周	指导准妈妈自数胎动	1
-9	4	第37周	检查胎儿与准妈妈骨盆等情况，决定分娩方式	1
-9	5	第37周	指导准妈妈有不适情况如腹痛、见红、阴道流液随诊	1
-10	1	第38周	量血压、体重、听胎心、查尿常规等常规项目	1
-10	2	第38周	胎位检查：胎位开始固定，胎头已经下来，并卡在骨盆腔内，此时准妈妈应有随时准备生产的心理。	1
-10	3	第38周	胎心监测，每天勤练拉玛泽呼吸法	1
-11	1	第39-42周	到了42周以后，仍没有生产迹象，就应考虑让医师使用催产素。	1
-11	2	第39-42周	胎位检查	1
-11	3	第39-42周	胎心监测，每天勤练拉玛泽呼吸法	1
+1**1**12**第1次正式产检：建档领取孕妇健康手册**First pregnant diagnosis:your information will be registered in the hospital information system and you will get an pregnant health recording manual.**1
+1**2**12**测量体重和血压：作为日后准妈妈孕期体重增加的参考依据。整个孕期中理想的体重增加值为10～12.5千克。**Weight and blood presure measurement:Set a weight and blood presure reference. It is better to get 10-12.5kg weight during the whole pregnant period.**1
+1**3**12**听心跳：运用多普勒胎心仪来听宝宝的心跳**Fetus heart beat detecting through fetal doppler**1
+1**4**12**验尿：主要是验准妈妈的尿糖及尿蛋白两项数值，以判断准妈妈本身是否可能血糖有问题、肾功能健全与否、是否有发生子痫的危险等。**Urine sample detecting: glucose and urine protein index testing, to confirm whether there is any potential glucose,renal function disease and eclampsia risk.**1
+1**5**12**抽血：主要是验准妈妈的血型、血红蛋白、肝功能、肾功能及梅毒、乙肝、艾滋病等，好为未来做防范。**Blood testing: blood type, hemoglobin, liver function, renal function, syphilis, hepatitis B, AIDS, etc..**1
+1**6**12**检查子宫大小：对检测以后胎儿的成长是否正常作准备。**Uterus size checking:To confirm whether fetal growth could be normalin the future.**1
+2**1**13-16**量血压、体重、听胎心、查尿常规等常规项目**Blood presure measurement, weight, fetal heart rate, urine sample and other routine testing.**1
+2**2**13-16**唐氏综合征筛检**Down syndrome screening**1
+3**1**17-20**量血压、体重、听胎心、查尿常规等常规项目**Blood presure measurement, weight, fetal heart rate, urine sample and other routine testing.**1
+3**2**17-20**超声波检查：主要看胎儿外观发育是否有较大问题，医师会仔细量胎儿的头围、腹围、大腿骨长度及检视脊柱是否有先天性异常。最令准妈妈期待的首次胎动，约在18-20周出现。**Utrasound Scanning:check the fetus growth condition，fetus head perimeter，abdominal perimeter,leg bone and spine development are checked. You will heard your baby's heart beat sound during the scanning.	**1
+4**1**21-24**量血压、体重、听胎心、查尿常规等常规项目**Blood presure measurement, weight, fetal heart rate, urine sample and other routine testing.**1
+4**2**21-24**妊娠糖尿病筛检：如果查出患有妊娠糖尿病，要采取饮食及注射胰岛素来控制，不可使用口服降糖药，以免影响胎儿。**Gestational diabetes screening: If you are diagnosed with gestational diabetes, you should take a diet and inject insulin to control, do not use oral hypoglycemic agents, so as not to affect the fetus.**1
+5**1**25-28**量血压、体重、听胎心、查尿常规等常规项目**Blood presure measurement, weight, fetal heart rate, urine sample and other routine testing.**1
+5**2**25-28**抽血检查：目的是要检视准妈妈本身是否携带乙型肝炎病毒**Blood testing:to confirm whether you are carrying hepatitis B virus.**1
+5**3**25-28**四维排畸检查：在这个时段胎儿的肢体及各主要脏器已经全部发育，羊水较适合做胎儿畸形筛查。**Four-dimensional dysmorphia examination: fetal limbs and the main organs have all developed in this period, and amniotic fluid is suitable for fetal malformations screening.**1
+6**1**29-32**量血压、体重、听胎心、查尿常规等常规项目**Blood testing:to confirm whether you are carrying hepatitis B virus.**1
+6**2**29-32**子痫前症检查：检查是否有水肿现象，如果测量结果发现准妈妈的血压偏高，又出现蛋白尿、全身水肿等情况时，准妈妈须多加留意，以免有子痫前症的危险。**Preeclampsia examination: check whether  there is any phenomenon of edema, if you are found to be with high blood pressure,and proteinuria, systemic edema, etc.,you need to pay more attention to avoid the risk of preeclampsia.**1
+6**3**29-32**指导准妈妈自数胎动**You should learn how to record the fetal movement.**1
+7**1**33-35**量血压、体重、听胎心、查尿常规等常规项目**Blood testing:to confirm whether you are carrying hepatitis B virus.**1
+7**2**33-35**超声波检查：评估胎儿当时的体重及发育状况，并预估胎儿至足月生产时的重量。一旦发现胎儿体重不足，准妈妈就应多补充一些营养素；若发现胎儿过重，准妈妈在饮食上就要稍加控制，以免日后需要剖宫生产，或在生产过程中出现胎儿难产情形。**Utrasound Scanning:Evaluate the fetus weight and growth condition, and forcast the fetus weight. If your fetus weight is lower than the standard index, you should enhance the nutrition, if your fetus weight is higher than the standard index, you should control the nutrition.**1
+7**3**33-35**胎心监护：通过绑在准妈妈身上的两个探头进行的，一个绑在子宫顶端，是压力感受器，其主要作用是了解有无宫缩及宫缩的强度；另一个放置在胎儿的胸部或背部，进行胎心的测量。**Fetal monitoring: you will get the UC(uterus constriction) and FHR(fetal heart rate) through the UC and FHR transducer.**1
+8**1**36**量血压、体重、听胎心、查尿常规等常规项目**Blood presure measurement, weight, fetal heart rate, urine sample and other routine testing.**1
+8**2**36**为生产做准备：此时产检以每周一次为原则，并持续监视胎儿状态。**Prepare for labor: go to hospital every week and monitor the fetus condition.**1
+9**1**37**量血压、体重、听胎心、查尿常规等常规项目**Blood presure measurement, weight, fetal heart rate, urine sample and other routine testing.**1
+9**2**37**注意临产征兆：由于胎动愈来愈频繁，准妈妈宜随时注意胎儿及自身的情况，以免胎儿提前出生。**Pay attention to the labor symptoms, such as the frequent fetal movement, you should be careful about your and fetus condition for possible preterm labor.**1
+9**3**37**指导准妈妈自数胎动**You should learn how to record the fetal movement.**1
+9**4**37**检查胎儿与准妈妈骨盆等情况，决定分娩方式**Check the fetus and mom's condition, and confirm the delivery way.**1
+9**5**37**指导准妈妈有不适情况如腹痛、见红、阴道流液随诊**If there is any uncomfortable symptom, such as abdominal pain, vaginal bleeding,or liquid, you should go to hospital as soon as possible.**1
+10**1**38**量血压、体重、听胎心、查尿常规等常规项目**Blood presure measurement, weight, fetal heart rate, urine sample and other routine testing.**1
+10**2**38**胎位检查：胎位开始固定，胎头已经下来，并卡在骨盆腔内，此时准妈妈应有随时准备生产的心理。**Fetus position checking: Fetus position starts to be stable, and fetal head should be down and goes to the  pelvic cavity and you should be ready to delivery soon.**1
+10**3**38**胎心监测，每天勤练拉玛泽呼吸法**Fetal heart rate detecting and practise the Lamaz breath everyday.**1
+11**1**39-42**到了42周以后，仍没有生产迹象，就应考虑让医师使用催产素。**Week	Fetal heart rate detecting and practise the Lamaz breath everyday.**1
+11**2**39-42**胎位检查**Fetus position checking**1
+11**3**39-42**胎心监测，每天勤练拉玛泽呼吸法**Fetal heart rate detecting and practise the Lamaz breath everyday.**1

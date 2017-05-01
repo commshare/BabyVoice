@@ -13,7 +13,7 @@
         android:paddingTop="@dimen/padding_top"
         app:leftTextColor="@android:color/white"
         app:leftDrawable="@mipmap/back"
-        app:leftText="使用短信验证码登录" />
+        app:leftText="@string/login_by_sms_code" />
 
     <RelativeLayout
         android:id="@+id/relativelayout2"
@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:hint="请输入你的手机号码"
+            android:hint="@string/please_input_phone_num"
             android:background="@null"
             android:layout_marginLeft="8dp"
             android:singleLine="true"
@@ -78,7 +78,7 @@
                 android:layout_centerVertical="true"
                 android:background="@null"
                 android:password="true"
-                android:hint="请输入手机验证码"
+                android:hint="@string/please_input_verify_code"
                 android:layout_marginLeft="8dp"
                 android:singleLine="true"
                 android:layout_toLeftOf="@+id/pwd_clear_input"
@@ -115,7 +115,7 @@
             android:background="@drawable/register_login_normal_shape"
             android:paddingBottom="7dp"
             android:paddingTop="7dp"
-            android:text="发送验证码"
+            android:text="@string/send_verify_code"
             android:textColor="@color/white"
             android:textSize="16sp" />
     </LinearLayout>
@@ -160,7 +160,7 @@
         android:layout_marginRight="15dp"
         android:paddingBottom="7dp"
         android:paddingTop="7dp"
-        android:text="登录"
+        android:text="@string/login"
         android:textColor="@color/white"
         android:textSize="16sp" />
 

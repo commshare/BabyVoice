@@ -12,6 +12,11 @@ public class VaccineInfo {
     public String vaccineName;
 
     /**
+     * 疫苗名称
+     */
+    public String vaccineNameEn;
+
+    /**
      * 是否免费
      */
     public int isFree;

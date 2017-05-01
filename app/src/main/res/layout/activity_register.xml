@@ -13,7 +13,7 @@
         android:paddingTop="@dimen/padding_top"
         app:leftDrawable="@mipmap/back"
         app:leftTextColor="@android:color/white"
-        app:leftText="设置账号密码" />
+        app:leftText="@string/account_and_password" />
 
 
     <RelativeLayout
@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:hint="请输入账号"
+            android:hint="@string/please_input_account"
             android:background="@null"
             android:layout_marginLeft="8dp"
             android:singleLine="true"
@@ -69,7 +69,7 @@
             android:layout_centerVertical="true"
             android:background="@null"
             android:password="true"
-            android:hint="请输入密码"
+            android:hint="@string/please_input_pwd"
             android:layout_marginLeft="8dp"
             android:singleLine="true"
             android:layout_toLeftOf="@+id/pwd_clear_input"
@@ -109,7 +109,7 @@
         android:layout_marginRight="15dp"
         android:paddingBottom="7dp"
         android:paddingTop="7dp"
-        android:text="保存"
+        android:text="@string/save"
         android:textColor="@color/white"
         android:textSize="16sp" />
 
@@ -119,7 +119,7 @@
         android:layout_height="wrap_content"
         android:textSize="12sp"
         android:textColor="#ff0000"
-        android:text="账号已经被注册了"
+        android:text="@string/account_registed"
         android:layout_marginTop="6dp"
         android:id="@+id/tips"
         android:visibility="gone"

@@ -15,6 +15,8 @@ import com.lihb.babyvoice.customview.DividerLine;
 import com.lihb.babyvoice.db.impl.PregnantDataImpl;
 import com.lihb.babyvoice.model.ProductionInspection;
 import com.lihb.babyvoice.utils.CommonToast;
+import com.lihb.babyvoice.utils.StringUtils;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -115,7 +117,7 @@ public class PregnantExamineAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         mItemPosition.clear();
         Set<Integer> keys = dataMap.keySet();
         for (Integer key : keys) {
-            mGroupPosition.put(count++, "第"+key+"次");
+            mGroupPosition.put(count++, key+"");
             List<ProductionInspection> list = dataMap.get(key);
             for (int i = 0; i < list.size(); i++) {
                 mItemPosition.put(count++, list.get(i));
@@ -161,9 +163,9 @@ public class PregnantExamineAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     public void call(Boolean aBoolean) {
                         Log.i("PregnantExamineAdapter", inspection.toString());
                         if (aBoolean) {
-                            CommonToast.showShortToast("更新数据成功");
+                            Logger.i("更新数据成功");
                         }else {
-                            CommonToast.showShortToast("更新数据失败");
+                            Logger.i("更新数据失败");
                         }
                     }
                 }, new Action1<Throwable>() {
@@ -207,7 +209,11 @@ public class PregnantExamineAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 return;
             }
             pregnantIndexTxt.setText(inspection.event_id + "");
-            pregnantTitleTxt.setText(inspection.event_name);
+            if (StringUtils.getSystemLanguage(mContext).endsWith("zh")) {
+                pregnantTitleTxt.setText(inspection.event_name);
+            }else {
+                pregnantTitleTxt.setText(inspection.event_name_en);
+            }
             if (inspection.isDone == 1) {
                 pregnantDoneImg.setImageResource(R.mipmap.selected);
             } else {

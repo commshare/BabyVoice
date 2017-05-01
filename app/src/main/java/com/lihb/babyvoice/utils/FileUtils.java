@@ -422,13 +422,14 @@ public class FileUtils {
             String line = "";
             String[] array;
             while ((line = bufReader.readLine()) != null) {
-                array = line.split("\\s+");
+                array = line.split("\\*+");
                 ProductionInspection productionInspection = new ProductionInspection();
                 productionInspection.no = Integer.valueOf(array[0]);
                 productionInspection.event_id = Integer.valueOf(array[1]);
                 productionInspection.week = array[2];
                 productionInspection.event_name = array[3];
-                productionInspection.isDone = Integer.valueOf(array[4]);
+                productionInspection.event_name_en = array[4];
+                productionInspection.isDone = Integer.valueOf(array[5]);
                 dataList.add(productionInspection);
             }
 
@@ -486,13 +487,14 @@ public class FileUtils {
             String line = "";
             String[] array;
             while ((line = bufReader.readLine()) != null) {
-                array = line.split("\\s+");
+                array = line.split("\\*+");
                 VaccineInfo vaccineInfo = new VaccineInfo();
                 vaccineInfo.vaccineName = array[0];
-                vaccineInfo.isFree = Integer.valueOf(array[1]);
-                vaccineInfo.isInjected = Integer.valueOf(array[2]);
-                vaccineInfo.ageToInject = Integer.valueOf(array[3]);
-                vaccineInfo.injectDate = array[4];
+                vaccineInfo.vaccineNameEn = array[1];
+                vaccineInfo.isFree = Integer.valueOf(array[2]);
+                vaccineInfo.isInjected = Integer.valueOf(array[3]);
+                vaccineInfo.ageToInject = Integer.valueOf(array[4]);
+                vaccineInfo.injectDate = array[5];
                 dataList.add(vaccineInfo);
             }
 
