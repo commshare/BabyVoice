@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="voice_type">
+        <item>胎心音</item>
+        <item>肺音</item>
+        <item>儿童语音</item>
+        <item>其他音</item>
+    </string-array>
+</resources>

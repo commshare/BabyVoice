@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="voice_type">
+        <item>fetal heart sound</item>
+        <item>lung sound</item>
+        <item>baby sound</item>
+        <item>other sound</item>
+    </string-array>
+</resources>
