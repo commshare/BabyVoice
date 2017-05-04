@@ -93,6 +93,12 @@ public class VaccineFragment extends BaseFragment {
 
         mVaccineAdapter = new VaccineAdapter(getContext(), mData);
 
+        // 更新单个数据不闪屏
+        // 方法1
+        mRecyclerView.getItemAnimator().setChangeDuration(0);
+        // 方法2
+//        ((SimpleItemAnimator)mRecyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+
         StickyDecoration decoration = new StickyDecoration(getActivity(), new StickyDecoration.DecorationCallback() {
             @Override
             public String getGroupLabel(int position) {
