@@ -25,20 +25,21 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="19dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         >
+
 
         <com.lihb.babyvoice.customview.CategoryView
             android:id="@+id/record_heart_category"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             />
 
         <com.lihb.babyvoice.customview.CategoryView
             android:id="@+id/record_lung_category"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             />
@@ -49,12 +50,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             />
-
         <com.lihb.babyvoice.customview.CategoryView
             android:id="@+id/record_other_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
+            android:layout_weight="1"
             />
 
     </LinearLayout>

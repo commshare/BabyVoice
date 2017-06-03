@@ -53,6 +53,9 @@ public class PickRecordDialog extends Dialog {
         mVoice.setOnClickListener(mOnClickListener);
         mOther.setOnClickListener(mOnClickListener);
 
+        // 2017.06.03隐藏掉其他音和儿童语音
+        mVoice.setVisibility(false);
+        mOther.setVisibility(false);
     }
 
     private void initData(CategoryView view, int id, String s) {

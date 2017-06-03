@@ -20,10 +20,12 @@ import com.lihb.babyvoice.command.PickedCategoryCommand;
 import com.lihb.babyvoice.customview.PickRecordDialog;
 import com.lihb.babyvoice.customview.RefreshLayout;
 import com.lihb.babyvoice.customview.RemovedRecyclerView;
+import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragment;
 import com.lihb.babyvoice.db.impl.BabyVoiceDataImpl;
 import com.lihb.babyvoice.model.BabyVoice;
 import com.lihb.babyvoice.utils.CommonToast;
+import com.lihb.babyvoice.utils.DimensionUtil;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
@@ -50,6 +52,9 @@ public class HeartFragment extends BaseFragment {
     private VoiceRecordFragmentV2 mVoiceRecordFragmentV2;
     private VoiceRecordFragment mVoiceRecordFragment;
     private VoicePlayFragment mVoicePlayFragment;
+    private MeFragment meFragment;
+
+    private TitleBar mTitleBar;
 
     private static final int COUNT = 10;
     private PickRecordDialog mPickCategoryDialog;
@@ -74,7 +79,7 @@ public class HeartFragment extends BaseFragment {
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (hidden == false) {
-            showBottomTab();
+//            showBottomTab();
             getData(true);
         }
     }
@@ -90,6 +95,9 @@ public class HeartFragment extends BaseFragment {
 
     private void initView() {
         emptyView = getView().findViewById(R.id.empty_root_view);
+
+        mTitleBar = (TitleBar) getView().findViewById(R.id.title_bar);
+        mTitleBar.setLeftOnClickListener(v -> gotoMeFragment());
 
         mRefreshLayout = (RefreshLayout) getView().findViewById(R.id.heart_refreshlayout);
         mRecyclerView = (RemovedRecyclerView) getView().findViewById(R.id.heart_recyclerView);
@@ -144,6 +152,7 @@ public class HeartFragment extends BaseFragment {
             }
         });
         getData(true);
+
     }
 
     private void showPickCategoryDialog() {
@@ -152,6 +161,8 @@ public class HeartFragment extends BaseFragment {
             mPickCategoryDialog.setContentView(R.layout.pick_category);
             Window window = mPickCategoryDialog.getWindow();
             window.setGravity(Gravity.CENTER);  // dialog显示的位置
+//            window.getAttributes().height
+            window.setLayout((int) (DimensionUtil.getScreenWidth(getContext())*0.7), window.getAttributes().height);
             window.setWindowAnimations(R.style.pickCategoryDialogStyle);  //弹出动画
             mPickCategoryDialog.setOnPickRecordDialogListener(new PickRecordDialog.OnPickRecordDialogListener() {
                 @Override
@@ -228,6 +239,24 @@ public class HeartFragment extends BaseFragment {
         }
         transaction.add(R.id.main_layout, mVoicePlayFragment, "VoicePlayFragment")
                 .show(mVoicePlayFragment)
+                .addToBackStack(null)
+                .commit();
+
+    }
+
+    private void gotoMeFragment() {
+        if (null == meFragment) {
+            meFragment = MeFragment.create();
+        }
+
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.hide(this);
+        int count = getActivity().getSupportFragmentManager().getBackStackEntryCount();
+        if (count > 0) {
+            getActivity().getSupportFragmentManager().popBackStackImmediate();
+        }
+        transaction.add(R.id.main_layout, meFragment, "meFragment")
+                .show(meFragment)
                 .addToBackStack(null)
                 .commit();
 

@@ -49,4 +49,8 @@ public class CategoryView extends RelativeLayout {
     public void setRecordTxt(String txt) {
         this.recordTxt.setText(txt);
     }
+
+    public void setVisibility(boolean visible) {
+        setVisibility(visible ? VISIBLE : GONE);
+    }
 }

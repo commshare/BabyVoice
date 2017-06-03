@@ -29,7 +29,9 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_above="@+id/linearLayout1"
-        android:background="@android:color/darker_gray" />
+        android:background="@android:color/darker_gray"
+        android:visibility="gone"
+        />
 
     <LinearLayout
         android:id="@+id/linearLayout1"
@@ -37,7 +39,9 @@
         android:layout_height="54dp"
         android:layout_alignParentBottom="true"
         android:background="@color/tab_background"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone"
+        >
 
         <RelativeLayout
             android:id="@+id/rl_tab_heart"
