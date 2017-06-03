@@ -43,14 +43,20 @@ public class DatePickerEx extends DatePicker {
     }
 
     private void doCustomize(Context context, AttributeSet attrs) {
+        final int identifier = Resources.getSystem().getIdentifier("year", "id", "android");
         NumberPicker yearPicker = (NumberPicker) findViewById(
-                Resources.getSystem().getIdentifier("year", "id", "android"));
+                identifier);
 
+        final int identifier1 = Resources.getSystem().getIdentifier("month", "id", "android");
         NumberPicker monthPicker = (NumberPicker) findViewById(
-                Resources.getSystem().getIdentifier("month", "id", "android"));
+                identifier1);
 
+        final int identifier2 = Resources.getSystem().getIdentifier("day", "id", "android");
         NumberPicker dayPicker = (NumberPicker) findViewById(
-                Resources.getSystem().getIdentifier("day", "id", "android"));
+                identifier2);
+        if(yearPicker == null || monthPicker == null || dayPicker == null){
+            return;
+        }
 
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.DatePickerEx);
         int count = a.getIndexCount();
