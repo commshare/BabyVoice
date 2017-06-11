@@ -102,4 +102,6 @@
     <string name="login">Login</string>
     <string name="account_login">Account login</string>
     <string name="register">Register</string>
+
+    <string name="upload_voice_record_success">upload voice record success</string>
 </resources>

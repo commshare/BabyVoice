@@ -36,13 +36,13 @@ public interface ApiManager {
             @Path("user") String user);
 
     /**
-     * 上传文件到服务器
+     * 上传声音文件到服务器
      *
      * @param files
      * @return
      */
-    @POST("uploadfiles")
-    Observable<HttpResponse<String>> uploadFiles(
+    @POST("web/voice/doUploadSound.do")
+    Observable<HttpResponse<String>> uploadVoiceFiles(
             @Query("username") String userName,
             @Body MultipartBody files);
 

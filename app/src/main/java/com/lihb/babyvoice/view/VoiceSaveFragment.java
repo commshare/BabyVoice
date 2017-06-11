@@ -180,7 +180,7 @@ public class VoiceSaveFragment extends BaseFragment {
         files.add(file);
         MultipartBody body = filesToMultipartBody(files);
         ServiceGenerator.createService(ApiManager.class)
-                .uploadFiles(BabyVoiceApp.currUserName,body)
+                .uploadVoiceFiles(BabyVoiceApp.currUserName,body)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<HttpResponse<String>>() {
@@ -188,7 +188,7 @@ public class VoiceSaveFragment extends BaseFragment {
                     public void call(HttpResponse<String> stringBaseResponse) {
                         Logger.i(stringBaseResponse.msg);
                         if (stringBaseResponse.code == 0) {
-                            CommonToast.showShortToast("上传成功！！");
+                            CommonToast.showShortToast(R.string.upload_voice_record_success);
                         }
 //                                FileUtils.deleteFile(FileUtils.getVoiceFilePath(mEditText.getText().toString().trim() + SUFFIX));
                     }
@@ -208,7 +208,7 @@ public class VoiceSaveFragment extends BaseFragment {
 
         for (File file : files) {
             RequestBody requestBody = RequestBody.create(MediaType.parse(""), file);
-            builder.addFormDataPart("file", file.getName(), requestBody);
+            builder.addFormDataPart("datafile", file.getName(), requestBody);
             builder.addFormDataPart("fileName", file.getName());
         }
         builder.setType(MultipartBody.FORM);
