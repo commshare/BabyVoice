@@ -85,6 +85,9 @@ dependencies {
     compile 'com.github.chrisbanes.photoview:library:+'
     compile project(':wavelibrary')
 
+    // 友盟
+    compile 'com.umeng.analytics:analytics:latest.integration'
+
 
 }
 

@@ -24,6 +24,7 @@ import com.lihb.babyvoice.customview.base.BaseFragment;
 import com.lihb.babyvoice.model.BabyVoice;
 import com.lihb.babyvoice.utils.CommonToast;
 import com.lihb.babyvoice.utils.StringUtils;
+import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
 
@@ -37,6 +38,7 @@ import static com.lihb.babyvoice.R.id.waveview;
 
 public class VoicePlayFragment extends BaseFragment {
 
+    private static final String TAG = "VoicePlayFragment";
     private String mFileName;
     private TitleBar mTitleBar;
     private SeekBar seekBar;
@@ -312,6 +314,7 @@ public class VoicePlayFragment extends BaseFragment {
             mediaPlayer.stop();
             resetUI();
         }
+        MobclickAgent.onPageEnd(TAG);
     }
 
     private void resetUI() {
@@ -396,5 +399,11 @@ public class VoicePlayFragment extends BaseFragment {
 
         // 启动分享GUI
         oks.show(getActivity());
+    }
+
+
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart(TAG); //统计页面，"MainScreen"为页面名称，可自定义
     }
 }

@@ -27,6 +27,7 @@ import com.lihb.babyvoice.model.HttpResponse;
 import com.lihb.babyvoice.utils.CommonToast;
 import com.lihb.babyvoice.utils.FileUtils;
 import com.lihb.babyvoice.utils.SharedPreferencesUtil;
+import com.umeng.analytics.MobclickAgent;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -292,5 +293,16 @@ public class RegisterActivity extends BaseFragmentActivity {
                 tips, Toast.LENGTH_LONG);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
+    }
+
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("RegisterActivity");
+        MobclickAgent.onResume(this);
+    }
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("RegisterActivity");
+        MobclickAgent.onPause(this);
     }
 }

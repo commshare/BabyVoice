@@ -19,6 +19,7 @@ import com.lihb.babyvoice.utils.FileUtils;
 import com.lihb.babyvoice.utils.RecorderHelper;
 import com.lihb.babyvoice.utils.StringUtils;
 import com.orhanobut.logger.Logger;
+import com.umeng.analytics.MobclickAgent;
 
 import static com.lihb.babyvoice.BabyVoiceApp.DATA_DIRECTORY;
 
@@ -27,6 +28,7 @@ import static com.lihb.babyvoice.BabyVoiceApp.DATA_DIRECTORY;
  */
 public class VoiceRecordFragment extends BaseFragment {
 
+    private static final String TAG = "VoiceRecordFragment";
     private TextView recordText;
     private Chronometer mChronometer;
     private TitleBar mTitleBar;
@@ -74,12 +76,6 @@ public class VoiceRecordFragment extends BaseFragment {
             hideBottomTab();
             mChronometer.setBase(System.currentTimeMillis());
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Logger.i("onResume");
     }
 
     private void hideBottomTab() {
@@ -166,11 +162,6 @@ public class VoiceRecordFragment extends BaseFragment {
         return System.currentTimeMillis() - mChronometer.getBase();
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-//        RecorderHelper.getInstance().cancel();
-    }
 
     /**
      * 计时器的时间变化监听
@@ -233,6 +224,16 @@ public class VoiceRecordFragment extends BaseFragment {
                 .addToBackStack(null)
                 .commit();
 
+    }
+
+
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart(TAG); //统计页面，"MainScreen"为页面名称，可自定义
+    }
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd(TAG);
     }
 
 

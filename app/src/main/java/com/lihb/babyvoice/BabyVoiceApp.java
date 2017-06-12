@@ -14,6 +14,7 @@ import com.lihb.babyvoice.utils.NotificationCenter;
 import com.lihb.babyvoice.utils.RxBus;
 import com.lihb.babyvoice.utils.SingleOkHttpClient;
 import com.lihb.babyvoice.utils.UserProfileChangedNotification;
+import com.umeng.analytics.MobclickAgent;
 
 import java.io.InputStream;
 
@@ -56,6 +57,9 @@ public class BabyVoiceApp extends Application {
 
         mBroadcastWatcher = new BroadcastWatcher(this);
         mBroadcastWatcher.startWatch();
+
+        //友盟
+        MobclickAgent.setDebugMode( true );
 
     }
 

@@ -13,11 +13,13 @@ import android.widget.ProgressBar;
 import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragmentActivity;
+import com.umeng.analytics.MobclickAgent;
 
 
 public class WebViewActivity extends BaseFragmentActivity {
 
-//    private ImageView mBackImg = null;
+    private static final String TAG = "WebViewActivity";
+    //    private ImageView mBackImg = null;
 //    private TextView mTitleTextView = null;
     private ProgressBar mProgressBar = null;
     private WebView mWebView = null;
@@ -37,6 +39,8 @@ public class WebViewActivity extends BaseFragmentActivity {
         if(mWebView != null) {
             mWebView.loadUrl(mUrl);
         }
+        MobclickAgent.onPageStart(TAG);
+        MobclickAgent.onResume(this);
     }
 
     @Override
@@ -45,6 +49,8 @@ public class WebViewActivity extends BaseFragmentActivity {
         if(mWebView != null) {
             mWebView.loadUrl("about:blank");
         }
+        MobclickAgent.onPageEnd(TAG);
+        MobclickAgent.onPause(this);
     }
 
     @Override

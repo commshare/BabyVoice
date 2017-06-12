@@ -21,6 +21,7 @@ import com.lihb.babyvoice.utils.CommonToast;
 import com.lihb.babyvoice.utils.FileUtils;
 import com.lihb.babyvoice.utils.SoftInputUtil;
 import com.orhanobut.logger.Logger;
+import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -43,6 +44,7 @@ import rx.schedulers.Schedulers;
 
 public class VoiceSaveFragment extends BaseFragment {
 
+    private static final String TAG = "VoiceSaveFragment";
     private EditText mEditText;
     private String mFileName;
     private TitleBar mTitleBar;
@@ -103,11 +105,6 @@ public class VoiceSaveFragment extends BaseFragment {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mEditText.setText(mFileName);
-    }
 
     private void hideBottomTab() {
         if (getActivity() == null) {
@@ -216,5 +213,14 @@ public class VoiceSaveFragment extends BaseFragment {
         return multipartBody;
     }
 
+    public void onResume() {
+        super.onResume();
+        mEditText.setText(mFileName);
+        MobclickAgent.onPageStart(TAG);
+    }
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd(TAG);
+    }
 
 }

@@ -11,6 +11,8 @@
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/padding_top"
         android:background="@color/colorPrimary"
+        app:leftDrawable="@mipmap/back"
+        app:leftTextColor="@android:color/white"
         app:titleTextColor="@android:color/white"
         app:titleText="@string/tab_baby_me" />
 

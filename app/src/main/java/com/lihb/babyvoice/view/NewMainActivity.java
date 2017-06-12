@@ -19,6 +19,7 @@ import com.lihb.babyvoice.utils.NetworkHelper;
 import com.lihb.babyvoice.utils.RecorderHelper;
 import com.lihb.babyvoice.utils.RxBus;
 import com.orhanobut.logger.Logger;
+import com.umeng.analytics.MobclickAgent;
 
 import cn.sharesdk.framework.ShareSDK;
 import rx.android.schedulers.AndroidSchedulers;
@@ -230,6 +231,15 @@ public class NewMainActivity extends BaseFragmentActivity {
     public int getStatusBarHeight(Context context) {
         int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
         return context.getResources().getDimensionPixelSize(resourceId);
+    }
+
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
 

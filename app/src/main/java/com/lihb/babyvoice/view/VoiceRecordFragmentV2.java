@@ -30,6 +30,7 @@ import com.lihb.babyvoice.utils.CommonToast;
 import com.lihb.babyvoice.utils.FileUtils;
 import com.lihb.babyvoice.utils.RxBus;
 import com.orhanobut.logger.Logger;
+import com.umeng.analytics.MobclickAgent;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -41,6 +42,7 @@ import static com.lihb.babyvoice.BabyVoiceApp.DATA_DIRECTORY;
  */
 public class VoiceRecordFragmentV2 extends BaseFragment {
 
+    private static final String TAG = "VoiceRecordFragmentV2";
     private TextView recordText;
     private Chronometer mChronometer;
     private TitleBar mTitleBar;
@@ -225,13 +227,7 @@ public class VoiceRecordFragmentV2 extends BaseFragment {
         }
         return System.currentTimeMillis() - mChronometer.getBase();
     }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-//        RecorderHelper.getInstance().cancel();
-    }
-
+    
     /**
      * 计时器的时间变化监听
      */
@@ -297,6 +293,16 @@ public class VoiceRecordFragmentV2 extends BaseFragment {
                 .addToBackStack(null)
                 .commit();
 
+    }
+
+
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart(TAG);
+    }
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd(TAG);
     }
 
 

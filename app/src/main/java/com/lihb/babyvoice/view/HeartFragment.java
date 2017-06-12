@@ -27,6 +27,7 @@ import com.lihb.babyvoice.model.BabyVoice;
 import com.lihb.babyvoice.utils.CommonToast;
 import com.lihb.babyvoice.utils.DimensionUtil;
 import com.orhanobut.logger.Logger;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,7 @@ import rx.schedulers.Schedulers;
 
 public class HeartFragment extends BaseFragment {
 
+    private static final String TAG = "HeartFragment";
     private RefreshLayout mRefreshLayout;
     private RemovedRecyclerView mRecyclerView;
     private HeartAdapter mHeartAdapter;
@@ -332,5 +334,15 @@ public class HeartFragment extends BaseFragment {
             mRefreshLayout.setLoading(false);
         }
     }
+
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart(TAG); //统计页面，"MainScreen"为页面名称，可自定义
+    }
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd(TAG);
+    }
+
 
 }

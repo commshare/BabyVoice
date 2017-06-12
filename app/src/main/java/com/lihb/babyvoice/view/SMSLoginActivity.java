@@ -27,6 +27,7 @@ import com.lihb.babyvoice.utils.CommonToast;
 import com.lihb.babyvoice.utils.FileUtils;
 import com.lihb.babyvoice.utils.SharedPreferencesUtil;
 import com.orhanobut.logger.Logger;
+import com.umeng.analytics.MobclickAgent;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -37,6 +38,7 @@ import rx.schedulers.Schedulers;
  */
 public class SMSLoginActivity  extends BaseFragmentActivity {
 
+    private static final String TAG = "SMSLoginActivity";
     private EditText mUserAccountEditText;
 
     private EditText mUserPasswordEditText;
@@ -336,5 +338,16 @@ public class SMSLoginActivity  extends BaseFragmentActivity {
             mCountDownTimer.cancel();
             mCountDownTimer = null;
         }
+    }
+
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart(TAG);
+        MobclickAgent.onResume(this);
+    }
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd(TAG);
+        MobclickAgent.onPause(this);
     }
 }

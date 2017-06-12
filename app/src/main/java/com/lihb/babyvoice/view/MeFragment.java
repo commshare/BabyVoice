@@ -10,8 +10,10 @@ import android.widget.LinearLayout;
 
 import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.customview.CommonItem;
+import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragment;
 import com.lihb.babyvoice.utils.CommonToast;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * Created by lhb on 2017/2/8.
@@ -21,6 +23,7 @@ public class MeFragment extends BaseFragment {
 
     public static final int ITEM_SET_PREGNANT_DATE  = 100;
     public static final int ITEM_SET_BABY_BIRTHDAY  = 200;
+    private static final String TAG = "MeFragment";
 
     private CommonItem itemMeCenter;
     private CommonItem itemPregnantDate;
@@ -29,6 +32,7 @@ public class MeFragment extends BaseFragment {
     private CommonItem itemLanguageSelect;
     private CommonItem itemAboutApp;
     private DateSelectFragment mDateSelectFragment;
+    private TitleBar mTitleBar;
 
     public static MeFragment create() {
         return new MeFragment();
@@ -91,6 +95,9 @@ public class MeFragment extends BaseFragment {
             }
         });
 
+        mTitleBar = (TitleBar) getView().findViewById(R.id.title_bar);
+        mTitleBar.setLeftOnClickListener(v -> getActivity().onBackPressed());
+
 //        itemRemoteVideoAddress = (CommonItem) getView().findViewById(R.id.item_remote_video_address);
 //        itemRemoteVideoAddress.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -132,6 +139,15 @@ public class MeFragment extends BaseFragment {
                 .addToBackStack(null)
                 .commit();
 
+    }
+
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart(TAG);
+    }
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd(TAG);
     }
 
 }

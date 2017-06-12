@@ -10,6 +10,7 @@ import com.lihb.babyvoice.BabyVoiceApp;
 import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.customview.base.BaseFragmentActivity;
 import com.lihb.babyvoice.utils.SharedPreferencesUtil;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * Created by lhb on 2017/4/1.
@@ -17,6 +18,7 @@ import com.lihb.babyvoice.utils.SharedPreferencesUtil;
 
 public class StartupActivity extends BaseFragmentActivity {
 
+    private static final String TAG = "StartupActivity";
     private TextView mRegisterBtn = null;
 
     private TextView mLoginBtn = null;
@@ -33,6 +35,9 @@ public class StartupActivity extends BaseFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_startup);
         initView();
+
+        //加密上传到友盟的数据
+        MobclickAgent.enableEncrypt(true);
     }
 
     private void initView() {
@@ -107,4 +112,15 @@ public class StartupActivity extends BaseFragmentActivity {
 //        }
 //
 //    }
+
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart(TAG);
+        MobclickAgent.onResume(this);
+    }
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd(TAG);
+        MobclickAgent.onPause(this);
+    }
 }
