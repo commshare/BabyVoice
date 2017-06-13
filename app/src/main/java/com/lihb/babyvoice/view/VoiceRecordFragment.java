@@ -1,5 +1,6 @@
 package com.lihb.babyvoice.view;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
@@ -16,6 +17,7 @@ import com.lihb.babyvoice.customview.AnimatedRecordingView;
 import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragment;
 import com.lihb.babyvoice.utils.FileUtils;
+import com.lihb.babyvoice.utils.PermissionCheckUtil;
 import com.lihb.babyvoice.utils.RecorderHelper;
 import com.lihb.babyvoice.utils.StringUtils;
 import com.orhanobut.logger.Logger;
@@ -96,7 +98,11 @@ public class VoiceRecordFragment extends BaseFragment {
                 String text = recordText.getText().toString().trim();
                 if (StringUtils.areEqual(text, "开始")) {
                     recordText.setText("完成");
-                    RecorderHelper.getInstance().startRecord();
+                    if (PermissionCheckUtil.checkHasPermission(getActivity(), Manifest.permission.RECORD_AUDIO)) {
+                        RecorderHelper.getInstance().startRecord();
+                    }else {
+                        PermissionCheckUtil.showGrantFailDialog(getActivity(), "请到设置中打开录音权限");
+                    }
                 } else {
 //                    RecorderHelper.getInstance().cancel();
                     mAnimatedRecordingView.stop();
