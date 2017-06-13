@@ -16,7 +16,7 @@
 
     <string name="net_error_notice">The network doesn\'t work,please check the website setting.</string>
 
-    <string name="no_voice_record">No baby heart beat sound record\n Touch the record button to start a new record!</string>
+    <string name="no_voice_record">No baby heart beat sound or lung sound record\n Touch the record button to start a new record!</string>
     <string name="voice_recording">Recording</string>
     <string name="voice_save">Save recording</string>
     <string name="voice_save_title">File name</string>

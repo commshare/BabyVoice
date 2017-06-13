@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:paddingTop="@dimen/padding_top"
-        app:leftDrawable="@mipmap/me_sel"
+        app:leftDrawable="@drawable/more_icon"
         app:leftTextColor="@android:color/white"
         app:titleTextColor="@android:color/white"
         app:titleText="@string/app_name" />
