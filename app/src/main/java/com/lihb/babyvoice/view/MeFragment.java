@@ -54,9 +54,9 @@ public class MeFragment extends BaseFragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (hidden == false) {
-            showBottomTab();
-        }
+//        if (hidden == false) {
+//            showBottomTab();
+//        }
     }
 
     private void showBottomTab() {
