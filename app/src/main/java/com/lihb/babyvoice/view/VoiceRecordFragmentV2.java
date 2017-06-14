@@ -1,5 +1,6 @@
 package com.lihb.babyvoice.view;
 
+import android.Manifest;
 import android.graphics.PixelFormat;
 import android.media.AudioFormat;
 import android.media.AudioManager;
@@ -28,6 +29,7 @@ import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragment;
 import com.lihb.babyvoice.utils.CommonToast;
 import com.lihb.babyvoice.utils.FileUtils;
+import com.lihb.babyvoice.utils.PermissionCheckUtil;
 import com.lihb.babyvoice.utils.RxBus;
 import com.orhanobut.logger.Logger;
 import com.umeng.analytics.MobclickAgent;
@@ -144,8 +146,13 @@ public class VoiceRecordFragmentV2 extends BaseFragment {
             @Override
             public void onClick(View view) {
                 if (waveCanvas == null || !waveCanvas.isRecording) {
-                    recordText.setText("完成");
-                    initAudio();
+                    // 权限检测
+                    if (PermissionCheckUtil.checkHasPermission(getActivity(), Manifest.permission.RECORD_AUDIO)) {
+                        recordText.setText("完成");
+                        initAudio();
+                    }else {
+                        PermissionCheckUtil.showGrantFailDialog(getActivity(), getString(R.string.grant_audio_record_permission));
+                    }
                 } else {
                     recordText.setText("开始");
                     waveCanvas.stop();

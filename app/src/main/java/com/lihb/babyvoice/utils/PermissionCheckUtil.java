@@ -43,12 +43,11 @@ public class PermissionCheckUtil {
     public static void showGrantFailDialog(final Activity activity, String msg) {
 
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(activity);
-        builder.setTitle("Material Design Dialog");
-        builder.setMessage("这是 android.support.v7.app.AlertDialog 中的样式");
+//        builder.setTitle("Material Design Dialog");
+        builder.setMessage(msg);
         builder.setNegativeButton("取消", (dialog, which) -> dialog.dismiss());
-        builder.setPositiveButton("去设置", (dialog, which) -> {
-            RuntimePermissionsUtil.startInstalledAppDetailsActivity(activity);
-        });
+        builder.setPositiveButton("去设置", (dialog, which) ->
+            RuntimePermissionsUtil.startInstalledAppDetailsActivity(activity));
         if (!activity.isFinishing()) {
             builder.show();
         }

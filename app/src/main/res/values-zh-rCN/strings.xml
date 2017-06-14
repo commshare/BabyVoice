@@ -103,4 +103,5 @@
     <string name="account_login">登陆账号</string>
     <string name="register">注册</string>
     <string name="upload_voice_record_success">上传声音文件成功</string>
+    <string name="grant_audio_record_permission">请设置录音权限</string>
 </resources>

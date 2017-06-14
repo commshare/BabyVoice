@@ -97,11 +97,12 @@ public class VoiceRecordFragment extends BaseFragment {
             public void onClick(View view) {
                 String text = recordText.getText().toString().trim();
                 if (StringUtils.areEqual(text, "开始")) {
-                    recordText.setText("完成");
+                    // 检测权限
                     if (PermissionCheckUtil.checkHasPermission(getActivity(), Manifest.permission.RECORD_AUDIO)) {
+                        recordText.setText("完成");
                         RecorderHelper.getInstance().startRecord();
                     }else {
-                        PermissionCheckUtil.showGrantFailDialog(getActivity(), "请到设置中打开录音权限");
+                        PermissionCheckUtil.showGrantFailDialog(getActivity(), getString(R.string.grant_audio_record_permission));
                     }
                 } else {
 //                    RecorderHelper.getInstance().cancel();
