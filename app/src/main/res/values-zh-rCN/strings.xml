@@ -41,6 +41,8 @@
     <string name="txt_remote_video_address">远程视频连接地址设置</string>
     <string name="txt_country_select">选择国家</string>
     <string name="txt_about_app">关于听贝贝</string>
+    <string name="txt_version_update">检测新版本</string>
+    <string name="checked_new_version">检测到新版本</string>
 
 
     <string name="enter_your_pregnant_date">请选择您的怀孕日期</string>
@@ -102,6 +104,7 @@
     <string name="login">登录</string>
     <string name="account_login">登陆账号</string>
     <string name="register">注册</string>
+    <string name="already_newest_version">已经是最新版</string>
     <string name="upload_voice_record_success">上传声音文件成功</string>
     <string name="grant_audio_record_permission">请设置录音权限</string>
 </resources>

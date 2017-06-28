@@ -35,19 +35,12 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <!--  <activity android:name=".view.MainActivity">
-              <intent-filter>
-                  <action android:name="android.intent.action.MAIN" />
-
-                  <category android:name="android.intent.category.LAUNCHER" />
-              </intent-filter>
-          </activity>-->
         <activity android:name=".view.NewMainActivity">
-           <!-- <intent-filter>
+            <intent-filter>
             <action android:name="android.intent.action.MAIN" />
 
             <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
         </activity>
 
         <activity android:name=".view.EditGrowUpRecordActivity" />
@@ -99,11 +92,11 @@
             android:exported="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name=".view.StartupActivity">
-            <intent-filter>
+           <!-- <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
 
         <activity android:name=".view.RegisterActivity"/>
@@ -111,8 +104,11 @@
         <activity android:name=".view.SMSLoginActivity"/>
         <activity android:name=".view.WebViewActivity" />
 
-        <meta-data android:value="593ded9b4ad1565f30001d3a" android:name="UMENG_APPKEY"/>
-        <meta-data android:value="Wandoujia" android:name="UMENG_CHANNEL"/>
+
+        <service
+            android:name=".upgrade.UpgradeService"
+            android:enabled="true"
+            android:exported="true" />
 
     </application>
 

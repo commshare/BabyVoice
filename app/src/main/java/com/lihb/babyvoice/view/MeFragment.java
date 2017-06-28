@@ -12,6 +12,7 @@ import com.lihb.babyvoice.R;
 import com.lihb.babyvoice.customview.CommonItem;
 import com.lihb.babyvoice.customview.TitleBar;
 import com.lihb.babyvoice.customview.base.BaseFragment;
+import com.lihb.babyvoice.upgrade.UpgradeUtil;
 import com.lihb.babyvoice.utils.CommonToast;
 import com.umeng.analytics.MobclickAgent;
 
@@ -31,6 +32,7 @@ public class MeFragment extends BaseFragment {
 //    private CommonItem itemRemoteVideoAddress;
     private CommonItem itemLanguageSelect;
     private CommonItem itemAboutApp;
+    private CommonItem itemVersionUpdate;
     private DateSelectFragment mDateSelectFragment;
     private TitleBar mTitleBar;
 
@@ -94,6 +96,8 @@ public class MeFragment extends BaseFragment {
                 gotoDateSelectFragment(ITEM_SET_BABY_BIRTHDAY);
             }
         });
+        itemVersionUpdate = (CommonItem) getView().findViewById(R.id.item_version_update);
+        itemVersionUpdate.setOnClickListener(v -> UpgradeUtil.checkUpgrade(getActivity(), UpgradeUtil.FROM_ME_FRAGMENT));
 
         mTitleBar = (TitleBar) getView().findViewById(R.id.title_bar);
         mTitleBar.setLeftOnClickListener(v -> getActivity().onBackPressed());

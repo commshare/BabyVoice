@@ -84,13 +84,23 @@
                 android:layout_marginTop="10dp" />
 
             <com.lihb.babyvoice.customview.CommonItem
-                android:id="@+id/item_language_select"
+            android:id="@+id/item_language_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:commonDividerVisible="true"
+            app:commonItemName="@string/txt_country_select"
+            app:commonItemSelector="@drawable/voice_item_selector"
+            app:commonLeftIcon="@mipmap/yy"
+            app:commonRightIcon="@mipmap/next_icon" />
+
+            <com.lihb.babyvoice.customview.CommonItem
+                android:id="@+id/item_version_update"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:commonDividerVisible="true"
-                app:commonItemName="@string/txt_country_select"
+                app:commonItemName="@string/txt_version_update"
                 app:commonItemSelector="@drawable/voice_item_selector"
-                app:commonLeftIcon="@mipmap/yy"
+                app:commonLeftIcon="@mipmap/gy"
                 app:commonRightIcon="@mipmap/next_icon" />
 
             <com.lihb.babyvoice.customview.CommonItem

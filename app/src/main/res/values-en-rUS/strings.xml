@@ -41,6 +41,8 @@
     <string name="txt_remote_video_address">set the remote video link</string>
     <string name="txt_country_select">Language</string>
     <string name="txt_about_app">About listen to baby</string>
+    <string name="txt_version_update">Check new version</string>
+    <string name="checked_new_version">Checked new version</string>
 
 
     <string name="enter_your_pregnant_date">Please set your pregnant date</string>
@@ -102,6 +104,7 @@
     <string name="login">Login</string>
     <string name="account_login">Account login</string>
     <string name="register">Register</string>
+    <string name="already_newest_version">already newest version</string>
 
     <string name="upload_voice_record_success">upload voice record success</string>
     <string name="grant_audio_record_permission">please grant audio record permission</string>

@@ -15,6 +15,8 @@ import com.lihb.babyvoice.command.BaseAndroidCommand;
 import com.lihb.babyvoice.command.NetStateChangedCommand;
 import com.lihb.babyvoice.command.PickedCategoryCommand;
 import com.lihb.babyvoice.customview.base.BaseFragmentActivity;
+import com.lihb.babyvoice.upgrade.UpgradeUtil;
+import com.lihb.babyvoice.utils.CommonToast;
 import com.lihb.babyvoice.utils.NetworkHelper;
 import com.lihb.babyvoice.utils.RecorderHelper;
 import com.lihb.babyvoice.utils.RxBus;
@@ -57,7 +59,8 @@ public class NewMainActivity extends BaseFragmentActivity {
         ShareSDK.initSDK(this);
         initViews();
         checkNetStatus();
-
+        UpgradeUtil.checkUpgrade(NewMainActivity.this, UpgradeUtil.FROM_MAIN_ACTIVITY);
+        CommonToast.showShortToast(UpgradeUtil.getVersionName(NewMainActivity.this));
     }
 
     private void initViews() {
@@ -218,6 +221,7 @@ public class NewMainActivity extends BaseFragmentActivity {
         mNetErrorNoticeBar.setVisibility(NetworkHelper.isDisconnected(NewMainActivity.this) ? View.VISIBLE : View.GONE);
         findViewById(R.id.divider_line).setVisibility(NetworkHelper.isDisconnected(NewMainActivity.this) ? View.VISIBLE : View.GONE);
     }
+
 
     private void addStatusBarView() {
         View view = new View(this);
